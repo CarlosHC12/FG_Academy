@@ -1,0 +1,28 @@
+@startuml
+!include <C4/C4_Container>
+
+Person(admin, "Administrador")
+Person(usuario1, "Alumno")
+Person(usuario2, "Profesor")
+
+System(web_app, "FGA_app", "Spring", "Gestiona el alumnado y docencia")
+
+ContainerDb(db, "Database", "H2", "Guarda informacion del alumnado y docencia")
+
+
+Rel(admin, web_app, "Usa", "HTTPS")
+Rel(usuario1, web_app, "Usa", "HTTPS")
+Rel(usuario2, web_app, "Usa", "HTTPS")
+Rel(web_app, db, "Conecta", " ")
+@enduml
+
+
+
+
+
+
+
+
+
+
+
