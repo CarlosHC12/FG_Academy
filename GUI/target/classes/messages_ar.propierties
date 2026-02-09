@@ -1,0 +1,22 @@
+# --- Globals / Actions ---
+generic.link.create=创建新的
+generic.link.export.pdf=导出为 PDF
+generic.button.save=保存产品
+generic.link.view-list=查看列表
+
+product.list.page.title=产品列表
+product.list.title=产品列表
+product.table.header.id=编号
+product.table.header.name=名称
+product.table.header.price=价格
+
+# --- Crear Producto
+product.form.title=创建产品
+product.form.label.name=名称：
+product.form.label.price=价格：
+product.form.page.title=新建产品
+
+# --- Feedback Messages ---
+feedback.success.created={0} 已成功创建。
+product.name.singular=产品
+product.confirmation.page.title=产品已创建

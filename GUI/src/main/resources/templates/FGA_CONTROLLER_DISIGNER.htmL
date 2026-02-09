@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FG Academy - Diseña tu Fight Stick</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #1a1a2e;
+            --accent-color: #ff4655;
+            --accent-glow: rgba(255, 70, 85, 0.4);
+            --text-light: #e6e6e6;
+            --border-color: #2a2a3e;
+            --panel-bg: rgba(26, 26, 46, 0.95);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Navbar */
+        nav {
+            background-color: var(--secondary-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            height: 50px;
+            filter: drop-shadow(0 0 5px var(--accent-glow));
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-color), #ff8e53);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 70, 85, 0.3);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 70, 85, 0.1);
+            color: var(--accent-color);
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+        
+        /* Layout principal */
+        .main-container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        /* Panel izquierdo - Editor */
+        .editor-container {
+            flex: 3;
+            background-color: var(--panel-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .editor-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        /* Selector de tipo */
+        .type-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .type-option {
+            flex: 1;
+            min-width: 150px;
+            background-color: var(--secondary-dark);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .type-option:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 70, 85, 0.2);
+        }
+        
+        .type-option.active {
+            border-color: var(--accent-color);
+            background-color: rgba(255, 70, 85, 0.1);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .type-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+        
+        .type-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        /* Canvas del fight stick */
+        .fightstick-container {
+            flex: 1;
+            position: relative;
+            background-color: #111122;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+            user-select: none;
+        }
+        
+        .fightstick-body {
+            position: relative;
+            width: 700px;
+            height: 350px;
+            background-color: #2a2a3e;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        
+        .fightstick-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.9;
+            z-index: 1;
+        }
+        
+        .fightstick-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: move;
+        }
+        
+        /* Elementos del fight stick */
+        .joystick {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #444;
+            border: 4px solid #666;
+            cursor: grab;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            z-index: 3;
+            transform-origin: center center;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        
+        .joystick:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .joystick::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #666;
+        }
+        
+        .button {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: #444;
+            border: 4px solid #666;
+            cursor: grab;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #ddd;
+            user-select: none;
+            z-index: 3;
+            transform-origin: center center;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            font-size: 1.1rem;
+        }
+        
+        .button:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .movement-button {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
+            background-color: #444;
+            border: 4px solid #666;
+            cursor: grab;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #ddd;
+            user-select: none;
+            font-size: 1.4rem;
+            z-index: 3;
+            transform-origin: center center;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        
+        .movement-button:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .keyboard-key {
+            position: absolute;
+            width: 60px;
+            height: 45px;
+            background-color: #333;
+            border: 3px solid #666;
+            cursor: grab;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #ddd;
+            user-select: none;
+            border-radius: 8px;
+            z-index: 3;
+            transform-origin: center center;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        
+        .keyboard-key:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .control-button {
+            position: absolute;
+            width: 70px;
+            height: 30px;
+            background-color: #444;
+            border: 3px solid #666;
+            cursor: grab;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #ddd;
+            user-select: none;
+            border-radius: 5px;
+            z-index: 3;
+            transform-origin: center center;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        
+        .control-button:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .element-selected {
+            box-shadow: 0 0 20px var(--accent-glow) !important;
+            border-color: var(--accent-color) !important;
+            z-index: 10 !important;
+        }
+        
+        /* Panel derecho - Controles MEJORADO */
+        .controls-container {
+            flex: 1;
+            background-color: var(--panel-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            max-height: 800px;
+            overflow-y: auto;
+        }
+        
+        .controls-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+        }
+        
+        .control-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #ccc;
+        }
+        
+        /* Controles deslizantes */
+        .slider-control {
+            margin-bottom: 20px;
+        }
+        
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .slider-name {
+            font-size: 0.95rem;
+            color: #ddd;
+        }
+        
+        .slider-value {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            min-width: 50px;
+            text-align: right;
+        }
+        
+        .slider-wrapper {
+            position: relative;
+            height: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(90deg, var(--border-color), var(--accent-color));
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-glow);
+            border: 2px solid white;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        /* Controles de color */
+        .color-controls {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .color-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .color-header h4 {
+            color: var(--accent-color);
+        }
+        
+        .color-mode {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .color-mode-btn {
+            padding: 8px 15px;
+            background-color: var(--secondary-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .color-mode-btn.active {
+            background-color: rgba(255, 70, 85, 0.2);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .color-swatch {
+            aspect-ratio: 1;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-swatch.active {
+            border-color: white;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .custom-color {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .custom-color input[type="color"] {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+        }
+        
+        .custom-color input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-light);
+            font-family: monospace;
+        }
+        
+        .apply-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s ease;
+        }
+        
+        .apply-btn:hover {
+            background-color: #ff2e3f;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        /* Fondo del mando */
+        .background-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .bg-option {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        
+        .bg-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .bg-option.active {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .bg-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .upload-btn {
+            padding: 12px;
+            background-color: var(--secondary-dark);
+            border: 2px dashed var(--border-color);
+            border-radius: 5px;
+            color: var(--text-light);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            border-color: var(--accent-color);
+            background-color: rgba(255, 70, 85, 0.05);
+        }
+        
+        /* Coordenadas de botones */
+        .coordinates-panel {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .coordinates-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .coordinates-header h4 {
+            color: var(--accent-color);
+        }
+        
+        .coordinates-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .coordinate-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .coordinate-name {
+            font-weight: 600;
+            color: #ddd;
+        }
+        
+        .coordinate-value {
+            font-family: monospace;
+            color: var(--accent-color);
+        }
+        
+        /* Elementos seleccionados */
+        .selected-elements {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .selected-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .selected-header h4 {
+            color: var(--accent-color);
+        }
+        
+        .selection-count {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .element-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .element-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .element-item.active {
+            background-color: rgba(255, 70, 85, 0.1);
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .element-preview {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .element-info {
+            flex: 1;
+        }
+        
+        .element-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .element-type {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        /* Acciones */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ff2e3f;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-dark);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2a2a3e;
+            border-color: var(--accent-color);
+        }
+        
+        /* Información */
+        .info-box {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        
+        .info-title {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-list {
+            padding-left: 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .info-list li {
+            margin-bottom: 5px;
+        }
+        
+        /* Modal de descarga */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--secondary-dark);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 30px rgba(255, 70, 85, 0.2);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #aaa;
+        }
+        
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .download-option {
+            padding: 15px;
+            background-color: var(--primary-dark);
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+        
+        .download-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .download-info p {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .controls-container {
+                max-height: none;
+            }
+            
+            .fightstick-body {
+                width: 600px;
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .type-selector {
+                flex-direction: column;
+            }
+            
+            .background-controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .color-palette {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .fightstick-body {
+                width: 100%;
+                height: 250px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo-container">
+            <div class="logo">🎮</div>
+            <div class="logo-text">FG Academy</div>
+        </div>
+        <div class="nav-links">
+            <a href="#">Inicio</a>
+            <a href="#">Cursos</a>
+            <a href="#" style="color: var(--accent-color);">Diseña tu Fight Stick</a>
+            <a href="#">Comunidad</a>
+            <a href="#">Contacto</a>
+        </div>
+    </nav>
+    
+    <!-- Contenido principal -->
+    <div class="main-container">
+        <!-- Panel izquierdo - Editor -->
+        <div class="editor-container">
+            <h1 class="editor-title">Diseña tu Fight Stick Personalizado</h1>
+            
+            <!-- Selector de tipo de fight stick -->
+            <div class="type-selector">
+                <div class="type-option active" data-type="traditional">
+                    <div class="type-icon">🕹️</div>
+                    <div class="type-name">Tradicional</div>
+                    <p>Palanca + 8 botones + Select/Start</p>
+                </div>
+                <div class="type-option" data-type="hitbox">
+                    <div class="type-icon">🔲</div>
+                    <div class="type-name">Hitbox</div>
+                    <p>4 botones dirección + 8 botones + Select/Start</p>
+                </div>
+                <div class="type-option" data-type="keyboard">
+                    <div class="type-icon">⌨️</div>
+                    <div class="type-name">Keyboard</div>
+                    <p>WASD + 8 botones + Select/Start</p>
+                </div>
+            </div>
+            
+            <!-- Canvas del fight stick -->
+            <div class="fightstick-container" id="fightstick-container">
+                <div class="fightstick-body" id="fightstick-body">
+                    <!-- Fondo del fight stick -->
+                    <div class="fightstick-bg" id="fightstick-bg" style="background-color: #222233;"></div>
+                    
+                    <!-- Overlay para elementos -->
+                    <div class="fightstick-overlay" id="fightstick-overlay">
+                        <!-- Elementos se añadirán dinámicamente aquí -->
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; color: #aaa; font-size: 0.9rem; margin-top: 10px;">
+                <i class="fas fa-mouse-pointer"></i> Haz clic y arrastra para mover elementos | Las coordenadas se actualizan en tiempo real
+            </div>
+        </div>
+        
+        <!-- Panel derecho - Controles -->
+        <div class="controls-container">
+            <h2 class="controls-title">Personalización</h2>
+            
+            <!-- Tamaño del mando -->
+            <div class="control-group">
+                <label class="control-label">Tamaño del mando</label>
+                
+                <!-- Ancho del mando -->
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-name">Ancho</span>
+                        <span class="slider-value" id="width-value">700px</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="400" max="1000" value="700" class="slider" id="width-slider">
+                    </div>
+                </div>
+                
+                <!-- Alto del mando -->
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-name">Alto</span>
+                        <span class="slider-value" id="height-value">350px</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="200" max="600" value="350" class="slider" id="height-slider">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Escala de imagen -->
+            <div class="control-group">
+                <label class="control-label">Escala de imagen de fondo</label>
+                
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-name">Escala</span>
+                        <span class="slider-value" id="scale-value">100%</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="50" max="200" value="100" class="slider" id="scale-slider">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Posición de elementos seleccionados -->
+            <div class="control-group">
+                <label class="control-label">Posición de elementos seleccionados</label>
+                
+                <!-- Posición X -->
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-name">Posición X</span>
+                        <span class="slider-value" id="posx-value">0px</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="0" max="700" value="0" class="slider" id="posx-slider">
+                    </div>
+                </div>
+                
+                <!-- Posición Y -->
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-name">Posición Y</span>
+                        <span class="slider-value" id="posy-value">0px</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="0" max="350" value="0" class="slider" id="posy-slider">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controles de color -->
+            <div class="color-controls">
+                <div class="color-header">
+                    <h4>Colores de los elementos</h4>
+                    <div class="color-mode">
+                        <button class="color-mode-btn active" id="color-all">Todos</button>
+                        <button class="color-mode-btn" id="color-selected">Seleccionados</button>
+                    </div>
+                </div>
+                
+                <div class="color-palette" id="color-palette">
+                    <!-- Colores predefinidos -->
+                    <div class="color-swatch" data-color="#444444" style="background-color: #444444;"></div>
+                    <div class="color-swatch" data-color="#ff4655" style="background-color: #ff4655;"></div>
+                    <div class="color-swatch" data-color="#4CAF50" style="background-color: #4CAF50;"></div>
+                    <div class="color-swatch" data-color="#2196F3" style="background-color: #2196F3;"></div>
+                    <div class="color-swatch" data-color="#FF9800" style="background-color: #FF9800;"></div>
+                    <div class="color-swatch" data-color="#9C27B0" style="background-color: #9C27B0;"></div>
+                    <div class="color-swatch" data-color="#00BCD4" style="background-color: #00BCD4;"></div>
+                    <div class="color-swatch" data-color="#FFC107" style="background-color: #FFC107;"></div>
+                    <div class="color-swatch" data-color="#795548" style="background-color: #795548;"></div>
+                    <div class="color-swatch" data-color="#607D8B" style="background-color: #607D8B;"></div>
+                </div>
+                
+                <div class="custom-color">
+                    <input type="color" id="custom-color-picker" value="#444444">
+                    <input type="text" id="custom-color-hex" value="#444444" placeholder="#RRGGBB">
+                </div>
+                
+                <button class="apply-btn" id="apply-color">Aplicar color</button>
+            </div>
+            
+            <!-- Fondo del mando -->
+            <div class="control-group">
+                <label class="control-label">Fondo del mando</label>
+                <div class="background-controls">
+                    <div class="bg-option active" data-bg="solid">
+                        <div style="width:100%;height:100%;background:#222233;"></div>
+                    </div>
+                    <div class="bg-option" data-bg="carbon">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Carbon">
+                    </div>
+                    <div class="bg-option" data-bg="grid">
+                        <img src="https://images.unsplash.com/photo-1534796636918-6a8c0be14515?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Grid">
+                    </div>
+                    <div class="bg-option" data-bg="metal">
+                        <img src="https://images.unsplash.com/photo-1518834103328-93d45986dce1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Metal">
+                    </div>
+                    <div class="bg-option" data-bg="wood">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Wood">
+                    </div>
+                    <div class="bg-option" data-bg="custom">
+                        <div style="width:100%;height:100%;background:linear-gradient(45deg, #333, #666);display:flex;align-items:center;justify-content:center;">
+                            <i class="fas fa-upload"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="upload-section">
+                    <div class="upload-btn" id="upload-bg-btn">
+                        <i class="fas fa-cloud-upload-alt"></i> Subir imagen personalizada
+                    </div>
+                    <input type="file" id="bg-file-input" accept="image/*" style="display: none;">
+                </div>
+            </div>
+            
+            <!-- Coordenadas de botones -->
+            <div class="coordinates-panel">
+                <div class="coordinates-header">
+                    <h4>Coordenadas de botones</h4>
+                    <button class="color-mode-btn" id="copy-coordinates">Copiar</button>
+                </div>
+                <div class="coordinates-list" id="coordinates-list">
+                    <!-- Las coordenadas se mostrarán aquí -->
+                </div>
+            </div>
+            
+            <!-- Elementos seleccionados -->
+            <div class="selected-elements">
+                <div class="selected-header">
+                    <h4>Elementos seleccionados</h4>
+                    <div class="selection-count" id="selection-count">0</div>
+                </div>
+                <div id="selected-elements-list">
+                    <!-- Elementos seleccionados aparecerán aquí -->
+                </div>
+                <div style="text-align: center; margin-top: 15px; color: #aaa; font-size: 0.9rem;">
+                    Haz clic en cualquier elemento para seleccionarlo (Shift+clic para múltiples)
+                </div>
+            </div>
+            
+            <!-- Acciones -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="save-design">
+                    <i class="fas fa-save"></i> Guardar diseño
+                </button>
+                <button class="btn btn-secondary" id="download-design">
+                    <i class="fas fa-download"></i> Descargar diseño
+                </button>
+                <button class="btn btn-secondary" id="reset-positions">
+                    <i class="fas fa-undo"></i> Restablecer posiciones
+                </button>
+                <button class="btn btn-secondary" id="reset-all">
+                    <i class="fas fa-redo"></i> Restablecer todo
+                </button>
+            </div>
+            
+            <!-- Información -->
+            <div class="info-box">
+                <div class="info-title">
+                    <i class="fas fa-info-circle"></i> Cómo usar
+                </div>
+                <ul class="info-list">
+                    <li><strong>Arrastra elementos</strong> directamente en el mando</li>
+                    <li><strong>Ajusta tamaño del mando</strong> con los controles deslizantes</li>
+                    <li><strong>Escala la imagen</strong> de fondo para ajustarla</li>
+                    <li><strong>Posiciona elementos</strong> con precisión usando los controles X/Y</li>
+                    <li><strong>Las coordenadas</strong> se actualizan en tiempo real</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de descarga -->
+    <div class="modal" id="download-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2 class="modal-title">Descargar diseño</h2>
+            <div class="download-options">
+                <div class="download-option">
+                    <div class="download-info">
+                        <h4>Imagen del diseño</h4>
+                        <p>PNG de alta calidad para compartir</p>
+                    </div>
+                    <button class="btn btn-primary download-option-btn" data-type="image">
+                        <i class="fas fa-image"></i> Descargar
+                    </button>
+                </div>
+                <div class="download-option">
+                    <div class="download-info">
+                        <h4>Plano de construcción</h4>
+                        <p>PDF con medidas y especificaciones técnicas</p>
+                    </div>
+                    <button class="btn btn-primary download-option-btn" data-type="blueprint">
+                        <i class="fas fa-ruler-combined"></i> Descargar
+                    </button>
+                </div>
+                <div class="download-option">
+                    <div class="download-info">
+                        <h4>Esquema de conexiones</h4>
+                        <p>Diagrama de cableado para tu fight stick</p>
+                    </div>
+                    <button class="btn btn-primary download-option-btn" data-type="wiring">
+                        <i class="fas fa-project-diagram"></i> Descargar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>FG Academy - Escuela de juegos de lucha &copy; 2023</p>
+        <p>Diseña tu fight stick personalizado para torneos y práctica</p>
+    </footer>
+    
+    <script>
+        // Variables globales
+        let currentType = 'traditional';
+        let selectedElements = new Set();
+        let isDragging = false;
+        let dragOffset = { x: 0, y: 0 };
+        let currentColorMode = 'all';
+        
+        // Configuración del mando
+        const fightstickConfig = {
+            width: 700,
+            height: 350,
+            bgScale: 1.0,
+            bgType: 'solid',
+            bgOpacity: 0.9,
+            elementColors: {
+                joystick: '#444444',
+                buttons: '#444444',
+                movementButtons: '#444444',
+                keyboardKeys: '#333333',
+                controlButtons: '#444444'
+            }
+        };
+        
+        // Referencias a los elementos del mando
+        let fightstickElements = {};
+        
+        // Elementos del DOM
+        const typeOptions = document.querySelectorAll('.type-option');
+        const fightstickBody = document.getElementById('fightstick-body');
+        const fightstickBg = document.getElementById('fightstick-bg');
+        const fightstickOverlay = document.getElementById('fightstick-overlay');
+        
+        // Controles deslizantes
+        const widthSlider = document.getElementById('width-slider');
+        const widthValue = document.getElementById('width-value');
+        const heightSlider = document.getElementById('height-slider');
+        const heightValue = document.getElementById('height-value');
+        const scaleSlider = document.getElementById('scale-slider');
+        const scaleValue = document.getElementById('scale-value');
+        const posXSlider = document.getElementById('posx-slider');
+        const posXValue = document.getElementById('posx-value');
+        const posYSlider = document.getElementById('posy-slider');
+        const posYValue = document.getElementById('posy-value');
+        
+        // Controles de color
+        const colorModeAllBtn = document.getElementById('color-all');
+        const colorModeSelectedBtn = document.getElementById('color-selected');
+        const colorPalette = document.getElementById('color-palette');
+        const customColorPicker = document.getElementById('custom-color-picker');
+        const customColorHex = document.getElementById('custom-color-hex');
+        const applyColorBtn = document.getElementById('apply-color');
+        const selectionCount = document.getElementById('selection-count');
+        const selectedElementsList = document.getElementById('selected-elements-list');
+        
+        // Coordenadas
+        const coordinatesList = document.getElementById('coordinates-list');
+        const copyCoordinatesBtn = document.getElementById('copy-coordinates');
+        
+        // Fondo
+        const bgOptions = document.querySelectorAll('.bg-option');
+        const uploadBgBtn = document.getElementById('upload-bg-btn');
+        const bgFileInput = document.getElementById('bg-file-input');
+        
+        // Acciones
+        const saveDesignBtn = document.getElementById('save-design');
+        const downloadDesignBtn = document.getElementById('download-design');
+        const resetPositionsBtn = document.getElementById('reset-positions');
+        const resetAllBtn = document.getElementById('reset-all');
+        
+        // Modal
+        const downloadModal = document.getElementById('download-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const downloadOptionBtns = document.querySelectorAll('.download-option-btn');
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar eventos
+            setupEventListeners();
+            
+            // Inicializar fight stick
+            initializeFightstick();
+            
+            // Crear elementos según el tipo
+            createElementsForType(currentType);
+            
+            // Actualizar controles deslizantes
+            updateSlidersFromConfig();
+            
+            // Actualizar lista de elementos seleccionados
+            updateSelectedElementsList();
+            
+            // Actualizar coordenadas
+            updateCoordinatesList();
+            
+            // Cargar diseño guardado si existe
+            loadSavedDesign();
+        });
+        
+        // Configurar eventos
+        function setupEventListeners() {
+            // Cambiar tipo de fight stick
+            typeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    typeOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    currentType = this.dataset.type;
+                    
+                    // Eliminar elementos actuales
+                    clearElements();
+                    
+                    // Crear nuevos elementos
+                    createElementsForType(currentType);
+                    
+                    // Limpiar selección
+                    clearSelection();
+                    
+                    // Actualizar coordenadas
+                    updateCoordinatesList();
+                });
+            });
+            
+            // Controles deslizantes - Tamaño del mando
+            widthSlider.addEventListener('input', function() {
+                const width = parseInt(this.value);
+                widthValue.textContent = `${width}px`;
+                fightstickConfig.width = width;
+                fightstickBody.style.width = `${width}px`;
+                
+                // Actualizar sliders de posición X
+                updatePositionSliders();
+                
+                // Actualizar coordenadas
+                updateCoordinatesList();
+            });
+            
+            heightSlider.addEventListener('input', function() {
+                const height = parseInt(this.value);
+                heightValue.textContent = `${height}px`;
+                fightstickConfig.height = height;
+                fightstickBody.style.height = `${height}px`;
+                
+                // Actualizar sliders de posición Y
+                updatePositionSliders();
+                
+                // Actualizar coordenadas
+                updateCoordinatesList();
+            });
+            
+            // Escala de imagen
+            scaleSlider.addEventListener('input', function() {
+                const scale = parseInt(this.value);
+                scaleValue.textContent = `${scale}%`;
+                fightstickConfig.bgScale = scale / 100;
+                
+                // Aplicar escala al fondo
+                fightstickBg.style.transform = `scale(${fightstickConfig.bgScale})`;
+                fightstickBg.style.transformOrigin = 'center center';
+            });
+            
+            // Posición de elementos seleccionados
+            posXSlider.addEventListener('input', function() {
+                const x = parseInt(this.value);
+                posXValue.textContent = `${x}px`;
+                
+                // Mover elementos seleccionados
+                moveSelectedElements(x, null);
+            });
+            
+            posYSlider.addEventListener('input', function() {
+                const y = parseInt(this.value);
+                posYValue.textContent = `${y}px`;
+                
+                // Mover elementos seleccionados
+                moveSelectedElements(null, y);
+            });
+            
+            // Modo de color
+            colorModeAllBtn.addEventListener('click', function() {
+                currentColorMode = 'all';
+                colorModeAllBtn.classList.add('active');
+                colorModeSelectedBtn.classList.remove('active');
+            });
+            
+            colorModeSelectedBtn.addEventListener('click', function() {
+                currentColorMode = 'selected';
+                colorModeAllBtn.classList.remove('active');
+                colorModeSelectedBtn.classList.add('active');
+            });
+            
+            // Selector de color de la paleta
+            colorPalette.querySelectorAll('.color-swatch').forEach(swatch => {
+                swatch.addEventListener('click', function() {
+                    const color = this.dataset.color;
+                    customColorPicker.value = color;
+                    customColorHex.value = color;
+                    applyColorToElements(color);
+                });
+            });
+            
+            // Selector de color personalizado
+            customColorPicker.addEventListener('input', function() {
+                const color = this.value;
+                customColorHex.value = color;
+            });
+            
+            customColorHex.addEventListener('input', function() {
+                const color = this.value;
+                if (isValidHexColor(color)) {
+                    customColorPicker.value = color;
+                }
+            });
+            
+            // Aplicar color
+            applyColorBtn.addEventListener('click', function() {
+                const color = customColorHex.value;
+                if (isValidHexColor(color)) {
+                    applyColorToElements(color);
+                } else {
+                    alert('Por favor, introduce un color hexadecimal válido (ej: #FF0000)');
+                }
+            });
+            
+            // Fondo del mando
+            bgOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const bgType = this.dataset.bg;
+                    
+                    // Actualizar miniaturas
+                    bgOptions.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Aplicar fondo
+                    updateBackground(bgType);
+                    
+                    // Si es personalizado, abrir selector de archivos
+                    if (bgType === 'custom') {
+                        bgFileInput.click();
+                    }
+                });
+            });
+            
+            // Subir imagen personalizada
+            uploadBgBtn.addEventListener('click', function() {
+                bgFileInput.click();
+            });
+            
+            bgFileInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        fightstickBg.style.backgroundImage = `url(${event.target.result})`;
+                        
+                        // Actualizar miniaturas
+                        bgOptions.forEach(t => t.classList.remove('active'));
+                        document.querySelector('.bg-option[data-bg="custom"]').classList.add('active');
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            
+            // Copiar coordenadas
+            copyCoordinatesBtn.addEventListener('click', function() {
+                copyCoordinatesToClipboard();
+            });
+            
+            // Guardar diseño
+            saveDesignBtn.addEventListener('click', function() {
+                saveDesign();
+            });
+            
+            // Descargar diseño
+            downloadDesignBtn.addEventListener('click', function() {
+                downloadModal.style.display = 'flex';
+            });
+            
+            // Restablecer posiciones
+            resetPositionsBtn.addEventListener('click', function() {
+                if (confirm('¿Restablecer todas las posiciones a sus ubicaciones originales?')) {
+                    resetElementPositions();
+                }
+            });
+            
+            // Restablecer todo
+            resetAllBtn.addEventListener('click', function() {
+                if (confirm('¿Restablecer todo el diseño a los valores por defecto?')) {
+                    resetDesign();
+                }
+            });
+            
+            // Cerrar modal
+            closeModalBtn.addEventListener('click', function() {
+                downloadModal.style.display = 'none';
+            });
+            
+            // Opciones de descarga
+            downloadOptionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    downloadDesign(type);
+                });
+            });
+            
+            // Cerrar modal al hacer clic fuera
+            window.addEventListener('click', function(e) {
+                if (e.target === downloadModal) {
+                    downloadModal.style.display = 'none';
+                }
+            });
+            
+            // Configurar eventos de arrastre
+            setupDragEvents();
+        }
+        
+        // Configurar eventos de arrastre
+        function setupDragEvents() {
+            // Evento para iniciar arrastre
+            fightstickOverlay.addEventListener('mousedown', function(e) {
+                if (e.target.classList.contains('joystick') || 
+                    e.target.classList.contains('button') ||
+                    e.target.classList.contains('movement-button') ||
+                    e.target.classList.contains('keyboard-key') ||
+                    e.target.classList.contains('control-button')) {
+                    
+                    const element = e.target;
+                    const rect = element.getBoundingClientRect();
+                    const bodyRect = fightstickBody.getBoundingClientRect();
+                    
+                    // Calcular offset del mouse respecto al elemento
+                    dragOffset.x = e.clientX - rect.left;
+                    dragOffset.y = e.clientY - rect.top;
+                    
+                    // Guardar elemento que se está arrastrando
+                    isDragging = element;
+                    
+                    // Seleccionar elemento si no está seleccionado
+                    if (!selectedElements.has(element)) {
+                        selectElement(element, e.shiftKey);
+                    }
+                    
+                    // Prevenir comportamiento por defecto
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            
+            // Evento para mover elemento
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                
+                const element = isDragging;
+                const bodyRect = fightstickBody.getBoundingClientRect();
+                
+                // Calcular nueva posición
+                let x = e.clientX - bodyRect.left - dragOffset.x;
+                let y = e.clientY - bodyRect.top - dragOffset.y;
+                
+                // Limitar al área del mando
+                const maxX = fightstickConfig.width - element.offsetWidth;
+                const maxY = fightstickConfig.height - element.offsetHeight;
+                
+                x = Math.max(0, Math.min(x, maxX));
+                y = Math.max(0, Math.min(y, maxY));
+                
+                // Aplicar nueva posición
+                element.style.left = `${x}px`;
+                element.style.top = `${y}px`;
+                
+                // Actualizar controles de posición si el elemento está seleccionado
+                if (selectedElements.has(element)) {
+                    updatePositionSlidersFromSelection();
+                }
+                
+                // Actualizar coordenadas
+                updateCoordinatesList();
+            });
+            
+            // Evento para soltar elemento
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+            });
+        }
+        
+        // Inicializar fight stick
+        function initializeFightstick() {
+            // Configurar fondo por defecto
+            updateBackground('solid');
+            
+            // Configurar tamaño
+            fightstickBody.style.width = `${fightstickConfig.width}px`;
+            fightstickBody.style.height = `${fightstickConfig.height}px`;
+        }
+        
+        // Actualizar controles deslizantes desde configuración
+        function updateSlidersFromConfig() {
+            widthSlider.value = fightstickConfig.width;
+            widthValue.textContent = `${fightstickConfig.width}px`;
+            
+            heightSlider.value = fightstickConfig.height;
+            heightValue.textContent = `${fightstickConfig.height}px`;
+            
+            scaleSlider.value = fightstickConfig.bgScale * 100;
+            scaleValue.textContent = `${fightstickConfig.bgScale * 100}%`;
+            
+            // Actualizar sliders de posición
+            updatePositionSliders();
+        }
+        
+        // Actualizar sliders de posición según tamaño del mando
+        function updatePositionSliders() {
+            posXSlider.max = fightstickConfig.width;
+            posYSlider.max = fightstickConfig.height;
+        }
+        
+        // Actualizar sliders de posición desde selección
+        function updatePositionSlidersFromSelection() {
+            if (selectedElements.size === 0) {
+                posXSlider.value = 0;
+                posXValue.textContent = '0px';
+                posYSlider.value = 0;
+                posYValue.textContent = '0px';
+                return;
+            }
+            
+            // Si hay múltiples elementos seleccionados, usar el primero
+            const firstElement = Array.from(selectedElements)[0];
+            const x = parseInt(firstElement.style.left) || 0;
+            const y = parseInt(firstElement.style.top) || 0;
+            
+            posXSlider.value = x;
+            posXValue.textContent = `${x}px`;
+            posYSlider.value = y;
+            posYValue.textContent = `${y}px`;
+        }
+        
+        // Mover elementos seleccionados
+        function moveSelectedElements(x, y) {
+            if (selectedElements.size === 0) return;
+            
+            selectedElements.forEach(element => {
+                if (x !== null) {
+                    element.style.left = `${x}px`;
+                }
+                if (y !== null) {
+                    element.style.top = `${y}px`;
+                }
+            });
+            
+            // Actualizar coordenadas
+            updateCoordinatesList();
+        }
+        
+        // Seleccionar elemento
+        function selectElement(element, multiSelect = false) {
+            // Si no es multiselección, limpiar selección
+            if (!multiSelect && !selectedElements.has(element)) {
+                clearSelection();
+            }
+            
+            // Alternar selección
+            if (selectedElements.has(element)) {
+                // Deseleccionar
+                selectedElements.delete(element);
+                element.classList.remove('element-selected');
+            } else {
+                // Seleccionar
+                selectedElements.add(element);
+                element.classList.add('element-selected');
+            }
+            
+            // Actualizar contador y lista
+            updateSelectionCount();
+            updateSelectedElementsList();
+            updatePositionSlidersFromSelection();
+        }
+        
+        // Limpiar selección
+        function clearSelection() {
+            selectedElements.forEach(element => {
+                element.classList.remove('element-selected');
+            });
+            selectedElements.clear();
+            updateSelectionCount();
+            updateSelectedElementsList();
+            updatePositionSlidersFromSelection();
+        }
+        
+        // Actualizar contador de selección
+        function updateSelectionCount() {
+            selectionCount.textContent = selectedElements.size;
+        }
+        
+        // Actualizar lista de elementos seleccionados
+        function updateSelectedElementsList() {
+            selectedElementsList.innerHTML = '';
+            
+            if (selectedElements.size === 0) {
+                selectedElementsList.innerHTML = `
+                    <div style="text-align: center; color: #aaa; padding: 20px;">
+                        <i class="fas fa-mouse-pointer" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                        Selecciona elementos en el mando
+                    </div>
+                `;
+                return;
+            }
+            
+            selectedElements.forEach(element => {
+                const item = document.createElement('div');
+                item.className = 'element-item active';
+                item.dataset.id = element.id;
+                
+                item.innerHTML = `
+                    <div class="element-preview" style="background-color: ${element.style.backgroundColor || '#444'}">
+                        ${element.textContent}
+                    </div>
+                    <div class="element-info">
+                        <div class="element-name">${getElementName(element.id)}</div>
+                        <div class="element-type">${getElementType(element)}</div>
+                    </div>
+                    <div class="element-actions">
+                        <div class="element-action" data-action="deselect">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                `;
+                
+                // Evento para deseleccionar elemento
+                item.querySelector('[data-action="deselect"]').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    selectElement(element);
+                });
+                
+                // Evento para seleccionar al hacer clic en el item
+                item.addEventListener('click', function() {
+                    // Enfocar el elemento en el mando
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                });
+                
+                selectedElementsList.appendChild(item);
+            });
+        }
+        
+        // Obtener tipo de elemento
+        function getElementType(element) {
+            if (element.classList.contains('joystick')) return 'Palanca';
+            if (element.classList.contains('button')) return 'Botón';
+            if (element.classList.contains('movement-button')) return 'Botón de dirección';
+            if (element.classList.contains('keyboard-key')) return 'Tecla';
+            if (element.classList.contains('control-button')) return 'Botón de control';
+            return 'Elemento';
+        }
+        
+        // Crear elementos según el tipo
+        function createElementsForType(type) {
+            fightstickElements = {};
+            
+            // Posiciones por defecto según el tipo
+            let positions;
+            
+            switch(type) {
+                case 'traditional':
+                    positions = {
+                        joystick: { id: 'joystick', type: 'joystick', label: '', left: 100, top: 150 },
+                        buttons: [
+                            { id: 'btn-a', type: 'button', label: 'A', left: 400, top: 100 },
+                            { id: 'btn-b', type: 'button', label: 'B', left: 480, top: 100 },
+                            { id: 'btn-c', type: 'button', label: 'C', left: 560, top: 100 },
+                            { id: 'btn-d', type: 'button', label: 'D', left: 400, top: 180 },
+                            { id: 'btn-e', type: 'button', label: 'E', left: 480, top: 180 },
+                            { id: 'btn-f', type: 'button', label: 'F', left: 560, top: 180 },
+                            { id: 'btn-g', type: 'button', label: 'G', left: 400, top: 260 },
+                            { id: 'btn-h', type: 'button', label: 'H', left: 480, top: 260 }
+                        ],
+                        controls: [
+                            { id: 'select-btn', type: 'control-button', label: 'SELECT', left: 580, top: 50 },
+                            { id: 'start-btn', type: 'control-button', label: 'START', left: 580, top: 90 }
+                        ]
+                    };
+                    
+                    // Crear palanca
+                    createElement(positions.joystick);
+                    break;
+                    
+                case 'hitbox':
+                    positions = {
+                        movement: [
+                            { id: 'left-btn', type: 'movement-button', label: '←', left: 100, top: 150 },
+                            { id: 'down-btn', type: 'movement-button', label: '↓', left: 170, top: 150 },
+                            { id: 'up-btn', type: 'movement-button', label: '↑', left: 170, top: 80 },
+                            { id: 'right-btn', type: 'movement-button', label: '→', left: 240, top: 150 }
+                        ],
+                        buttons: [
+                            { id: 'btn-a', type: 'button', label: 'A', left: 400, top: 100 },
+                            { id: 'btn-b', type: 'button', label: 'B', left: 480, top: 100 },
+                            { id: 'btn-c', type: 'button', label: 'C', left: 560, top: 100 },
+                            { id: 'btn-d', type: 'button', label: 'D', left: 400, top: 180 },
+                            { id: 'btn-e', type: 'button', label: 'E', left: 480, top: 180 },
+                            { id: 'btn-f', type: 'button', label: 'F', left: 560, top: 180 },
+                            { id: 'btn-g', type: 'button', label: 'G', left: 400, top: 260 },
+                            { id: 'btn-h', type: 'button', label: 'H', left: 480, top: 260 }
+                        ],
+                        controls: [
+                            { id: 'select-btn', type: 'control-button', label: 'SELECT', left: 580, top: 50 },
+                            { id: 'start-btn', type: 'control-button', label: 'START', left: 580, top: 90 }
+                        ]
+                    };
+                    
+                    // Crear botones de movimiento
+                    positions.movement.forEach(pos => {
+                        createElement(pos);
+                    });
+                    break;
+                    
+                case 'keyboard':
+                    positions = {
+                        keys: [
+                            { id: 'key-w', type: 'keyboard-key', label: 'W', left: 120, top: 80 },
+                            { id: 'key-a', type: 'keyboard-key', label: 'A', left: 70, top: 150 },
+                            { id: 'key-s', type: 'keyboard-key', label: 'S', left: 120, top: 150 },
+                            { id: 'key-d', type: 'keyboard-key', label: 'D', left: 170, top: 150 }
+                        ],
+                        buttons: [
+                            { id: 'btn-a', type: 'button', label: 'A', left: 400, top: 100 },
+                            { id: 'btn-b', type: 'button', label: 'B', left: 480, top: 100 },
+                            { id: 'btn-c', type: 'button', label: 'C', left: 560, top: 100 },
+                            { id: 'btn-d', type: 'button', label: 'D', left: 400, top: 180 },
+                            { id: 'btn-e', type: 'button', label: 'E', left: 480, top: 180 },
+                            { id: 'btn-f', type: 'button', label: 'F', left: 560, top: 180 },
+                            { id: 'btn-g', type: 'button', label: 'G', left: 400, top: 260 },
+                            { id: 'btn-h', type: 'button', label: 'H', left: 480, top: 260 }
+                        ],
+                        controls: [
+                            { id: 'select-btn', type: 'control-button', label: 'SELECT', left: 580, top: 50 },
+                            { id: 'start-btn', type: 'control-button', label: 'START', left: 580, top: 90 }
+                        ]
+                    };
+                    
+                    // Crear teclas
+                    positions.keys.forEach(pos => {
+                        createElement(pos);
+                    });
+                    break;
+            }
+            
+            // Guardar referencia a los elementos
+            fightstickElements = positions;
+            
+            // Crear botones de acción (comunes a todos los tipos)
+            positions.buttons.forEach(pos => {
+                createElement(pos);
+            });
+            
+            // Crear botones de control (comunes a todos los tipos)
+            positions.controls.forEach(pos => {
+                createElement(pos);
+            });
+        }
+        
+        // Crear un elemento
+        function createElement(data) {
+            const element = document.createElement('div');
+            element.id = data.id;
+            element.className = data.type;
+            element.style.left = `${data.left}px`;
+            element.style.top = `${data.top}px`;
+            element.textContent = data.label;
+            
+            // Aplicar color según el tipo
+            let color = '#444444';
+            if (data.type === 'keyboard-key') color = '#333333';
+            
+            element.style.backgroundColor = color;
+            element.style.borderColor = darkenColor(color, 20);
+            
+            fightstickOverlay.appendChild(element);
+            
+            // Añadir evento de clic para seleccionar
+            element.addEventListener('click', function(e) {
+                e.stopPropagation();
+                selectElement(this, e.shiftKey);
+            });
+        }
+        
+        // Limpiar elementos
+        function clearElements() {
+            fightstickOverlay.innerHTML = '';
+            fightstickElements = {};
+            clearSelection();
+        }
+        
+        // Obtener nombre legible del elemento
+        function getElementName(id) {
+            const names = {
+                'joystick': 'Palanca',
+                'left-btn': 'Flecha Izquierda',
+                'down-btn': 'Flecha Abajo',
+                'up-btn': 'Flecha Arriba',
+                'right-btn': 'Flecha Derecha',
+                'key-w': 'Tecla W',
+                'key-a': 'Tecla A',
+                'key-s': 'Tecla S',
+                'key-d': 'Tecla D',
+                'btn-a': 'Botón A',
+                'btn-b': 'Botón B',
+                'btn-c': 'Botón C',
+                'btn-d': 'Botón D',
+                'btn-e': 'Botón E',
+                'btn-f': 'Botón F',
+                'btn-g': 'Botón G',
+                'btn-h': 'Botón H',
+                'select-btn': 'SELECT',
+                'start-btn': 'START'
+            };
+            
+            return names[id] || id;
+        }
+        
+        // Actualizar fondo
+        function updateBackground(bgType) {
+            fightstickConfig.bgType = bgType;
+            
+            switch(bgType) {
+                case 'solid':
+                    fightstickBg.style.backgroundImage = 'none';
+                    fightstickBg.style.backgroundColor = '#222233';
+                    break;
+                case 'carbon':
+                    fightstickBg.style.backgroundImage = 'url("https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")';
+                    break;
+                case 'grid':
+                    fightstickBg.style.backgroundImage = 'url("https://images.unsplash.com/photo-1534796636918-6a8c0be14515?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")';
+                    break;
+                case 'metal':
+                    fightstickBg.style.backgroundImage = 'url("https://images.unsplash.com/photo-1518834103328-93d45986dce1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")';
+                    break;
+                case 'wood':
+                    fightstickBg.style.backgroundImage = 'url("https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")';
+                    break;
+            }
+            
+            fightstickBg.style.opacity = fightstickConfig.bgOpacity;
+        }
+        
+        // Aplicar color a elementos
+        function applyColorToElements(color) {
+            // Actualizar selector de color
+            customColorPicker.value = color;
+            customColorHex.value = color;
+            
+            // Determinar a qué elementos aplicar el color
+            let elementsToColor = [];
+            
+            if (currentColorMode === 'all') {
+                // Aplicar a todos los elementos
+                elementsToColor = document.querySelectorAll('.joystick, .button, .movement-button, .keyboard-key, .control-button');
+            } else {
+                // Aplicar solo a elementos seleccionados
+                elementsToColor = Array.from(selectedElements);
+            }
+            
+            // Aplicar color a cada elemento
+            elementsToColor.forEach(element => {
+                element.style.backgroundColor = color;
+                element.style.borderColor = darkenColor(color, 20);
+            });
+            
+            // Actualizar lista de elementos seleccionados
+            updateSelectedElementsList();
+            
+            // Actualizar coordenadas
+            updateCoordinatesList();
+        }
+        
+        // Verificar si un color hexadecimal es válido
+        function isValidHexColor(color) {
+            return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color);
+        }
+        
+        // Oscurecer un color
+        function darkenColor(color, percent) {
+            // Si el color es en formato hexadecimal
+            if (color.startsWith('#')) {
+                let r = parseInt(color.substr(1, 2), 16);
+                let g = parseInt(color.substr(3, 2), 16);
+                let b = parseInt(color.substr(5, 2), 16);
+                
+                r = Math.floor(r * (100 - percent) / 100);
+                g = Math.floor(g * (100 - percent) / 100);
+                b = Math.floor(b * (100 - percent) / 100);
+                
+                return `rgb(${r}, ${g}, ${b})`;
+            }
+            
+            // Para otros formatos, devolver un color predeterminado
+            return '#333';
+        }
+        
+        // Actualizar lista de coordenadas
+        function updateCoordinatesList() {
+            coordinatesList.innerHTML = '';
+            
+            // Obtener todos los elementos del fight stick
+            const allElements = document.querySelectorAll('.joystick, .button, .movement-button, .keyboard-key, .control-button');
+            
+            // Filtrar solo los botones normales (los 8 botones de acción)
+            const normalButtons = Array.from(allElements).filter(element => 
+                element.id.startsWith('btn-') && element.id.length === 5
+            );
+            
+            // Ordenar botones por ID
+            normalButtons.sort((a, b) => a.id.localeCompare(b.id));
+            
+            // Mostrar coordenadas de botones normales
+            normalButtons.forEach(element => {
+                const x = parseInt(element.style.left) || 0;
+                const y = parseInt(element.style.top) || 0;
+                
+                const coordinateItem = document.createElement('div');
+                coordinateItem.className = 'coordinate-item';
+                coordinateItem.innerHTML = `
+                    <div class="coordinate-name">${getElementName(element.id)}</div>
+                    <div class="coordinate-value">${x}px, ${y}px</div>
+                `;
+                
+                coordinatesList.appendChild(coordinateItem);
+            });
+            
+            // También mostrar en consola
+            console.log('=== COORDENADAS DE BOTONES ===');
+            normalButtons.forEach(element => {
+                const x = parseInt(element.style.left) || 0;
+                const y = parseInt(element.style.top) || 0;
+                console.log(`${getElementName(element.id)}: X=${x}px, Y=${y}px`);
+            });
+            console.log('=============================');
+        }
+        
+        // Copiar coordenadas al portapapeles
+        function copyCoordinatesToClipboard() {
+            let coordinatesText = 'Coordenadas de botones:\n\n';
+            
+            // Obtener todos los elementos del fight stick
+            const allElements = document.querySelectorAll('.joystick, .button, .movement-button, .keyboard-key, .control-button');
+            
+            // Filtrar solo los botones normales (los 8 botones de acción)
+            const normalButtons = Array.from(allElements).filter(element => 
+                element.id.startsWith('btn-') && element.id.length === 5
+            );
+            
+            // Ordenar botones por ID
+            normalButtons.sort((a, b) => a.id.localeCompare(b.id));
+            
+            // Crear texto de coordenadas
+            normalButtons.forEach(element => {
+                const x = parseInt(element.style.left) || 0;
+                const y = parseInt(element.style.top) || 0;
+                coordinatesText += `${getElementName(element.id)}: X=${x}px, Y=${y}px\n`;
+            });
+            
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(coordinatesText).then(() => {
+                alert('Coordenadas copiadas al portapapeles');
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+                alert('No se pudieron copiar las coordenadas. Usa la consola para verlas.');
+            });
+        }
+        
+        // Restablecer posiciones de elementos
+        function resetElementPositions() {
+            if (!fightstickElements) return;
+            
+            // Restaurar todas las posiciones por defecto
+            const categories = ['joystick', 'movement', 'keys', 'buttons', 'controls'];
+            
+            categories.forEach(category => {
+                if (fightstickElements[category]) {
+                    const elements = Array.isArray(fightstickElements[category]) ? 
+                        fightstickElements[category] : [fightstickElements[category]];
+                    
+                    elements.forEach(elementData => {
+                        const element = document.getElementById(elementData.id);
+                        if (element) {
+                            element.style.left = `${elementData.left}px`;
+                            element.style.top = `${elementData.top}px`;
+                        }
+                    });
+                }
+            });
+            
+            // Actualizar controles de posición
+            updatePositionSlidersFromSelection();
+            
+            // Actualizar lista de elementos seleccionados
+            updateSelectedElementsList();
+            
+            // Actualizar coordenadas
+            updateCoordinatesList();
+            
+            alert('Posiciones restablecidas correctamente.');
+        }
+        
+        // Guardar diseño
+        function saveDesign() {
+            // Obtener coordenadas actuales de todos los elementos
+            const elementsData = {};
+            const allElements = document.querySelectorAll('.joystick, .button, .movement-button, .keyboard-key, .control-button');
+            
+            allElements.forEach(element => {
+                const x = parseInt(element.style.left) || 0;
+                const y = parseInt(element.style.top) || 0;
+                elementsData[element.id] = { x, y };
+            });
+            
+            const design = {
+                type: currentType,
+                config: fightstickConfig,
+                elements: elementsData,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Guardar en localStorage
+            localStorage.setItem('fg_academy_fightstick_design', JSON.stringify(design));
+            
+            // Mostrar mensaje
+            alert('Diseño guardado correctamente. Podrás recuperarlo en tu próxima visita.');
+        }
+        
+        // Cargar diseño guardado
+        function loadSavedDesign() {
+            const savedDesign = localStorage.getItem('fg_academy_fightstick_design');
+            if (savedDesign) {
+                try {
+                    const design = JSON.parse(savedDesign);
+                    
+                    // Restaurar configuración
+                    if (design.config) {
+                        fightstickConfig.width = design.config.width || fightstickConfig.width;
+                        fightstickConfig.height = design.config.height || fightstickConfig.height;
+                        fightstickConfig.bgScale = design.config.bgScale || fightstickConfig.bgScale;
+                        
+                        // Aplicar cambios
+                        fightstickBody.style.width = `${fightstickConfig.width}px`;
+                        fightstickBody.style.height = `${fightstickConfig.height}px`;
+                        fightstickBg.style.transform = `scale(${fightstickConfig.bgScale})`;
+                        
+                        // Actualizar controles deslizantes
+                        updateSlidersFromConfig();
+                    }
+                    
+                    // Restaurar posiciones de elementos
+                    if (design.elements) {
+                        Object.keys(design.elements).forEach(elementId => {
+                            const element = document.getElementById(elementId);
+                            if (element && design.elements[elementId]) {
+                                element.style.left = `${design.elements[elementId].x}px`;
+                                element.style.top = `${design.elements[elementId].y}px`;
+                            }
+                        });
+                    }
+                    
+                    // Actualizar coordenadas
+                    updateCoordinatesList();
+                    
+                    console.log('Diseño cargado:', design);
+                } catch (error) {
+                    console.error('Error al cargar diseño:', error);
+                }
+            }
+        }
+        
+        // Descargar diseño
+        function downloadDesign(type) {
+            let message = '';
+            
+            switch(type) {
+                case 'image':
+                    message = 'Generando imagen de tu diseño... (En una implementación real, esto generaría un archivo PNG)';
+                    break;
+                case 'blueprint':
+                    message = 'Generando plano de construcción... (En una implementación real, esto generaría un PDF con medidas)';
+                    break;
+                case 'wiring':
+                    message = 'Generando esquema de conexiones... (En una implementación real, esto generaría un diagrama de cableado)';
+                    break;
+            }
+            
+            alert(message);
+            downloadModal.style.display = 'none';
+        }
+        
+        // Restablecer diseño
+        function resetDesign() {
+            // Restablecer tipo a tradicional
+            typeOptions.forEach(opt => opt.classList.remove('active'));
+            document.querySelector('.type-option[data-type="traditional"]').classList.add('active');
+            currentType = 'traditional';
+            
+            // Restablecer configuración
+            fightstickConfig.width = 700;
+            fightstickConfig.height = 350;
+            fightstickConfig.bgScale = 1.0;
+            fightstickConfig.bgType = 'solid';
+            
+            // Restablecer fondo
+            bgOptions.forEach(t => t.classList.remove('active'));
+            document.querySelector('.bg-option[data-bg="solid"]').classList.add('active');
+            updateBackground('solid');
+            
+            // Restablecer color
+            currentColorMode = 'all';
+            colorModeAllBtn.classList.add('active');
+            colorModeSelectedBtn.classList.remove('active');
+            customColorPicker.value = '#444444';
+            customColorHex.value = '#444444';
+            
+            // Actualizar controles deslizantes
+            updateSlidersFromConfig();
+            
+            // Eliminar elementos actuales
+            clearElements();
+            
+            // Crear nuevos elementos
+            createElementsForType(currentType);
+            
+            // Actualizar coordenadas
+            updateCoordinatesList();
+            
+            alert('Diseño restablecido correctamente.');
+        }
+    </script>
+</body>
+</html>
