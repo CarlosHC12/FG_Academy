@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Producto;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.ProductoId;
+import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Alumno;
+import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.AlumnoId;
 import es.etg.daw.dawes.java.rest.restfull.productos.domain.repository.ProductoRepository;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.ProductoFactory;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.ProductoRepositoryMockImpl;
@@ -30,7 +30,7 @@ public class ProductoRepositoryMockImplTest {
         // Arrange
         var producto = ProductoFactory.create();
         // Act
-        Producto p = repository.save(producto);
+        Alumno p = repository.save(producto);
         // Asset
         assertAll(
                 () -> assertNotNull(p), // el producto no es nulo
@@ -54,9 +54,9 @@ public class ProductoRepositoryMockImplTest {
 
     void getById() {
         // Arrange
-        ProductoId id = new ProductoId(1);
+        AlumnoId id = new AlumnoId(1);
         // Act
-        Optional<Producto> p = repository.getById(id);
+        Optional<Alumno> p = repository.getById(id);
         // Assert
         assertTrue(p.isPresent());
         assertEquals(id, p.get().getId());
@@ -67,7 +67,7 @@ public class ProductoRepositoryMockImplTest {
 
     void deleteById() {
         // Arrange
-        ProductoId id = new ProductoId(1);
+        AlumnoId id = new AlumnoId(1);
         // Act
         repository.deleteById(id);
         // Assert

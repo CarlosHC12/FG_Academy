@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Categoria;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.CategoriaId;
+import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Profesor;
+import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.ProfesorId;
 import es.etg.daw.dawes.java.rest.restfull.productos.domain.repository.CategoriaRepository;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.CategoriaFactory;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.CategoriaRepositoryMockImpl;
@@ -31,7 +31,7 @@ public class CategoriaRepositoryMockImplTest {
          var categoria= CategoriaFactory.create();
 
         // Act
-        Categoria c = repository.save(categoria);
+        Profesor c = repository.save(categoria);
 
         // Assert
         assertAll(
@@ -43,7 +43,7 @@ public class CategoriaRepositoryMockImplTest {
 
     @Test
     void getAll() {
-        List<Categoria> categorias = repository.getAll();
+        List<Profesor> categorias = repository.getAll();
 
         assertAll(
             () -> assertNotNull(categorias),
@@ -56,10 +56,10 @@ public class CategoriaRepositoryMockImplTest {
     @Test
     void getById() {
         // Arrange
-        CategoriaId id = new CategoriaId(1);
+        ProfesorId id = new ProfesorId(1);
 
         // Act
-        Optional<Categoria> resultado = repository.getById(id);
+        Optional<Profesor> resultado = repository.getById(id);
 
         // Assert
         assertEquals(id, resultado.get().getId());
@@ -68,7 +68,7 @@ public class CategoriaRepositoryMockImplTest {
     @Test
     void deleteById() {
         // Arrange
-        CategoriaId id = new CategoriaId(1);
+        ProfesorId id = new ProfesorId(1);
         
         // Act
         repository.deleteById(id);

@@ -26,8 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Producto;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.ProductoId;
+import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Alumno;
+import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.AlumnoId;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.ProductoFactory;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.ProductoRequest;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.ProductoResponse;
@@ -95,7 +95,7 @@ public class ProductoControllerIT {
     @Test
     @Order(10)
     public void When_Post_CreateProducto() throws Exception{
-        Producto nuevo = ProductoFactory.create();
+        Alumno nuevo = ProductoFactory.create();
 
         ProductoRequest req = new ProductoRequest(nuevo);
 
@@ -127,7 +127,7 @@ public class ProductoControllerIT {
     @Test
     @Order(11)
     public void Error_ValidationError_When_CreateProducto_EmptyNombre() throws Exception{
-        Producto nuevo = ProductoFactory.create();
+        Alumno nuevo = ProductoFactory.create();
         nuevo.setNombre(null);
 
         ProductoRequest req = new ProductoRequest(nuevo);
@@ -153,8 +153,8 @@ public class ProductoControllerIT {
     @Test
     @Order(20)
     public void When_Put_EditProducto() throws Exception{
-        Producto nuevo = ProductoFactory.create();
-        nuevo.setId(new ProductoId(1));
+        Alumno nuevo = ProductoFactory.create();
+        nuevo.setId(new AlumnoId(1));
 
         ProductoRequest req = new ProductoRequest(nuevo);
 
@@ -185,8 +185,8 @@ public class ProductoControllerIT {
     @Test
     @Order(30)
     public void When_Delete_DeleteProducto() throws Exception{
-        Producto nuevo = ProductoFactory.create();
-        nuevo.setId(new ProductoId(1));
+        Alumno nuevo = ProductoFactory.create();
+        nuevo.setId(new AlumnoId(1));
 
         ProductoRequest req = new ProductoRequest(nuevo);
 

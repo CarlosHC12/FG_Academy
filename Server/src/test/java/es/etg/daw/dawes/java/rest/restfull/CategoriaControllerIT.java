@@ -25,8 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Categoria;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.CategoriaId;
+import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Profesor;
+import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.ProfesorId;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.CategoriaFactory;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.CategoriaRequest;
 import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.CategoriaResponse;
@@ -81,7 +81,7 @@ public void When_Get_AllCategorias_Expect_Lista() throws Exception {
 @Test
 @Order(10)
 public void When_Post_CreateCategoria() throws  Exception{
-    Categoria nuevo = CategoriaFactory.create();
+    Profesor nuevo = CategoriaFactory.create();
     CategoriaRequest req = new CategoriaRequest(nuevo);
 
         //Realizo la petición POST
@@ -107,7 +107,7 @@ public void When_Post_CreateCategoria() throws  Exception{
      @Test
     @Order(11)
     public void Error_ValidationError_When_CreateCategoria_EmptyNombre() throws Exception{
-        Categoria nuevo = CategoriaFactory.create();
+        Profesor nuevo = CategoriaFactory.create();
         nuevo.setNombre(null);
 
         CategoriaRequest req = new CategoriaRequest(nuevo);
@@ -132,8 +132,8 @@ public void When_Post_CreateCategoria() throws  Exception{
      @Test
     @Order(20)
     public void When_Put_EditCategoria() throws Exception{
-        Categoria nuevo = CategoriaFactory.create();
-        nuevo.setId(new CategoriaId(1));
+        Profesor nuevo = CategoriaFactory.create();
+        nuevo.setId(new ProfesorId(1));
 
        CategoriaRequest req = new CategoriaRequest(nuevo);
 
@@ -161,8 +161,8 @@ public void When_Post_CreateCategoria() throws  Exception{
      @Test
     @Order(30)
     public void When_Delete_DeleteCategoria() throws Exception{
-        Categoria nuevo = CategoriaFactory.create();
-        nuevo.setId(new CategoriaId(1));
+        Profesor nuevo = CategoriaFactory.create();
+        nuevo.setId(new ProfesorId(1));
 
        CategoriaRequest req = new CategoriaRequest(nuevo);
 
