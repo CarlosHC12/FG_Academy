@@ -12,51 +12,38 @@ import es.etg.daw.dawes.java.rest.restfull.alumnos.application.usecase.profesor.
 import es.etg.daw.dawes.java.rest.restfull.alumnos.application.usecase.profesor.EditProfesorUseCase;
 import es.etg.daw.dawes.java.rest.restfull.alumnos.application.usecase.profesor.FindProfesorUseCase;
 import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.repository.ProfesorRepository;
+import es.etg.daw.dawes.java.rest.restfull.alumnos.infraestructure.db.jpa.repository.ProfesorEntityJpaRepository;
+import es.etg.daw.dawes.java.rest.restfull.alumnos.infraestructure.db.jpa.repository.ProfesorJpaRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class ProfesorConfig {
-    
-    private final ProfesorRepository profesorRepository;
+
+    private final ProfesorEntityJpaRepository profesorEntityJpaRepository;
 
     @Bean
-    public CreateProfesorUseCase createProfesorUseCase() {
-        return new CreateProfesorUseCase(profesorRepository);
+    public ProfesorRepository profesorRepository() {
+        return new ProfesorJpaRepositoryImpl(profesorEntityJpaRepository);
     }
 
     @Bean
-    public CreateProfesorService createProfesorService() {
-        return new CreateProfesorService(createProfesorUseCase());
+    public CreateProfesorUseCase createProfesorUseCase() {
+        return new CreateProfesorUseCase(profesorRepository());
     }
 
     @Bean
     public FindProfesorUseCase findProfesorUseCase() {
-        return new FindProfesorUseCase(profesorRepository);
-    }
-
-    @Bean
-    public FindProfesorService findProfesorService() {
-        return new FindProfesorService(findProfesorUseCase());
+        return new FindProfesorUseCase(profesorRepository());
     }
 
     @Bean
     public DeleteProfesorUseCase deleteProfesorUseCase() {
-        return new DeleteProfesorUseCase(profesorRepository);
-    }
-
-    @Bean
-    public DeleteProfesorService deleteProfesorService() {
-        return new DeleteProfesorService(deleteProfesorUseCase());
+        return new DeleteProfesorUseCase(profesorRepository());
     }
 
     @Bean
     public EditProfesorUseCase editProfesorUseCase() {
-        return new EditProfesorUseCase(profesorRepository);
-    }
-    
-    @Bean
-    public EditProfesorService editProfesorService() {
-        return new EditProfesorService(editProfesorUseCase());
+        return new EditProfesorUseCase(profesorRepository());
     }
 }
