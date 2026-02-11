@@ -1,7 +1,7 @@
 package es.etg.daw.dawes.java.rest.restfull.alumnos.application.command.alumno;
 
-import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.model.ProfesorId;
 import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.model.AlumnoId;
+import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.model.ProfesorId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -10,11 +10,11 @@ import lombok.experimental.Accessors;
 @Getter
 @AllArgsConstructor
 @Accessors(fluent = true) // Así los getters no llevan prefijo get
-public class EditProductoCommand {
+public class EditAlumnoCommand {
     
     private final AlumnoId id; //Lo cambiamos
     private final String nombre;
-    private final double precio;
-    private final ProfesorId categoriaId;
+    private final int edad;
+    private final ProfesorId profesorId;
     
 }

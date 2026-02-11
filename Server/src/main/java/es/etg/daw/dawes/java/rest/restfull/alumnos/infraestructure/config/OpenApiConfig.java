@@ -1,4 +1,4 @@
-package es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.config;
+package es.etg.daw.dawes.java.rest.restfull.alumnos.infraestructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,4 +18,4 @@ public class OpenApiConfig {
                 .description("Documentación detallada de la API para la gestión de productos")
                 .contact(new Contact().name("Alumnado").email("daw@etg.es")));
     }
-}
+} 

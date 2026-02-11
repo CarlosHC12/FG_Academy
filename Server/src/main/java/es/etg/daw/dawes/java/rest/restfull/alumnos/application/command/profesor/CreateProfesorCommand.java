@@ -10,4 +10,3 @@ import lombok.experimental.Accessors;
 public class CreateProfesorCommand {
     private final String nombre;
 }
-

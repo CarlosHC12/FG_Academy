@@ -19,7 +19,7 @@ public class CreateAlumnoUseCase {
         Alumno alumno = Alumno.builder()
                 .nombre(comando.nombre())
                 .edad(comando.edad())
-                .profesor(comando.profesorId()) // Asumiendo que la clase Alumno tiene un campo profesorId
+                .profesorId(comando.profesorId()) // Cambiado de .profesor() a .profesorId()
                 .createdAt(LocalDateTime.now())
                 .build();
 

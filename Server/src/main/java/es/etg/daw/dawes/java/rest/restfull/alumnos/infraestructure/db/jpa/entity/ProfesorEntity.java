@@ -1,0 +1,48 @@
+package es.etg.daw.dawes.java.rest.restfull.alumnos.infraestructure.db.jpa.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "PROFESORES")
+public class ProfesorEntity {
+
+    @Id
+    // Sin @GeneratedValue porque los IDs se asignan manualmente (data.sql)
+    private Integer id;
+
+    @Column(name = "nombre", nullable = false, length = 100)
+    private String nombre;
+
+    // Relación One-to-Many con AlumnoEntity
+    // Mapeada por el campo "profesor" en la entidad Alumno
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<AlumnoEntity> alumnos = new ArrayList<>();
+
+    // --- Métodos auxiliares para sincronizar la relación bidireccional ---
+    public void addAlumno(AlumnoEntity alumno) {
+        this.alumnos.add(alumno);
+        alumno.setProfesor(this);
+    }
+
+    public void removeAlumno(AlumnoEntity alumno) {
+        this.alumnos.remove(alumno);
+        alumno.setProfesor(null);
+    }
+}

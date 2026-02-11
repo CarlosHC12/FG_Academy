@@ -1,23 +1,23 @@
-package es.etg.daw.dawes.java.rest.restfull.productos.application.usecase.producto;
+package es.etg.daw.dawes.java.rest.restfull.alumnos.application.usecase.alumno;
 
 import java.util.List;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.error.ProductoNotFoundException;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Alumno;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.repository.ProductoRepository;
+import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.error.AlumnoNotFoundException;
+import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.model.Alumno;
+import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.repository.AlumnoRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class FindProductoUseCase {
+public class FindAlumnoUseCase {
 
-    private final ProductoRepository productoRepository;
-    public List<Alumno> findAll(){
-        List<Alumno> productos = productoRepository.getAll();
-
-        if (productos.isEmpty())
-            throw new ProductoNotFoundException();
-
-        return productos;
-    }
+    private final AlumnoRepository alumnoRepository;
     
+    public List<Alumno> findAll() {
+        List<Alumno> alumnos = alumnoRepository.getAll();
+
+        if (alumnos.isEmpty())
+            throw new AlumnoNotFoundException();
+
+        return alumnos;
+    }
 }

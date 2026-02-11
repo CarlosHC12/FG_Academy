@@ -9,10 +9,9 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(fluent = true)
 public class CreateAlumnoCommand {
-    
+
     private final String nombre;
     private final int edad;
     private final ProfesorId profesorId;
-}
 
-
+    }

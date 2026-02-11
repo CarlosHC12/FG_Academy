@@ -1,15 +1,15 @@
-package es.etg.daw.dawes.java.rest.restfull.productos.application.usecase.producto;
+package es.etg.daw.dawes.java.rest.restfull.alumnos.application.usecase.alumno;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.AlumnoId;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.repository.ProductoRepository;
+import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.model.AlumnoId;
+import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.repository.AlumnoRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class DeleteProductoUseCase {
+public class DeleteAlumnoUseCase {
 
-    private final ProductoRepository productoRepository;
+    private final AlumnoRepository alumnoRepository;
     
-    public void delete(AlumnoId id){ //Lo cambiamos
-        productoRepository.deleteById(id);
+    public void delete(AlumnoId id) {
+        alumnoRepository.deleteById(id);
     }
 }
