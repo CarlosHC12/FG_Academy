@@ -25,12 +25,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Profesor;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.ProfesorId;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.CategoriaFactory;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.CategoriaRequest;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.CategoriaResponse;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.ProductoResponse;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.model.Profesor;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.model.ProfesorId;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.db.repository.mock.CategoriaFactory;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.web.dto.CategoriaRequest;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.web.dto.CategoriaResponse;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.web.dto.ProductoResponse;
 
 
 @SpringBootTest

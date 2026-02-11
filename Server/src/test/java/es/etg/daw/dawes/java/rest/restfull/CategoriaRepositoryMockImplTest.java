@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Profesor;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.ProfesorId;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.repository.CategoriaRepository;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.CategoriaFactory;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.CategoriaRepositoryMockImpl;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.model.Profesor;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.model.ProfesorId;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.repository.CategoriaRepository;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.db.repository.mock.CategoriaFactory;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.db.repository.mock.CategoriaRepositoryMockImpl;
 
 public class CategoriaRepositoryMockImplTest {
 

@@ -26,11 +26,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Alumno;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.AlumnoId;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.ProductoFactory;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.ProductoRequest;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.web.dto.ProductoResponse;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.model.Alumno;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.model.AlumnoId;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.db.repository.mock.ProductoFactory;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.web.dto.ProductoRequest;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.web.dto.ProductoResponse;
 
 // Indicamos que es un test de Spring
 @SpringBootTest

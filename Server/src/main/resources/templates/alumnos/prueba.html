@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba Alumnos</title>
+</head>
+<body>
+    <h1>Listado de Alumnos</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Profesor ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="alumno : ${alumnos}">
+                <td th:text="${alumno.id.value}">1</td>
+                <td th:text="${alumno.nombre}">Juan</td>
+                <td th:text="${alumno.edad}">20</td>
+                <td th:text="${alumno.profesorId.value}">1</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a href="/">Volver al inicio</a>
+</body>
+</html>

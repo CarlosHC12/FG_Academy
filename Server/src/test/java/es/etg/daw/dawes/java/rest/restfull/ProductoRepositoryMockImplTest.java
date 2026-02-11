@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.Alumno;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.model.AlumnoId;
-import es.etg.daw.dawes.java.rest.restfull.productos.domain.repository.ProductoRepository;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.ProductoFactory;
-import es.etg.daw.dawes.java.rest.restfull.productos.infraestructure.db.repository.mock.ProductoRepositoryMockImpl;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.model.Alumno;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.model.AlumnoId;
+import es.etg.daw.dawes.java.rest.restfull.thym.domain.repository.ProductoRepository;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.db.repository.mock.ProductoFactory;
+import es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.db.repository.mock.ProductoRepositoryMockImpl;
 
 public class ProductoRepositoryMockImplTest {
 

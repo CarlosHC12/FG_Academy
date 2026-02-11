@@ -1,9 +1,9 @@
 INSERT INTO PROFESORES (id, nombre) VALUES 
-(1, 'Carlos Rodríguez'),      
-(2, 'Ana Martínez'),         
-(3, 'Luis Fernández'),       
-(4, 'Marta Sánchez'),       
-(5, 'Javier Gómez');         
+(1, 'MarioelpoF14'),      
+(2, 'ERicland06'),         
+(3, 'CarsMCG12'),       
+(4, 'Justing wong'),       
+(5, 'Maximiliamdood');         
 
 INSERT INTO ALUMNOS (nombre, edad, fecha_creacion, profesor_id) VALUES 
 ('Alejandro Pérez', 22, NOW(), 1),

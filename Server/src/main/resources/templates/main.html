@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FG Academy - Academia de Juegos de Lucha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/css/fg-academy-styles.css">
+</head>
+<style>
+:root {
+    --primary-dark: #0a1429;
+    --secondary-dark: #1a2849;
+    --accent-blue: #2a75bb;
+    --accent-light: #4da1ff;
+    --accent-glow: rgba(42, 117, 187, 0.4);
+    --text-light: #e6f0ff;
+    --border-color: #2a3a5e;
+    --panel-bg: rgba(26, 40, 73, 0.95);
+    --gradient-bg: linear-gradient(135deg, #0a1429 0%, #1a2849 50%, #0a1a3a 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: var(--gradient-bg);
+    position: relative;
+}
+
+/* Fondo animado */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-particle {
+    position: absolute;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0.3;
+    }
+    25% {
+        transform: translateY(-100px) translateX(100px) rotate(90deg);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(-50px) translateX(-100px) rotate(180deg);
+        opacity: 0.7;
+    }
+    75% {
+        transform: translateY(100px) translateX(50px) rotate(270deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(360deg);
+        opacity: 0.3;
+    }
+}
+
+/* Navbar */
+nav {
+    background-color: rgba(10, 20, 41, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    height: 50px;
+    filter: drop-shadow(0 0 5px var(--accent-glow));
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-light), var(--accent-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(77, 161, 255, 0.3);
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-light);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-links a:hover::after {
+    width: 80%;
+}
+
+.nav-links a:hover {
+    color: var(--accent-light);
+}
+
+.nav-links a.active {
+    color: var(--accent-light);
+}
+
+.nav-links a.active::after {
+    width: 80%;
+}
+
+/* Hero Section */
+.hero {
+    padding: 80px 30px;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(42, 117, 187, 0.1) 0%, transparent 70%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, var(--text-light), var(--accent-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(77, 161, 255, 0.3);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    color: #b3ccff;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-light));
+    color: white;
+    box-shadow: 0 5px 15px rgba(42, 117, 187, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(42, 117, 187, 0.6);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--accent-light);
+    border: 2px solid var(--accent-light);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(77, 161, 255, 0.1);
+    transform: translateY(-3px);
+}
+
+/* Sección de características */
+.features {
+    padding: 60px 30px;
+    background-color: rgba(10, 20, 41, 0.7);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    color: var(--text-light);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-light));
+    border-radius: 2px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background-color: var(--panel-bg);
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-light));
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-blue);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--accent-light);
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--text-light);
+}
+
+.feature-card p {
+    color: #b3ccff;
+    line-height: 1.6;
+}
+
+/* Carrusel de juegos */
+.games-carousel {
+    padding: 60px 30px;
+    position: relative;
+}
+
+.swiper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0 50px;
+}
+
+.swiper-slide {
+    background-color: var(--panel-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    height: 400px;
+}
+
+.swiper-slide:hover {
+    transform: scale(1.03);
+    border-color: var(--accent-blue);
+}
+
+.game-card {
+    height: 100%;
+    position: relative;
+}
+
+.game-image {
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
+}
+
+.game-info {
+    padding: 20px;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.game-info h3 {
+    color: var(--text-light);
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.game-info p {
+    color: #b3ccff;
+    font-size: 0.9rem;
+}
+
+.swiper-button-next, .swiper-button-prev {
+    color: var(--accent-light) !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--accent-light) !important;
+}
+
+/* Sección de noticias */
+.news-section {
+    padding: 60px 30px;
+    background-color: rgba(10, 20, 41, 0.7);
+}
+
+.news-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.news-card {
+    background-color: var(--panel-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-blue);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.news-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 25px;
+}
+
+.news-date {
+    color: var(--accent-light);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.news-content h3 {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.news-content p {
+    color: #b3ccff;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.read-more {
+    color: var(--accent-light);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.read-more:hover {
+    gap: 10px;
+    color: var(--text-light);
+}
+
+/* Sección "Únete Ya" */
+.join-section {
+    padding: 80px 30px;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(42, 117, 187, 0.2) 0%, transparent 70%);
+    position: relative;
+    overflow: hidden;
+}
+
+.join-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--panel-bg);
+    border-radius: 20px;
+    padding: 50px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.join-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-light));
+}
+
+.join-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, var(--accent-light), #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.join-text {
+    font-size: 1.2rem;
+    color: #b3ccff;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.join-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.form-group label {
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.form-group input {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-light);
+    box-shadow: 0 0 0 2px rgba(77, 161, 255, 0.2);
+}
+
+.btn-large {
+    padding: 18px 40px;
+    font-size: 1.2rem;
+    margin-top: 20px;
+}
+
+/* Footer */
+footer {
+    background-color: rgba(10, 20, 41, 0.95);
+    padding: 50px 30px 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.footer-section p, .footer-section a {
+    color: #b3ccff;
+    line-height: 1.8;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: var(--accent-light);
+    padding-left: 5px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(77, 161, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-light);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background-color: var(--accent-blue);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    color: #8aa3cc;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .nav-links {
+        gap: 10px;
+    }
+    
+    .nav-links a {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .join-container {
+        padding: 30px 20px;
+    }
+    
+    .join-title {
+        font-size: 2rem;
+    }
+    
+    .swiper-slide {
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .features-grid, .news-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+</style>
+
+
+<body>
+
+    <script>
+            // Inicializar fondo animado
+function createAnimatedBackground() {
+    const bgContainer = document.getElementById('animated-bg');
+    const colors = ['rgba(42, 117, 187, 0.1)', 'rgba(77, 161, 255, 0.1)', 'rgba(106, 176, 255, 0.1)'];
+    
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('bg-particle');
+        
+        // Tamaño aleatorio
+        const size = Math.random() * 200 + 100;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Posición aleatoria
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Color aleatorio
+        particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
+        
+        // Animación más lenta para partículas grandes
+        const duration = 20 + Math.random() * 30;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${Math.random() * 10}s`;
+        
+        bgContainer.appendChild(particle);
+    }
+}
+
+// Inicializar Swiper (carrusel)
+function initializeSwiper() {
+    const swiper = new Swiper('.swiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            768: {
+                slidesPerView: 2,
+            },
+            1024: {
+                slidesPerView: 3,
+            },
+        },
+    });
+}
+
+// Manejar el formulario
+function setupForm() {
+    document.querySelector('.join-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Aquí normalmente enviarías los datos a un servidor
+        // Por ahora solo mostramos un mensaje
+        alert('¡Gracias por tu interés! Te contactaremos pronto con más información sobre FG Academy.');
+        
+        // Limpiar el formulario
+        this.reset();
+    });
+}
+
+// Efecto suave al hacer scroll a los enlaces
+function setupSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            if (href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+}
+
+// Efectos de aparición de elementos
+function setupScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observar elementos con animación
+    document.querySelectorAll('.feature-card, .news-card, .join-container').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(el);
+    });
+}
+
+// Efecto de escritura en el título principal
+function typeWriterEffect() {
+    const heroTitle = document.querySelector('.hero h1');
+    const originalText = heroTitle.textContent;
+    
+    if (!heroTitle || !originalText) return;
+    
+    let i = 0;
+    heroTitle.textContent = '';
+    
+    function type() {
+        if (i < originalText.length) {
+            heroTitle.textContent += originalText.charAt(i);
+            i++;
+            setTimeout(type, 50);
+        } else {
+            setTimeout(deleteText, 2000);
+        }
+    }
+    
+    function deleteText() {
+        if (i > 0) {
+            heroTitle.textContent = originalText.substring(0, i - 1);
+            i--;
+            setTimeout(deleteText, 30);
+        } else {
+            setTimeout(type, 500);
+        }
+    }
+    
+    type();
+}
+
+// Inicializar todo cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    createAnimatedBackground();
+    initializeSwiper();
+    setupForm();
+    setupSmoothScrolling();
+    setupScrollAnimations();
+    
+    // Iniciar efecto de escritura después de un tiempo
+    setTimeout(typeWriterEffect, 1000);
+});
+    
+    </script>
+    <!-- Fondo animado -->
+    <div class="animated-bg" id="animated-bg"></div>
+    
+    <!-- Navbar -->
+    <nav>
+        <div class="logo-container">
+            <div class="logo">🎮</div>
+            <div class="logo-text">FG Academy</div>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active">Inicio</a>
+            <a href="#">Cursos</a>
+            <a href="FGA_CONTROLLER_DISIGNER.htmL">Diseña tu Fight Stick</a>
+            <a href="#">Comunidad</a>
+            <a href="#">Contacto</a>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Domina el Arte de los Juegos de Lucha</h1>
+        <p>Únete a la academia líder en formación de jugadores competitivos. Aprende de los mejores, mejora tus habilidades y compite en torneos internacionales.</p>
+        <div class="hero-buttons">
+            <a href="#join" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Únete a la Academia
+            </a>
+            <a href="FGA_CONTROLLER_DESIGNER.html" class="btn btn-secondary">
+                <i class="fas fa-gamepad"></i> Diseña tu Fight Stick
+            </a>
+        </div>
+    </section>
+    
+    <!-- Sección de características -->
+    <section class="features">
+        <h2 class="section-title">¿Por qué elegir FG Academy?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Cursos Especializados</h3>
+                <p>Aprende desde lo básico hasta técnicas avanzadas con nuestro plan de estudios estructurado y profesores profesionales.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Entrenamiento Competitivo</h3>
+                <p>Prepárate para torneos con sesiones de práctica intensiva, análisis de partidas y estrategias de juego.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Comunidad Activa</h3>
+                <p>Conecta con jugadores de todos los niveles, participa en eventos exclusivos y forma parte de nuestra red de fighters.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3>Equipamiento Profesional</h3>
+                <p>Accede a fight sticks de alta calidad, salas de práctica equipadas y tecnología de última generación.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Carrusel de juegos -->
+    <section class="games-carousel">
+        <h2 class="section-title">Juegos que Enseñamos</h2>
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="game-card">
+                        <img src="https://images.unsplash.com/photo-1632501641765-e568d28b0017?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Street Fighter" class="game-image">
+                        <div class="game-info">
+                            <h3>Street Fighter VI</h3>
+                            <p>Domina el legendario juego de lucha con personajes icónicos y mecánicas profundas.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="game-card">
+                        <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tekken" class="game-image">
+                        <div class="game-info">
+                            <h3>Tekken 8</h3>
+                            <p>Aprende el juego de lucha 3D más popular con nuestro sistema de entrenamiento especializado.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="game-card">
+                        <img src="https://images.unsplash.com/photo-1593693399748-55d1f2f7c75b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Guilty Gear" class="game-image">
+                        <div class="game-info">
+                            <h3>Guilty Gear Strive</h3>
+                            <p>Descubre el juego de lucha anime con los gráficos más impresionantes y gameplay único.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="game-card">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dragon Ball FighterZ" class="game-image">
+                        <div class="game-info">
+                            <h3>Dragon Ball FighterZ</h3>
+                            <p>Conviértete en el mejor luchador con este frenético juego de lucha basado en el popular anime.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="game-card">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mortal Kombat" class="game-image">
+                        <div class="game-info">
+                            <h3>Mortal Kombat 1</h3>
+                            <p>Domina el juego de lucha más brutal con fatalities icónicas y gameplay profundo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+    
+    <!-- Sección de noticias -->
+    <section class="news-section">
+        <h2 class="section-title">Noticias Recientes</h2>
+        <div class="news-container">
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Torneo" class="news-image">
+                <div class="news-content">
+                    <div class="news-date">
+                        <i class="far fa-calendar"></i> 15 Noviembre 2023
+                    </div>
+                    <h3>Nuestro equipo gana el torneo regional</h3>
+                    <p>Los estudiantes de FG Academy se alzan con la victoria en el torneo regional de Street Fighter VI, demostrando el alto nivel de nuestra formación.</p>
+                    <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nuevo curso" class="news-image">
+                <div class="news-content">
+                    <div class="news-date">
+                        <i class="far fa-calendar"></i> 10 Noviembre 2023
+                    </div>
+                    <h3>Nuevo curso: Tekken 8 desde cero</h3>
+                    <p>Lanzamos un curso completo para dominar Tekken 8, ideal para jugadores que quieren comenzar su camino competitivo.</p>
+                    <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1585504198191-3ca5e3bc6c62?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Colaboración" class="news-image">
+                <div class="news-content">
+                    <div class="news-date">
+                        <i class="far fa-calendar"></i> 5 Noviembre 2023
+                    </div>
+                    <h3>Colaboración con profesionales del sector</h3>
+                    <p>FG Academy anuncia colaboración con jugadores profesionales para ofrecer masterclasses exclusivas a nuestros estudiantes.</p>
+                    <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección "Únete Ya" -->
+    <section class="join-section" id="join">
+        <div class="join-container">
+            <h2 class="join-title">¡ÚNETE YA!</h2>
+            <p class="join-text">Comienza tu viaje en el mundo competitivo de los juegos de lucha. Forma parte de la academia que está formando a la próxima generación de campeones.</p>
+            
+            <form class="join-form">
+                <div class="form-group">
+                    <label for="name">Nombre completo</label>
+                    <input type="text" id="name" placeholder="Tu nombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" placeholder="tu@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="game">Juego de interés principal</label>
+                    <input type="text" id="game" placeholder="Ej: Street Fighter VI, Tekken 8, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <label for="level">Nivel de experiencia</label>
+                    <input type="text" id="level" placeholder="Principiante, Intermedio, Avanzado">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-large">
+                    <i class="fas fa-paper-plane"></i> Enviar solicitud
+                </button>
+            </form>
+            
+            <p style="margin-top: 30px; color: #8aa3cc; font-size: 0.9rem;">
+                <i class="fas fa-shield-alt"></i> Tus datos están seguros y solo serán usados para contactarte.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>FG Academy</h3>
+                <p>La academia líder en formación de jugadores competitivos de juegos de lucha. Nuestra misión es desarrollar el talento de la próxima generación de esports.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitch"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Enlaces rápidos</h3>
+                <a href="#">Inicio</a><br>
+                <a href="#">Cursos</a><br>
+                <a href="fightstick-designer.html">Diseña tu Fight Stick</a><br>
+                <a href="#">Comunidad</a><br>
+                <a href="#">Contacto</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Cursos populares</h3>
+                <a href="#">Street Fighter VI - De cero a héroe</a><br>
+                <a href="#">Tekken 8 - Técnicas avanzadas</a><br>
+                <a href="#">Guilty Gear Strive - Fundamentos</a><br>
+                <a href="#">Entrenamiento competitivo</a><br>
+                <a href="#">Psicología del jugador</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Calle del Arcade 123, Madrid</p>
+                <p><i class="fas fa-phone"></i> +34 912 345 678</p>
+                <p><i class="fas fa-envelope"></i> info@fgacademy.com</p>
+                <p><i class="fas fa-clock"></i> Lunes a Viernes: 10:00 - 22:00</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>FG Academy - Escuela de juegos de lucha &copy; 2023 | Todos los derechos reservados</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="/js/fg-academy-scripts.js"></script>
+</body>
+</html>
