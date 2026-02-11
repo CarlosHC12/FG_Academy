@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class FindProfesorUseCase {
+
     private final ProfesorRepository profesorRepository;
 
     public List<Profesor> findAll() {
         List<Profesor> profesores = profesorRepository.getAll();
-        if (profesores.isEmpty())
+        if (profesores.isEmpty()) {
             throw new ProfesorNotFoundException();
+        }
         return profesores;
     }
 }
