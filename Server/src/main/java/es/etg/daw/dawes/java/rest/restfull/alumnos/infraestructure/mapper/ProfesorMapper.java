@@ -1,7 +1,7 @@
 package es.etg.daw.dawes.java.rest.restfull.alumnos.infraestructure.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import es.etg.daw.dawes.java.rest.restfull.alumnos.application.command.profesor.CreateProfesorCommand;
 import es.etg.daw.dawes.java.rest.restfull.alumnos.application.command.profesor.EditProfesorCommand;
@@ -13,44 +13,49 @@ import es.etg.daw.dawes.java.rest.restfull.alumnos.infraestructure.web.dto.Profe
 
 public class ProfesorMapper {
 
-    // ---------- Métodos para Command y DTO (ya existentes) ----------
-    public static CreateProfesorCommand toCommand(ProfesorRequest profesorRequest) {
-        return new CreateProfesorCommand(profesorRequest.nombre());
+    // ---------- Entity ----------
+    public static ProfesorEntity toEntity(Profesor p) {
+        return ProfesorEntity.builder()
+                .nombre(p.getNombre())
+                .build(); // ✅ No pases ID, se genera automáticamente
     }
 
-    public static EditProfesorCommand toCommand(int id, ProfesorRequest profesorRequest) {
-        return new EditProfesorCommand(new ProfesorId(id), profesorRequest.nombre());
+    // ---------- Commands ----------
+    public static CreateProfesorCommand toCommand(ProfesorRequest req) {
+        return new CreateProfesorCommand(req.nombre());
     }
 
-    public static ProfesorResponse toResponse(Profesor profesor) {
+    public static EditProfesorCommand toCommand(int id, ProfesorRequest req) {
+        return new EditProfesorCommand(new ProfesorId(id), req.nombre());
+    }
+
+    // ---------- Response ----------
+    public static ProfesorResponse toResponse(Profesor p) {
+        if (p.getId() == null) {
+            throw new IllegalStateException("El ID del profesor no puede ser nulo");
+        }
         return new ProfesorResponse(
-            profesor.getId().getValue(),
-            profesor.getNombre(),
-            profesor.getCreatedAt()
-        );
+                p.getId().getValue(),
+                p.getNombre(),
+                null);
     }
 
-    // ---------- Métodos para convertir con ProfesorEntity (NUEVOS) ----------
-    public static Profesor toDomain(ProfesorEntity entity) {
-        if (entity == null) return null;
+    // ---------- Domain ----------
+    public static Profesor toDomain(ProfesorEntity p) {
+        if (p.getId() == null) {
+            throw new IllegalStateException("El ID de la entidad no puede ser nulo");
+        }
         return Profesor.builder()
-                .id(new ProfesorId(entity.getId()))
-                .nombre(entity.getNombre())
+                .id(new ProfesorId(p.getId()))
+                .nombre(p.getNombre())
                 .build();
     }
 
-    public static List<Profesor> toDomain(List<ProfesorEntity> entities) {
-        if (entities == null) return List.of();
-        return entities.stream()
-                .map(ProfesorMapper::toDomain)
-                .collect(Collectors.toList());
-    }
-
-    public static ProfesorEntity toEntity(Profesor domain) {
-        if (domain == null) return null;
-        ProfesorEntity entity = new ProfesorEntity();
-        entity.setId(domain.getId().getValue());
-        entity.setNombre(domain.getNombre());
-        return entity;
+    public static List<Profesor> toDomain(List<ProfesorEntity> lista) {
+        List<Profesor> lp = new ArrayList<>();
+        for (ProfesorEntity pe : lista) {
+            lp.add(toDomain(pe));
+        }
+        return lp;
     }
 }

@@ -20,7 +20,9 @@ public class ProfesorRepositoryMockImpl implements ProfesorRepository {
     @Override
     public Profesor save(Profesor t) {
         // create
-        if (t.getId() == null) t.setId(new ProfesorId(obtenerSiguienteId()));
+        if (t.getId() == null)
+            System.out.println("BOOOOOOOOOOOOOOOOOOOOOOOMBA LA CUOCA EL ID ES NULO PUTO");
+        t.setId(new ProfesorId(obtenerSiguienteId()));
 
         profesores.put(t.getId(), t);
         return t;
@@ -53,5 +55,12 @@ public class ProfesorRepositoryMockImpl implements ProfesorRepository {
         profesores.remove(id);
     }
 
-    // Nota: No hay método getByName en ProfesorRepository, por lo que no se implementa.
+    @Override
+    public Optional<Profesor> getByNombre(String nombre) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getByNombre'");
+    }
+
+    // Nota: No hay método getByName en ProfesorRepository, por lo que no se
+    // implementa.
 }

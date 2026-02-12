@@ -10,4 +10,6 @@ public interface ProfesorEntityJpaRepository extends JpaRepository<ProfesorEntit
     // Hereda automáticamente métodos como: save(), findById(), findAll(), delete(), etc.
 
     public ProfesorEntity findByNombre(String nombre);
+
+    
 }

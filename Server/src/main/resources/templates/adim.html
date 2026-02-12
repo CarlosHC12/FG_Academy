@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FG Academy - Administración</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+
+/* ===========================
+   PALETA ZONA DE PELIGRO
+=========================== */
+
+:root {
+    --primary-dark: #1a1300;
+    --secondary-dark: #2a1b00;
+    --accent-main: #ffb300;
+    --accent-light: #ffd54f;
+    --accent-strong: #ff9800;
+    --danger-red: #ff2d2d;
+    --text-light: #fff8e1;
+    --border-color: #5c3b00;
+    --panel-bg: rgba(42, 27, 0, 0.95);
+    --gradient-bg: linear-gradient(135deg, #1a1300 0%, #2a1b00 50%, #1f1400 100%);
+}
+
+/* ===========================
+   BASE
+=========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: var(--gradient-bg);
+    color: var(--text-light);
+    min-height: 100vh;
+}
+
+/* ===========================
+   NAVBAR
+=========================== */
+
+nav {
+    background-color: rgba(20, 14, 0, 0.95);
+    padding: 15px 30px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-light), var(--accent-main));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* ===========================
+   PANEL ADMIN
+=========================== */
+
+.admin-container {
+    max-width: 900px;
+    margin: 60px auto;
+    background: var(--panel-bg);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 40px rgba(255, 179, 0, 0.2);
+}
+
+/* ===========================
+   CONTROLES SUPERIORES
+=========================== */
+
+.admin-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.toggle-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-main), var(--accent-strong));
+    color: #000;
+    box-shadow: 0 5px 20px rgba(255, 179, 0, 0.4);
+    transition: 0.3s;
+}
+
+.toggle-btn:hover {
+    transform: translateY(-3px);
+}
+
+.create-btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: 2px solid var(--accent-light);
+    background: transparent;
+    color: var(--accent-light);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.create-btn:hover {
+    background: rgba(255, 213, 79, 0.1);
+}
+
+/* ===========================
+   LISTAS
+=========================== */
+
+.list {
+    display: none;
+}
+
+.list.active {
+    display: block;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    transition: 0.3s;
+}
+
+.list-item:hover {
+    background: rgba(255, 179, 0, 0.05);
+}
+
+.item-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* BOTONES DE ACCIÓN */
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #ffffff, #f2f2f2);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #333;
+    transition: 0.2s;
+}
+
+.btn-edit:hover {
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    background: var(--danger-red);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: white;
+    transition: 0.2s;
+}
+
+.btn-delete:hover {
+    background: #cc0000;
+}
+
+/* ===========================
+   MODAL
+=========================== */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--panel-bg);
+    padding: 30px;
+    border-radius: 15px;
+    width: 350px;
+    border: 1px solid var(--accent-main);
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    border-radius: 6px;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: var(--accent-main);
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 6px;
+    color: black;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo-text">FG Academy - Administración</div>
+</nav>
+
+<div class="admin-container">
+
+    <div class="admin-controls">
+        <button class="toggle-btn" id="toggleList">
+            Ver Profesores
+        </button>
+
+        <button class="create-btn" id="createBtn">
+            <i class="fas fa-plus"></i> Crear Alumno
+        </button>
+    </div>
+
+    <!-- LISTA ALUMNOS -->
+    <div class="list active" id="alumnosList">
+        <div class="list-item">
+            <div class="item-name">Carlos Vega</div>
+            <div class="actions">
+                <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                <button class="btn-delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="item-name">Lucía Fernández</div>
+            <div class="actions">
+                <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                <button class="btn-delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LISTA PROFESORES -->
+    <div class="list" id="profesoresList">
+        <div class="list-item">
+            <div class="item-name">Profesor Ryu</div>
+            <div class="actions">
+                <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                <button class="btn-delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="item-name">Maestro Jin</div>
+            <div class="actions">
+                <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                <button class="btn-delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Crear Alumno</h3>
+        <input type="text" placeholder="Nombre completo">
+        <button>Guardar</button>
+    </div>
+</div>
+
+<script>
+
+let showingAlumnos = true;
+
+const toggleBtn = document.getElementById('toggleList');
+const createBtn = document.getElementById('createBtn');
+const alumnosList = document.getElementById('alumnosList');
+const profesoresList = document.getElementById('profesoresList');
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+
+toggleBtn.addEventListener('click', () => {
+    showingAlumnos = !showingAlumnos;
+
+    alumnosList.classList.toggle('active');
+    profesoresList.classList.toggle('active');
+
+    toggleBtn.textContent = showingAlumnos ? "Ver Profesores" : "Ver Alumnos";
+    createBtn.innerHTML = showingAlumnos
+        ? '<i class="fas fa-plus"></i> Crear Alumno'
+        : '<i class="fas fa-plus"></i> Crear Profesor';
+});
+
+createBtn.addEventListener('click', () => {
+    modal.classList.add('active');
+    modalTitle.textContent = showingAlumnos ? "Crear Alumno" : "Crear Profesor";
+});
+
+modal.addEventListener('click', (e) => {
+    if(e.target === modal) {
+        modal.classList.remove('active');
+    }
+});
+
+</script>
+
+</body>
+</html>

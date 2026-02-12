@@ -6,6 +6,8 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -23,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class ProfesorEntity {
 
     @Id
-    // Sin @GeneratedValue porque los IDs se asignan manualmente (data.sql)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "nombre", nullable = false, length = 100)

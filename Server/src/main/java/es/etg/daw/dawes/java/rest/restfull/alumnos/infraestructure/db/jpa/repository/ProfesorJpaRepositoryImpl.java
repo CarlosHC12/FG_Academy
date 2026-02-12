@@ -44,5 +44,10 @@ public class ProfesorJpaRepositoryImpl implements ProfesorRepository {
         repository.deleteById(id.getValue());
     }
 
-   
+    @Override
+    public Optional<Profesor> getByNombre(String nombre) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getByNombre'");
+    }
+
 }

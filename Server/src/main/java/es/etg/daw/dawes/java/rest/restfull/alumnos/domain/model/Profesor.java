@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class Profesor{
+public class Profesor {
     private ProfesorId id;
     private String nombre;
     private LocalDateTime createdAt;

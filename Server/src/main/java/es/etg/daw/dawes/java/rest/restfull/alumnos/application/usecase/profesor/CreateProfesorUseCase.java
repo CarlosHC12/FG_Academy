@@ -13,12 +13,13 @@ public class CreateProfesorUseCase {
     private final ProfesorRepository profesorRepository;
 
     public Profesor create(CreateProfesorCommand comando) {
+
         Profesor profesor = Profesor.builder()
                 .nombre(comando.nombre())
                 .createdAt(LocalDateTime.now())
                 .build();
-        profesorRepository.save(profesor);
-        return profesor;
+
+        // IMPORTANTE: Devolver el resultado del save (con ID generado)
+        return profesorRepository.save(profesor);
     }
 }
-
