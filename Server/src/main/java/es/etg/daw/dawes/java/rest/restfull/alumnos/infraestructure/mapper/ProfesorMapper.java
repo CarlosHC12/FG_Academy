@@ -15,9 +15,17 @@ public class ProfesorMapper {
 
     // ---------- Entity ----------
     public static ProfesorEntity toEntity(Profesor p) {
-        return ProfesorEntity.builder()
+        ProfesorEntity entity = ProfesorEntity.builder()
                 .nombre(p.getNombre())
-                .build(); // ✅ No pases ID, se genera automáticamente
+                .createdAt(p.getCreatedAt())
+                .build();
+
+        // 🔥 ¡ASIGNAR ID SI EXISTE! (para UPDATE)
+        if (p.getId() != null) {
+            entity.setId(p.getId().getValue());
+        }
+
+        return entity;
     }
 
     // ---------- Commands ----------

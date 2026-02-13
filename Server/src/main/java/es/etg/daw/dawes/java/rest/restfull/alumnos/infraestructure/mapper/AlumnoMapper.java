@@ -20,12 +20,18 @@ public class AlumnoMapper {
         ProfesorEntity profesor = new ProfesorEntity();
         profesor.setId(a.getProfesorId().getValue());
 
-        return AlumnoEntity.builder()
+        AlumnoEntity entity = AlumnoEntity.builder()
                 .nombre(a.getNombre())
                 .edad(a.getEdad())
                 .fechaCreacion(a.getCreatedAt() != null ? a.getCreatedAt() : LocalDateTime.now())
                 .profesor(profesor)
-                .build(); // No pases ID, se genera automáticamente
+                .build();
+
+        if (a.getId() != null) {
+            entity.setId(a.getId().getValue());
+        }
+
+        return entity;
     }
 
     public static CreateAlumnoCommand toCommand(AlumnoRequest req) {

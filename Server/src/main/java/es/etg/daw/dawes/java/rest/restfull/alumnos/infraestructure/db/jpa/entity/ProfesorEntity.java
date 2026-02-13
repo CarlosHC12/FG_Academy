@@ -1,5 +1,6 @@
 package es.etg.daw.dawes.java.rest.restfull.alumnos.infraestructure.db.jpa.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,13 +32,13 @@ public class ProfesorEntity {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    // Relación One-to-Many con AlumnoEntity
-    // Mapeada por el campo "profesor" en la entidad Alumno
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<AlumnoEntity> alumnos = new ArrayList<>();
 
-    // --- Métodos auxiliares para sincronizar la relación bidireccional ---
     public void addAlumno(AlumnoEntity alumno) {
         this.alumnos.add(alumno);
         alumno.setProfesor(this);

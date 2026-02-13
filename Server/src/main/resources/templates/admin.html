@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FG Academy - Gestión Alumnos/Profesores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<style>
+/* ===== ESTILOS AMARILLOS ===== */
+:root {
+    --primary-dark: #1a1a0a;
+    --secondary-dark: #2a2a1a;
+    --accent-yellow: #ffd700;
+    --accent-light: #ffee99;
+    --accent-glow: rgba(255, 215, 0, 0.4);
+    --accent-orange: #ffb347;
+    --text-light: #fff9e6;
+    --border-color: #5e5e3a;
+    --panel-bg: rgba(42, 42, 26, 0.95);
+    --gradient-bg: linear-gradient(135deg, #1a1a0a 0%, #2a2a1a 50%, #1a1a0a 100%);
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+    min-height: 100vh;
+    background-image: var(--gradient-bg);
+}
+
+/* Fondo animado */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-particle {
+    position: absolute;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
+    25% { transform: translateY(-100px) translateX(100px) rotate(90deg); opacity: 0.5; }
+    50% { transform: translateY(-50px) translateX(-100px) rotate(180deg); opacity: 0.7; }
+    75% { transform: translateY(100px) translateX(50px) rotate(270deg); opacity: 0.5; }
+    100% { transform: translateY(0) translateX(0) rotate(360deg); opacity: 0.3; }
+}
+
+/* Navbar */
+nav {
+    background-color: rgba(26, 26, 10, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 2rem;
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-light), var(--accent-yellow));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 8px 15px;
+    transition: all 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--accent-yellow);
+    border-bottom: 2px solid var(--accent-yellow);
+}
+
+/* Header */
+.header {
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, var(--text-light), var(--accent-yellow));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.header p {
+    color: #bfbf8a;
+}
+
+/* Panel de selección */
+.selection-panel {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    padding: 0 30px;
+}
+
+.selection-card {
+    background-color: var(--panel-bg);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.selection-card:hover {
+    border-color: var(--accent-yellow);
+    box-shadow: 0 0 30px var(--accent-glow);
+    transform: translateY(-5px);
+}
+
+.selection-card.active {
+    border-color: var(--accent-yellow);
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.selection-icon {
+    font-size: 3rem;
+    color: var(--accent-yellow);
+    margin-bottom: 15px;
+}
+
+.selection-card h2 {
+    margin-bottom: 15px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-yellow);
+}
+
+.stat-label {
+    color: #bfbf8a;
+}
+
+/* Contenedor principal */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* Panel de listado */
+.listing-panel {
+    background-color: var(--panel-bg);
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    display: none;
+}
+
+.listing-panel.active {
+    display: block;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.panel-title {
+    font-size: 1.8rem;
+    color: var(--accent-yellow);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel-title i {
+    color: var(--accent-yellow);
+}
+
+.stats-badge {
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid var(--accent-yellow);
+    border-radius: 20px;
+    padding: 8px 20px;
+    color: var(--accent-yellow);
+}
+
+/* Tablas */
+.table-container {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead {
+    background-color: rgba(255, 215, 0, 0.2);
+}
+
+.data-table th {
+    padding: 15px;
+    text-align: left;
+    color: var(--accent-yellow);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+}
+
+/* Badges */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: inline-block;
+}
+
+.badge.id {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    border: 1px solid var(--info-color);
+}
+
+.badge.professor {
+    background-color: rgba(255, 215, 0, 0.2);
+    color: var(--accent-yellow);
+    border: 1px solid var(--accent-yellow);
+}
+
+/* Botones de acción */
+.btn-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    transition: all 0.2s;
+}
+
+.btn-edit {
+    background: var(--info-color);
+}
+
+.btn-delete {
+    background: var(--danger-color);
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--panel-bg);
+    border: 2px solid var(--accent-yellow);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.modal-content h2 {
+    color: var(--accent-yellow);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    color: var(--accent-yellow);
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-select {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+.form-select {
+    cursor: pointer;
+}
+
+.form-select option {
+    background-color: var(--secondary-dark);
+    color: var(--text-light);
+}
+
+.form-group input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--accent-yellow);
+}
+
+.form-group input[readonly] {
+    background: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-confirm {
+    flex: 1;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--accent-yellow), var(--accent-orange));
+    border: none;
+    border-radius: 8px;
+    color: #1a1a0a;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--accent-yellow);
+    border-radius: 8px;
+    color: var(--accent-yellow);
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+/* Confirmación */
+.confirm-message {
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.confirm-highlight {
+    color: var(--accent-yellow);
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    background-color: rgba(26, 26, 10, 0.95);
+    padding: 30px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 40px;
+    text-align: center;
+    color: #bfbf8a;
+}
+</style>
+<script>
+// Fondo animado
+function createAnimatedBackground() {
+    const bg = document.getElementById('animated-bg');
+    if (!bg) return;
+    
+    const colors = ['rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.1)', 'rgba(255, 215, 0, 0.1)'];
+    
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('bg-particle');
+        
+        const size = Math.random() * 200 + 100;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
+        
+        const duration = 20 + Math.random() * 30;
+        particle.style.animation = `float ${duration}s infinite linear`;
+        
+        bg.appendChild(particle);
+    }
+}
+
+// Añadir keyframes al estilo
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
+        25% { transform: translateY(-100px) translateX(100px) rotate(90deg); opacity: 0.5; }
+        50% { transform: translateY(-50px) translateX(-100px) rotate(180deg); opacity: 0.7; }
+        75% { transform: translateY(100px) translateX(50px) rotate(270deg); opacity: 0.5; }
+        100% { transform: translateY(0) translateX(0) rotate(360deg); opacity: 0.3; }
+    }
+`;
+document.head.appendChild(style);
+
+// Cambiar paneles
+function setupPanelSwitching() {
+    const alumnosCard = document.getElementById('alumnos-card');
+    const profesoresCard = document.getElementById('profesores-card');
+    const alumnosPanel = document.getElementById('alumnos-panel');
+    const profesoresPanel = document.getElementById('profesores-panel');
+    
+    alumnosCard.addEventListener('click', function() {
+        alumnosCard.classList.add('active');
+        profesoresCard.classList.remove('active');
+        alumnosPanel.classList.add('active');
+        profesoresPanel.classList.remove('active');
+    });
+    
+    profesoresCard.addEventListener('click', function() {
+        profesoresCard.classList.add('active');
+        alumnosCard.classList.remove('active');
+        profesoresPanel.classList.add('active');
+        alumnosPanel.classList.remove('active');
+    });
+}
+
+// FUNCIONES PARA ALUMNOS
+function editarAlumno(btn) {
+    const id = btn.getAttribute('data-id');
+    const nombre = btn.getAttribute('data-nombre');
+    const edad = btn.getAttribute('data-edad');
+    const profesorId = btn.getAttribute('data-profesor');
+    
+    document.getElementById('edit-alumno-id').value = id;
+    document.getElementById('edit-alumno-id-display').value = id;
+    document.getElementById('edit-alumno-nombre').value = nombre;
+    document.getElementById('edit-alumno-edad').value = edad;
+    
+    // Seleccionar el profesor en el dropdown
+    const selectProfesor = document.getElementById('edit-alumno-profesor');
+    if (selectProfesor) {
+        selectProfesor.value = profesorId;
+    }
+    
+    document.getElementById('modal-editar-alumno').classList.add('active');
+}
+
+function cerrarModalEditarAlumno() {
+    document.getElementById('modal-editar-alumno').classList.remove('active');
+}
+
+function eliminarAlumno(btn) {
+    const id = btn.getAttribute('data-id');
+    const nombre = btn.getAttribute('data-nombre');
+    
+    document.getElementById('confirm-mensaje').innerHTML = 
+        '¿Estás seguro de eliminar a <span class="confirm-highlight">' + nombre + '</span>?';
+    document.getElementById('confirm-eliminar-link').href = '/eliminar/alumno/' + id;
+    document.getElementById('modal-confirmar').classList.add('active');
+}
+
+// FUNCIONES PARA PROFESORES
+function editarProfesor(btn) {
+    const id = btn.getAttribute('data-id');
+    const nombre = btn.getAttribute('data-nombre');
+    
+    document.getElementById('edit-profesor-id').value = id;
+    document.getElementById('edit-profesor-id-display').value = id;
+    document.getElementById('edit-profesor-nombre').value = nombre;
+    document.getElementById('modal-editar-profesor').classList.add('active');
+}
+
+function cerrarModalEditarProfesor() {
+    document.getElementById('modal-editar-profesor').classList.remove('active');
+}
+
+function eliminarProfesor(btn) {
+    const id = btn.getAttribute('data-id');
+    const nombre = btn.getAttribute('data-nombre');
+    
+    document.getElementById('confirm-mensaje').innerHTML = 
+        '¿Estás seguro de eliminar a <span class="confirm-highlight">' + nombre + '</span>?';
+    document.getElementById('confirm-eliminar-link').href = '/eliminar/profesor/' + id;
+    document.getElementById('modal-confirmar').classList.add('active');
+}
+
+function cerrarModalConfirmar() {
+    document.getElementById('modal-confirmar').classList.remove('active');
+}
+
+// Cerrar modales con ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        cerrarModalEditarAlumno();
+        cerrarModalEditarProfesor();
+        cerrarModalConfirmar();
+    }
+});
+
+// Cerrar modales al hacer click fuera
+window.addEventListener('click', function(e) {
+    if (e.target === document.getElementById('modal-editar-alumno')) {
+        cerrarModalEditarAlumno();
+    }
+    if (e.target === document.getElementById('modal-editar-profesor')) {
+        cerrarModalEditarProfesor();
+    }
+    if (e.target === document.getElementById('modal-confirmar')) {
+        cerrarModalConfirmar();
+    }
+});
+
+// Inicializar
+document.addEventListener('DOMContentLoaded', function() {
+    createAnimatedBackground();
+    setupPanelSwitching();
+});
+</script>
+<body>
+    <div class="animated-bg" id="animated-bg"></div>
+
+    <nav>
+        <div class="logo-container">
+            <div class="logo">🎮</div>
+            <div class="logo-text">FG Academy</div>
+        </div>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/admin" class="active">Gestión</a>
+        </div>
+    </nav>
+
+    <section class="header">
+        <h1>Gestión de Alumnos y Profesores</h1>
+        <p>Panel de control - Sistema de gestión académica</p>
+    </section>
+
+    <!-- Panel de selección -->
+    <div class="selection-panel">
+        <div class="selection-card active" id="alumnos-card">
+            <div class="selection-icon"><i class="fas fa-user-graduate"></i></div>
+            <h2>Alumnos</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" th:text="${totalAlumnos}">0</div>
+                    <div class="stat-label">registrados</div>
+                </div>
+            </div>
+        </div>
+        <div class="selection-card" id="profesores-card">
+            <div class="selection-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            <h2>Profesores</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" th:text="${totalProfesores}">0</div>
+                    <div class="stat-label">registrados</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- PANEL DE ALUMNOS -->
+        <div class="listing-panel active" id="alumnos-panel">
+            <div class="panel-header">
+                <h2 class="panel-title"><i class="fas fa-user-graduate"></i> Listado de Alumnos</h2>
+                <div class="stats-badge">
+                    <i class="fas fa-users"></i> Total: <span th:text="${totalAlumnos}">0</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Edad</th>
+                            <th>Profesor</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alumnos-tbody">
+                        <tr th:each="alumno : ${alumnos}">
+                            <td><span class="badge id" th:text="${alumno.id.value}">1</span></td>
+                            <td th:text="${alumno.nombre}">Juan Pérez</td>
+                            <td th:text="${alumno.edad}">20</td>
+                            <td><span class="badge professor" th:text="${alumno.profesorId?.value} ?: 'N/A'">1</span></td>
+                            <td th:text="${#temporals.format(alumno.createdAt, 'dd/MM/yyyy')}">01/01/2024</td>
+                            <td>
+                                <div class="btn-actions">
+                                    <button class="btn-action btn-edit" 
+                                            th:attr="data-id=${alumno.id.value}, data-nombre=${alumno.nombre}, data-edad=${alumno.edad}, data-profesor=${alumno.profesorId?.value}"
+                                            onclick="editarAlumno(this)">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn-action btn-delete" 
+                                            th:attr="data-id=${alumno.id.value}, data-nombre=${alumno.nombre}"
+                                            onclick="eliminarAlumno(this)">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(alumnos)}">
+                            <td colspan="6" style="text-align:center; padding:30px;">
+                                <i class="fas fa-info-circle"></i> No hay alumnos registrados
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PANEL DE PROFESORES -->
+        <div class="listing-panel" id="profesores-panel">
+            <div class="panel-header">
+                <h2 class="panel-title"><i class="fas fa-chalkboard-teacher"></i> Listado de Profesores</h2>
+                <div class="stats-badge">
+                    <i class="fas fa-users"></i> Total: <span th:text="${totalProfesores}">0</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="profesores-tbody">
+                        <tr th:each="profesor : ${profesores}">
+                            <td><span class="badge id" th:text="${profesor.id.value}">1</span></td>
+                            <td th:text="${profesor.nombre}">Carlos Rodríguez</td>
+                            <td th:text="${#temporals.format(profesor.createdAt, 'dd/MM/yyyy')}">01/01/2024</td>
+                            <td>
+                                <div class="btn-actions">
+                                    <button class="btn-action btn-edit" 
+                                            th:attr="data-id=${profesor.id.value}, data-nombre=${profesor.nombre}"
+                                            onclick="editarProfesor(this)">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn-action btn-delete" 
+                                            th:attr="data-id=${profesor.id.value}, data-nombre=${profesor.nombre}"
+                                            onclick="eliminarProfesor(this)">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(profesores)}">
+                            <td colspan="4" style="text-align:center; padding:30px;">
+                                <i class="fas fa-info-circle"></i> No hay profesores registrados
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR ALUMNO (CON SELECT DE PROFESORES) -->
+    <div id="modal-editar-alumno" class="modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-edit"></i> Editar Alumno</h2>
+            <form action="/editar/alumno" method="post">
+                <input type="hidden" id="edit-alumno-id" name="id">
+                <div class="form-group">
+                    <label>ID</label>
+                    <input type="text" id="edit-alumno-id-display" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="edit-alumno-nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label>Edad</label>
+                    <input type="number" id="edit-alumno-edad" name="edad" required>
+                </div>
+                <div class="form-group">
+                    <label>Profesor</label>
+                    <select id="edit-alumno-profesor" name="profesorId" class="form-select" required>
+                        <option value="">Selecciona un profesor</option>
+                        <option th:each="profesor : ${profesores}" 
+                                th:value="${profesor.id.value}" 
+                                th:text="${profesor.nombre}">
+                        </option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-confirm">Guardar Cambios</button>
+                    <button type="button" class="btn-cancel" onclick="cerrarModalEditarAlumno()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR PROFESOR -->
+    <div id="modal-editar-profesor" class="modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-edit"></i> Editar Profesor</h2>
+            <form action="/editar/profesor" method="post">
+                <input type="hidden" id="edit-profesor-id" name="id">
+                <div class="form-group">
+                    <label>ID</label>
+                    <input type="text" id="edit-profesor-id-display" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="edit-profesor-nombre" name="nombre" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-confirm">Guardar Cambios</button>
+                    <button type="button" class="btn-cancel" onclick="cerrarModalEditarProfesor()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMAR ELIMINACIÓN -->
+    <div id="modal-confirmar" class="modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación</h2>
+            <div class="confirm-message" id="confirm-mensaje"></div>
+            <div class="modal-buttons">
+                <a href="#" id="confirm-eliminar-link" class="btn-delete" style="text-decoration: none; text-align: center; padding: 12px 20px; border-radius: 8px; color: white; background: #dc3545;">Eliminar</a>
+                <button type="button" class="btn-cancel" onclick="cerrarModalConfirmar()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">
+                <p>FG Academy - Sistema de Gestión &copy; 2024 | Datos en tiempo real</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

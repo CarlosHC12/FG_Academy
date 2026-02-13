@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FG Academy - Gestión Alumnos/Profesores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link th:href="@{/css/gestion.css}" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #7a771c;
+            --secondary-dark: #493e1a;
+            --accent-purple: #d9dc13;
+            --accent-light: #b366ff;
+            --accent-glow: rgba(89, 73, 3, 0.4);
+            --accent-pink: #8eda14;
+            --text-light: #f0e6ff;
+            --border-color: #3a2a5e;
+            --panel-bg: rgba(42, 26, 73, 0.95);
+            --gradient-bg: linear-gradient(135deg, #1a0a29 0%, #2a1a49 50%, #1a0a3a 100%);
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: var(--gradient-bg);
+        }
+
+        /* Fondo animado */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-particle {
+            position: absolute;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
+            25% { transform: translateY(-100px) translateX(100px) rotate(90deg); opacity: 0.5; }
+            50% { transform: translateY(-50px) translateX(-100px) rotate(180deg); opacity: 0.7; }
+            75% { transform: translateY(100px) translateX(50px) rotate(270deg); opacity: 0.5; }
+            100% { transform: translateY(0) translateX(0) rotate(360deg); opacity: 0.3; }
+        }
+
+        /* Navbar */
+        nav {
+            background-color: rgba(26, 10, 41, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            height: 50px;
+            filter: drop-shadow(0 0 5px var(--accent-glow));
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-light), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-light);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 80%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-light);
+        }
+
+        /* Header */
+        .header {
+            padding: 40px 30px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--text-light), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #c9b3ff;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        /* Panel de selección */
+        .selection-panel {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 0 30px;
+        }
+
+        .selection-card {
+            background-color: var(--panel-bg);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .selection-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-purple);
+            box-shadow: 0 15px 30px rgba(138, 43, 226, 0.3);
+        }
+
+        .selection-card.active {
+            border-color: var(--accent-purple);
+            background: linear-gradient(to bottom, rgba(138, 43, 226, 0.1), var(--panel-bg));
+        }
+
+        .selection-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--accent-light);
+        }
+
+        .selection-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #8a6bbf;
+        }
+
+        /* Contenedor principal */
+        .main-container {
+            padding: 0 30px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Panel de listado */
+        .listing-panel {
+            background-color: var(--panel-bg);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .listing-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .listing-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title i {
+            color: var(--accent-light);
+        }
+
+        .stats-badge {
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid var(--accent-purple);
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 1rem;
+            color: var(--accent-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* FILTROS */
+        .filters-container {
+            background-color: rgba(26, 10, 41, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filters-title {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 0.95rem;
+            color: #c9b3ff;
+            font-weight: 500;
+        }
+
+        .filter-input, .filter-select {
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: var(--accent-light);
+            box-shadow: 0 0 0 2px rgba(179, 102, 255, 0.2);
+        }
+
+        .filter-select option {
+            background-color: var(--secondary-dark);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .filter-btn.apply {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: white;
+            box-shadow: 0 3px 10px rgba(138, 43, 226, 0.3);
+        }
+
+        .filter-btn.reset {
+            background-color: transparent;
+            color: var(--accent-light);
+            border: 1px solid var(--accent-light);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.apply:hover {
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.5);
+        }
+
+        .filter-btn.reset:hover {
+            background-color: rgba(179, 102, 255, 0.1);
+        }
+
+        /* Tablas */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .data-table thead {
+            background-color: rgba(138, 43, 226, 0.2);
+        }
+
+        .data-table th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--accent-light);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: 16px 15px;
+            border-bottom: 1px solid rgba(58, 42, 94, 0.5);
+        }
+
+        .data-table tbody tr:hover {
+            background-color: rgba(138, 43, 226, 0.1);
+        }
+
+        /* Badges */
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge.id {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .badge.professor {
+            background-color: rgba(217, 70, 239, 0.2);
+            color: #f0abfc;
+            border: 1px solid rgba(217, 70, 239, 0.5);
+        }
+
+        /* BOTONES DE ACCIÓN */
+        .btn-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, var(--info-color), #2563eb);
+            box-shadow: 0 2px 5px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, var(--danger-color), #b91c1c);
+            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.5);
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--panel-bg);
+            border: 2px solid var(--accent-purple);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 30px var(--accent-glow);
+            animation: modalSlideIn 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-content h2 {
+            color: var(--accent-light);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--accent-light);
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-light);
+            box-shadow: 0 0 0 2px rgba(179, 102, 255, 0.2);
+        }
+
+        .form-group input[readonly] {
+            background: rgba(255, 255, 255, 0.05);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-modal {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: white;
+            box-shadow: 0 3px 10px rgba(138, 43, 226, 0.3);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: var(--accent-light);
+            border: 1px solid var(--accent-light);
+        }
+
+        .btn-confirm:hover, .btn-cancel:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-confirm:hover {
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.5);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(179, 102, 255, 0.1);
+        }
+
+        /* Mensaje de confirmación */
+        .confirm-message {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .confirm-highlight {
+            color: var(--accent-light);
+            font-weight: 700;
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(26, 10, 41, 0.95);
+            padding: 30px 30px 20px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .copyright {
+            color: #8a6bbf;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .selection-panel { grid-template-columns: 1fr; }
+            .panel-header { flex-direction: column; }
+            .nav-links { gap: 10px; }
+            .nav-links a { padding: 6px 10px; }
+            .filter-grid { grid-template-columns: 1fr; }
+            .filters-header { flex-direction: column; align-items: flex-start; }
+            .filter-buttons { flex-direction: column; width: 100%; }
+            .filter-btn { width: 100%; justify-content: center; }
+            .btn-actions { flex-direction: column; }
+            .modal-content { padding: 25px; }
+            .modal-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg" id="animated-bg"></div>
+    
+    <nav>
+        <div class="logo-container">
+            <div class="logo">🎮</div>
+            <div class="logo-text">FG Academy</div>
+        </div>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/gestion" class="active">Gestión</a>
+        </div>
+    </nav>
+    
+    <section class="header">
+        <h1>Gestión de Alumnos y Profesores</h1>
+        <p>Selecciona una opción para ver y gestionar los datos. Utiliza los filtros para búsquedas específicas.</p>
+    </section>
+    
+    <!-- Panel de selección -->
+    <div class="selection-panel">
+        <div class="selection-card active" id="alumnos-card">
+            <div class="selection-icon"><i class="fas fa-user-graduate"></i></div>
+            <h2>Alumnos</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" th:text="${totalAlumnos}">0</div>
+                    <div class="stat-label">Alumnos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" th:text="${totalProfesores}">0</div>
+                    <div class="stat-label">Profesores</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="selection-card" id="profesores-card">
+            <div class="selection-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            <h2>Profesores</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" th:text="${totalProfesores}">0</div>
+                    <div class="stat-label">Profesores</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" th:text="${totalAlumnos}">0</div>
+                    <div class="stat-label">Alumnos</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <!-- PANEL DE ALUMNOS -->
+        <section class="listing-panel active" id="alumnos-panel">
+            <div class="panel-header">
+                <h2 class="panel-title"><i class="fas fa-user-graduate"></i> Listado de Alumnos</h2>
+                <div class="stats-badge">
+                    <i class="fas fa-users"></i> Total: <span th:text="${totalAlumnos}">0</span>
+                </div>
+            </div>
+            
+            <!-- FILTROS PARA ALUMNOS -->
+            <div class="filters-container">
+                <div class="filters-header">
+                    <h3 class="filters-title"><i class="fas fa-filter"></i> Filtrar Alumnos</h3>
+                    <div class="filter-buttons">
+                        <button class="filter-btn apply" id="apply-alumno-filters">
+                            <i class="fas fa-search"></i> Aplicar Filtros
+                        </button>
+                        <button class="filter-btn reset" id="reset-alumno-filters">
+                            <i class="fas fa-redo"></i> Limpiar Filtros
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label for="alumno-id"><i class="fas fa-hashtag"></i> ID del Alumno</label>
+                        <input type="text" id="alumno-id" class="filter-input" placeholder="Ej: 1, 2, 3...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="alumno-nombre"><i class="fas fa-user"></i> Nombre</label>
+                        <input type="text" id="alumno-nombre" class="filter-input" placeholder="Buscar por nombre...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="alumno-profesor"><i class="fas fa-chalkboard-teacher"></i> Profesor Asignado</label>
+                        <select id="alumno-profesor" class="filter-select">
+                            <option value="">Todos los profesores</option>
+                            <option th:each="profesor : ${profesores}" th:value="${profesor.id.value}" th:text="${profesor.nombre}">Profesor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Edad</th>
+                            <th>Profesor</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alumnos-tbody">
+                        <tr th:each="alumno : ${alumnos}">
+                            <td><span class="badge id" th:text="${alumno.id.value}">1</span></td>
+                            <td th:text="${alumno.nombre}">Juan Pérez</td>
+                            <td th:text="${alumno.edad}">22</td>
+                            <td>
+                                <span class="badge professor" th:text="${alumno.profesorId?.value} ?: 'N/A'">1</span>
+                            </td>
+                            <td th:text="${#temporals.format(alumno.createdAt, 'dd/MM/yyyy')}">01/01/2024</td>
+                            <td>
+                                <div class="btn-actions">
+                                    <button class="btn-action btn-edit" th:onclick="'openEditModal(' + ${alumno.id.value} + ', \'' + ${alumno.nombre} + '\', ' + ${alumno.edad} + ', ' + ${alumno.profesorId?.value} + ', \'alumno\')'">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn-action btn-delete" th:onclick="'confirmDelete(' + ${alumno.id.value} + ', \'' + ${alumno.nombre} + '\', \'alumno\')'">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(alumnos)}">
+                            <td colspan="6" style="text-align:center; padding:30px;">
+                                <i class="fas fa-info-circle"></i> No hay alumnos registrados
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- PANEL DE PROFESORES -->
+        <section class="listing-panel" id="profesores-panel">
+            <div class="panel-header">
+                <h2 class="panel-title"><i class="fas fa-chalkboard-teacher"></i> Listado de Profesores</h2>
+                <div class="stats-badge">
+                    <i class="fas fa-users"></i> Total: <span th:text="${totalProfesores}">0</span>
+                </div>
+            </div>
+            
+            <!-- FILTROS PARA PROFESORES -->
+            <div class="filters-container">
+                <div class="filters-header">
+                    <h3 class="filters-title"><i class="fas fa-filter"></i> Filtrar Profesores</h3>
+                    <div class="filter-buttons">
+                        <button class="filter-btn apply" id="apply-profesor-filters">
+                            <i class="fas fa-search"></i> Aplicar Filtros
+                        </button>
+                        <button class="filter-btn reset" id="reset-profesor-filters">
+                            <i class="fas fa-redo"></i> Limpiar Filtros
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label for="profesor-id"><i class="fas fa-hashtag"></i> ID del Profesor</label>
+                        <input type="text" id="profesor-id" class="filter-input" placeholder="Ej: 1, 2, 3...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="profesor-nombre"><i class="fas fa-user"></i> Nombre</label>
+                        <input type="text" id="profesor-nombre" class="filter-input" placeholder="Buscar por nombre...">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="profesores-tbody">
+                        <tr th:each="profesor : ${profesores}">
+                            <td><span class="badge id" th:text="${profesor.id.value}">1</span></td>
+                            <td th:text="${profesor.nombre}">Carlos Rodríguez</td>
+                            <td th:text="${#temporals.format(profesor.createdAt, 'dd/MM/yyyy')}">01/01/2024</td>
+                            <td>
+                                <div class="btn-actions">
+                                    <button class="btn-action btn-edit" th:onclick="'openEditModal(' + ${profesor.id.value} + ', \'' + ${profesor.nombre} + '\', null, null, \'profesor\')'">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn-action btn-delete" th:onclick="'confirmDelete(' + ${profesor.id.value} + ', \'' + ${profesor.nombre} + '\', \'profesor\')'">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(profesores)}">
+                            <td colspan="4" style="text-align:center; padding:30px;">
+                                <i class="fas fa-info-circle"></i> No hay profesores registrados
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL DE EDICIÓN -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">✎ Editar Registro</h2>
+            <form id="editForm" th:action="@{/}" method="post">
+                <input type="hidden" id="editId" name="id">
+                <input type="hidden" id="editType" name="type">
+                
+                <div class="form-group">
+                    <label for="editIdDisplay">ID</label>
+                    <input type="text" id="editIdDisplay" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editNombre">Nombre</label>
+                    <input type="text" id="editNombre" name="nombre" required>
+                </div>
+                
+                <div id="editEdadGroup" class="form-group">
+                    <label for="editEdad">Edad</label>
+                    <input type="number" id="editEdad" name="edad">
+                </div>
+                
+                <div id="editProfesorGroup" class="form-group">
+                    <label for="editProfesorId">ID del Profesor</label>
+                    <input type="number" id="editProfesorId" name="profesorId">
+                </div>
+                
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-modal btn-confirm">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                    <button type="button" class="btn-modal btn-cancel" onclick="closeModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h2>⚠️ Confirmar Eliminación</h2>
+            <div class="confirm-message" id="confirmMessage"></div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-confirm" onclick="executeDelete()">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+                <button class="btn-modal btn-cancel" onclick="closeConfirmModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">
+                <p>FG Academy - Sistema de Gestión &copy; 2024 | Datos en tiempo real</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fondo animado
+        function createAnimatedBackground() {
+            const bgContainer = document.getElementById('animated-bg');
+            if (!bgContainer) return;
+            
+            const colors = ['rgba(138, 43, 226, 0.1)', 'rgba(179, 102, 255, 0.1)', 'rgba(217, 70, 239, 0.1)'];
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('bg-particle');
+                
+                const size = Math.random() * 200 + 100;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
+                
+                const duration = 20 + Math.random() * 30;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                bgContainer.appendChild(particle);
+            }
+        }
+
+        // Cambio de paneles
+        function setupPanelSwitching() {
+            const alumnosCard = document.getElementById('alumnos-card');
+            const profesoresCard = document.getElementById('profesores-card');
+            const alumnosPanel = document.getElementById('alumnos-panel');
+            const profesoresPanel = document.getElementById('profesores-panel');
+            
+            if (!alumnosCard || !profesoresCard || !alumnosPanel || !profesoresPanel) return;
+            
+            alumnosCard.addEventListener('click', function() {
+                alumnosCard.classList.add('active');
+                profesoresCard.classList.remove('active');
+                alumnosPanel.classList.add('active');
+                profesoresPanel.classList.remove('active');
+            });
+            
+            profesoresCard.addEventListener('click', function() {
+                profesoresCard.classList.add('active');
+                alumnosCard.classList.remove('active');
+                profesoresPanel.classList.add('active');
+                alumnosPanel.classList.remove('active');
+            });
+        }
+
+        // FUNCIONES DE FILTRADO
+        function setupFilters() {
+            // Filtros para alumnos
+            const alumnoFilterBtn = document.getElementById('apply-alumno-filters');
+            const alumnoResetBtn = document.getElementById('reset-alumno-filters');
+            const alumnosTbody = document.getElementById('alumnos-tbody');
+            
+            if (alumnoFilterBtn && alumnosTbody) {
+                alumnoFilterBtn.addEventListener('click', function() {
+                    const idFilter = document.getElementById('alumno-id')?.value.toLowerCase() || '';
+                    const nombreFilter = document.getElementById('alumno-nombre')?.value.toLowerCase() || '';
+                    const profesorFilter = document.getElementById('alumno-profesor')?.value || '';
+                    
+                    const filas = Array.from(alumnosTbody.querySelectorAll('tr')).filter(fila => {
+                        const celdas = fila.querySelectorAll('td');
+                        return celdas.length > 0 && !celdas[0].hasAttribute('colspan');
+                    });
+                    
+                    filas.forEach(fila => {
+                        const id = fila.cells[0]?.textContent.trim() || '';
+                        const nombre = fila.cells[1]?.textContent.trim().toLowerCase() || '';
+                        const profesor = fila.cells[3]?.textContent.trim() || '';
+                        
+                        let mostrar = true;
+                        
+                        if (idFilter && !id.includes(idFilter)) mostrar = false;
+                        if (nombreFilter && !nombre.includes(nombreFilter)) mostrar = false;
+                        if (profesorFilter && profesor !== profesorFilter && profesor !== 'N/A') mostrar = false;
+                        
+                        fila.style.display = mostrar ? '' : 'none';
+                    });
+                    
+                    const filasVisibles = filas.filter(f => f.style.display !== 'none');
+                    let mensajeNoResultados = document.getElementById('alumnos-no-resultados');
+                    
+                    if (mensajeNoResultados) mensajeNoResultados.remove();
+                    
+                    if (filasVisibles.length === 0) {
+                        const noResultsRow = document.createElement('tr');
+                        noResultsRow.id = 'alumnos-no-resultados';
+                        noResultsRow.innerHTML = '<td colspan="6" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> No hay alumnos que coincidan con los filtros</td>';
+                        alumnosTbody.appendChild(noResultsRow);
+                    }
+                });
+            }
+            
+            if (alumnoResetBtn && alumnosTbody) {
+                alumnoResetBtn.addEventListener('click', function() {
+                    document.getElementById('alumno-id').value = '';
+                    document.getElementById('alumno-nombre').value = '';
+                    document.getElementById('alumno-profesor').value = '';
+                    
+                    const filas = Array.from(alumnosTbody.querySelectorAll('tr')).filter(fila => {
+                        const celdas = fila.querySelectorAll('td');
+                        return celdas.length > 0 && !celdas[0].hasAttribute('colspan');
+                    });
+                    
+                    filas.forEach(fila => fila.style.display = '');
+                    
+                    const mensajeNoResultados = document.getElementById('alumnos-no-resultados');
+                    if (mensajeNoResultados) mensajeNoResultados.remove();
+                });
+            }
+            
+            // Filtros para profesores
+            const profesorFilterBtn = document.getElementById('apply-profesor-filters');
+            const profesorResetBtn = document.getElementById('reset-profesor-filters');
+            const profesoresTbody = document.getElementById('profesores-tbody');
+            
+            if (profesorFilterBtn && profesoresTbody) {
+                profesorFilterBtn.addEventListener('click', function() {
+                    const idFilter = document.getElementById('profesor-id')?.value.toLowerCase() || '';
+                    const nombreFilter = document.getElementById('profesor-nombre')?.value.toLowerCase() || '';
+                    
+                    const filas = Array.from(profesoresTbody.querySelectorAll('tr')).filter(fila => {
+                        const celdas = fila.querySelectorAll('td');
+                        return celdas.length > 0 && !celdas[0].hasAttribute('colspan');
+                    });
+                    
+                    filas.forEach(fila => {
+                        const id = fila.cells[0]?.textContent.trim() || '';
+                        const nombre = fila.cells[1]?.textContent.trim().toLowerCase() || '';
+                        
+                        let mostrar = true;
+                        
+                        if (idFilter && !id.includes(idFilter)) mostrar = false;
+                        if (nombreFilter && !nombre.includes(nombreFilter)) mostrar = false;
+                        
+                        fila.style.display = mostrar ? '' : 'none';
+                    });
+                    
+                    const filasVisibles = filas.filter(f => f.style.display !== 'none');
+                    let mensajeNoResultados = document.getElementById('profesores-no-resultados');
+                    
+                    if (mensajeNoResultados) mensajeNoResultados.remove();
+                    
+                    if (filasVisibles.length === 0) {
+                        const noResultsRow = document.createElement('tr');
+                        noResultsRow.id = 'profesores-no-resultados';
+                        noResultsRow.innerHTML = '<td colspan="4" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> No hay profesores que coincidan con los filtros</td>';
+                        profesoresTbody.appendChild(noResultsRow);
+                    }
+                });
+            }
+            
+            if (profesorResetBtn && profesoresTbody) {
+                profesorResetBtn.addEventListener('click', function() {
+                    document.getElementById('profesor-id').value = '';
+                    document.getElementById('profesor-nombre').value = '';
+                    
+                    const filas = Array.from(profesoresTbody.querySelectorAll('tr')).filter(fila => {
+                        const celdas = fila.querySelectorAll('td');
+                        return celdas.length > 0 && !celdas[0].hasAttribute('colspan');
+                    });
+                    
+                    filas.forEach(fila => fila.style.display = '');
+                    
+                    const mensajeNoResultados = document.getElementById('profesores-no-resultados');
+                    if (mensajeNoResultados) mensajeNoResultados.remove();
+                });
+            }
+        }
+
+        // VARIABLES GLOBALES PARA ELIMINACIÓN
+        let deleteId = null;
+        let deleteType = null;
+
+        // ABRIR MODAL DE EDICIÓN
+        function openEditModal(id, nombre, edad, profesorId, type) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editIdDisplay').value = id;
+            document.getElementById('editNombre').value = nombre;
+            document.getElementById('editType').value = type;
+            
+            if (type === 'alumno') {
+                document.getElementById('editEdad').value = edad || 0;
+                document.getElementById('editProfesorId').value = profesorId || 1;
+                document.getElementById('editEdadGroup').style.display = 'block';
+                document.getElementById('editProfesorGroup').style.display = 'block';
+                document.getElementById('modalTitle').innerHTML = '✎ Editar Alumno - ID: ' + id;
+                document.getElementById('editForm').action = '/gestion/alumnos/editar';
+            } else {
+                document.getElementById('editEdadGroup').style.display = 'none';
+                document.getElementById('editProfesorGroup').style.display = 'none';
+                document.getElementById('modalTitle').innerHTML = '✎ Editar Profesor - ID: ' + id;
+                document.getElementById('editForm').action = '/gestion/profesores/editar';
+            }
+            
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        // CERRAR MODAL DE EDICIÓN
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+
+
+
+
+        
+        // CONFIRMAR ELIMINACIÓN
+        function confirmDelete(id, nombre, type) {
+            deleteId = id;
+            deleteType = type;
+            document.getElementById('confirmMessage').innerHTML = 
+                `¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">${nombre}</span>?<br><br>Esta acción no se puede deshacer.`;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        // EJECUTAR ELIMINACIÓN
+        function executeDelete() {
+            if (deleteType === 'alumno') {
+                window.location.href = '/gestion/alumnos/eliminar/' + deleteId;
+            } else {
+                window.location.href = '/gestion/profesores/eliminar/' + deleteId;
+            }
+        }
+
+        // CERRAR MODAL DE CONFIRMACIÓN
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+            deleteId = null;
+            deleteType = null;
+        }
+
+        // CERRAR MODALES CON TECLA ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeConfirmModal();
+            }
+        });
+
+        // CERRAR MODAL HACIENDO CLICK FUERA
+        document.addEventListener('click', function(e) {
+            const editModal = document.getElementById('editModal');
+            const confirmModal = document.getElementById('confirmModal');
+            
+            if (e.target === editModal) closeModal();
+            if (e.target === confirmModal) closeConfirmModal();
+        });
+
+        // INICIALIZACIÓN
+        document.addEventListener('DOMContentLoaded', function() {
+            createAnimatedBackground();
+            setupPanelSwitching();
+            setupFilters();
+        });
+    </script>
+</body>
+</html>
