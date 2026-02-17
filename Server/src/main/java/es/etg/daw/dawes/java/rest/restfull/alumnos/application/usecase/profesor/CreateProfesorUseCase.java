@@ -16,7 +16,7 @@ public class CreateProfesorUseCase {
 
         Profesor profesor = Profesor.builder()
                 .nombre(comando.nombre())
-                .createdAt(LocalDateTime.now())
+                .juego(comando.juego())
                 .build();
 
         // IMPORTANTE: Devolver el resultado del save (con ID generado)

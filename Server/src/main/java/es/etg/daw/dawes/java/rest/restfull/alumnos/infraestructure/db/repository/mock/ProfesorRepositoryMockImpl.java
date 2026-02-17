@@ -21,7 +21,7 @@ public class ProfesorRepositoryMockImpl implements ProfesorRepository {
     public Profesor save(Profesor t) {
         // create
         if (t.getId() == null)
-            System.out.println("BOOOOOOOOOOOOOOOOOOOOOOOMBA LA CUOCA EL ID ES NULO PUTO");
+            System.out.println(" esto es un test de validacion");
         t.setId(new ProfesorId(obtenerSiguienteId()));
 
         profesores.put(t.getId(), t);

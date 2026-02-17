@@ -9,9 +9,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(fluent = true)
 public class EditProfesorCommand {
-    
+
     private final ProfesorId id;
     private final String nombre;
+    private final String juego;
 }
-
-

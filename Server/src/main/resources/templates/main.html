@@ -161,10 +161,27 @@ nav {
 .hero {
     padding: 80px 30px;
     text-align: center;
-    background: radial-gradient(circle at center, rgba(42, 117, 187, 0.1) 0%, transparent 70%);
     position: relative;
     overflow: hidden;
+
+    background-image: url("https://media.discordapp.net/attachments/471316767914983427/1472297436742680801/1.png?ex=69920f56&is=6990bdd6&hm=078f77460ca018f0776d9c130542e813eccff044703ea752acb372e75b3633a4&=&format=webp&quality=lossless&width=1872&height=624");
+    background-size: cover;        /* que cubra todo */
+    background-position: center;   /* centrada */
+    background-repeat: no-repeat;  /* sin repetir */
 }
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 20, 41, 0.65); /* oscurece */
+    z-index: 0;
+}
+
+.hero * {
+    position: relative;
+    z-index: 1;
+}
+
 
 .hero h1 {
     font-size: 3.5rem;
@@ -835,16 +852,29 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <div class="nav-links">
             <a href="#" class="active">Inicio</a>
-            <a href="#">Cursos</a>
-            <a href="FGA_CONTROLLER_DISIGNER.htmL">Diseña tu Fight Stick</a>
-            <a href="#">Comunidad</a>
-            <a href="#">Contacto</a>
+            <a href="/arcade">Diseña tu Fight Stick</a>
+            <a href="#">Mas informacion</a>
+            <a href="/gestion"><span style="background-color: #3a69d6 ; border-radius: 5px; height: 300px; width: 20%; color: #fff;"> Iniciar sesion </span></a>
+            <a >|</a>
+            <a href=""><span style="background-color: #000d2a ; border-radius: 5px; height:300px; width: 20%; color: #fff;"> Solicita acceso </span></a>
+           
         </div>
     </nav>
-    
+     <a href="?lang=es" class="lang-flag" 
+       th:classappend="${lang == 'es' ? 'active' : ''}"
+       title="Español">🇪🇸</a>
+    <a href="?lang=en" class="lang-flag"
+       th:classappend="${lang == 'en' ? 'active' : ''}"
+       title="English">🇬🇧</a>
+    <a href="?lang=ja" class="lang-flag"
+       th:classappend="${lang == 'ja' ? 'active' : ''}"
+       title="日本語">🇯🇵</a>
+    <a href="?lang=ko" class="lang-flag"
+       th:classappend="${lang == 'ko' ? 'active' : ''}"
+       title="한국어">🇰🇷</a>
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Domina el Arte de los Juegos de Lucha</h1>
+        <h1>APRENDE, COMPITE, DOMINA</h1>
         <p>Únete a la academia líder en formación de jugadores competitivos. Aprende de los mejores, mejora tus habilidades y compite en torneos internacionales.</p>
         <div class="hero-buttons">
             <a href="#join" class="btn btn-primary">

@@ -12,12 +12,12 @@ public class ProfesorFactory {
     public static final Map<ProfesorId, Profesor> getDemoData() {
         Map<ProfesorId, Profesor> datos = new LinkedHashMap<>();
 
-        datos.put(new ProfesorId(1), new Profesor(new ProfesorId(1), "Profesor 1", LocalDateTime.now()));
-        datos.put(new ProfesorId(2), new Profesor(new ProfesorId(2), "Profesor 2", LocalDateTime.now()));
+        datos.put(new ProfesorId(1), new Profesor(new ProfesorId(1), "Profesor 1", "granblue"));
+        datos.put(new ProfesorId(2), new Profesor(new ProfesorId(2), "Profesor 2", "granblue"));
         return datos;
     }
 
     public static Profesor create() {
-        return new Profesor(null, "Nuevo profesor", LocalDateTime.now());
+        return new Profesor(null, "Nuevo profesor", "granblue");
     }
 }

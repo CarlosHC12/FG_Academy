@@ -13,14 +13,12 @@ import es.etg.daw.dawes.java.rest.restfull.alumnos.infraestructure.web.dto.Profe
 
 public class ProfesorMapper {
 
-    // ---------- Entity ----------
     public static ProfesorEntity toEntity(Profesor p) {
         ProfesorEntity entity = ProfesorEntity.builder()
                 .nombre(p.getNombre())
-                .createdAt(p.getCreatedAt())
+                .juego(p.getJuego())
                 .build();
 
-        // 🔥 ¡ASIGNAR ID SI EXISTE! (para UPDATE)
         if (p.getId() != null) {
             entity.setId(p.getId().getValue());
         }
@@ -28,16 +26,14 @@ public class ProfesorMapper {
         return entity;
     }
 
-    // ---------- Commands ----------
     public static CreateProfesorCommand toCommand(ProfesorRequest req) {
-        return new CreateProfesorCommand(req.nombre());
+        return new CreateProfesorCommand(req.nombre(), req.juego());
     }
 
     public static EditProfesorCommand toCommand(int id, ProfesorRequest req) {
-        return new EditProfesorCommand(new ProfesorId(id), req.nombre());
+        return new EditProfesorCommand(new ProfesorId(id), req.nombre(), req.juego());
     }
 
-    // ---------- Response ----------
     public static ProfesorResponse toResponse(Profesor p) {
         if (p.getId() == null) {
             throw new IllegalStateException("El ID del profesor no puede ser nulo");
@@ -45,10 +41,9 @@ public class ProfesorMapper {
         return new ProfesorResponse(
                 p.getId().getValue(),
                 p.getNombre(),
-                null);
+                p.getJuego());
     }
 
-    // ---------- Domain ----------
     public static Profesor toDomain(ProfesorEntity p) {
         if (p.getId() == null) {
             throw new IllegalStateException("El ID de la entidad no puede ser nulo");
@@ -56,6 +51,7 @@ public class ProfesorMapper {
         return Profesor.builder()
                 .id(new ProfesorId(p.getId()))
                 .nombre(p.getNombre())
+                .juego(p.getJuego())
                 .build();
     }
 

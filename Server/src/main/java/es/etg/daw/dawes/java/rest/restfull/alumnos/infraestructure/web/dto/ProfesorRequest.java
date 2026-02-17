@@ -4,9 +4,10 @@ import es.etg.daw.dawes.java.rest.restfull.alumnos.domain.model.Profesor;
 import jakarta.validation.constraints.NotBlank;
 
 public record ProfesorRequest(
-        @NotBlank(message = "{profesor.valid.nombre.no_vacio}") String nombre) {
+        @NotBlank(message = "{profesor.valid.nombre.no_vacio}") String nombre,
+        @NotBlank(message = "{profesor.valid.juego.no_vacio}") String juego) {
 
     public ProfesorRequest(Profesor p) {
-        this(p.getNombre());
+        this(p.getNombre(), p.getJuego());
     }
 }

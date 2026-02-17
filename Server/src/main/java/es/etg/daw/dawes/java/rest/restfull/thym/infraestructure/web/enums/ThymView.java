@@ -1,9 +1,9 @@
 package es.etg.daw.dawes.java.rest.restfull.thym.infraestructure.web.enums;
 
 public enum ThymView {
-    
+
     MAIN("main"),
-    ALUMNOS_PRUEBA("alumnos/prueba");
+    REPORTES_LISTADOS("pfd/listados");
 
     private final String path;
 

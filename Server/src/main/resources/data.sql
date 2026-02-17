@@ -1,9 +1,10 @@
-INSERT INTO PROFESORES (nombre) VALUES 
-('MarioelpoF14'),
-('EricLAND06'),
-('CarsMCG12'),
-('MaximiliamDOOD'),
-('JUsting wong');       
+INSERT INTO PROFESORES (nombre, juego) VALUES 
+('MarioElpof14', 'Street Fighter 6'),
+('CarsMCG12', 'Tekken 8'),
+('Ericland06', 'Street Fighter 6'),
+('Maximiliamdood', 'Guilty Gear -Strive-'),
+('justing wong', 'Mortal Kombat 1');
+ 
 
 INSERT INTO ALUMNOS (nombre, edad, fecha_creacion, profesor_id) VALUES 
 ('Alejandro Pérez', 22, NOW(), 1),

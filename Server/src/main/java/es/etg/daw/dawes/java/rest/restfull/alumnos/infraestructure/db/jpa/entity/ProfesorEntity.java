@@ -32,8 +32,8 @@ public class ProfesorEntity {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "juego", nullable = false, length = 180)
+    private String juego;
 
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

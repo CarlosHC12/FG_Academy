@@ -9,4 +9,5 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class CreateProfesorCommand {
     private final String nombre;
+    private final String juego;
 }

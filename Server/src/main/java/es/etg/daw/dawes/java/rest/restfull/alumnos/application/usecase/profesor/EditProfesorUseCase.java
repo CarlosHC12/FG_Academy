@@ -14,6 +14,7 @@ public class EditProfesorUseCase {
         return profesorRepository.getById(command.id())
                 .map(p -> {
                     p.setNombre(command.nombre());
+                    p.setJuego(command.juego());
                     return profesorRepository.save(p);
                 })
                 .orElseThrow(() -> new ProfesorNotFoundException(command.id().getValue()));

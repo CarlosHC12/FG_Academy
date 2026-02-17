@@ -12,5 +12,5 @@ import lombok.Data;
 public class Profesor {
     private ProfesorId id;
     private String nombre;
-    private LocalDateTime createdAt;
+    private String juego;
 }
