@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FG Academy - Gestión Alumnos/Profesores</title>
+    <title th:text="#{app.titulo}">FG Academy - Gestión Alumnos/Profesores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link th:href="@{/css/gestion.css}" rel="stylesheet">
 </head>
@@ -135,6 +135,27 @@ nav {
 .nav-links a:hover,
 .nav-links a.active {
     color: var(--accent-light);
+}
+
+.lang-flags {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 30px;
+}
+
+.lang-flag {
+    font-size: 1.5rem;
+    text-decoration: none;
+    opacity: 0.6;
+    transition: all 0.3s;
+}
+
+.lang-flag:hover,
+.lang-flag.active {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 /* Header */
@@ -666,7 +687,11 @@ function setupFilters() {
             if (filasVisibles.length === 0) {
                 const noResultsRow = document.createElement('tr');
                 noResultsRow.id = 'alumnos-no-resultados';
-                noResultsRow.innerHTML = '<td colspan="6" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> No hay alumnos que coincidan con los filtros</td>';
+                noResultsRow.innerHTML = '<td colspan="6" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> ' + 
+                    (document.documentElement.lang === 'es' ? 'No hay alumnos que coincidan con los filtros' : 
+                     document.documentElement.lang === 'en' ? 'No students match the filters' :
+                     document.documentElement.lang === 'ja' ? 'フィルターに一致する生徒はいません' :
+                     '필터와 일치하는 학생이 없습니다') + '</td>';
                 alumnosTbody.appendChild(noResultsRow);
             }
         });
@@ -728,7 +753,11 @@ function setupFilters() {
             if (filasVisibles.length === 0) {
                 const noResultsRow = document.createElement('tr');
                 noResultsRow.id = 'profesores-no-resultados';
-                noResultsRow.innerHTML = '<td colspan="4" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> No hay profesores que coincidan con los filtros</td>';
+                noResultsRow.innerHTML = '<td colspan="4" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> ' + 
+                    (document.documentElement.lang === 'es' ? 'No hay profesores que coincidan con los filtros' : 
+                     document.documentElement.lang === 'en' ? 'No teachers match the filters' :
+                     document.documentElement.lang === 'ja' ? 'フィルターに一致する講師はいません' :
+                     '필터와 일치하는 강사가 없습니다') + '</td>';
                 profesoresTbody.appendChild(noResultsRow);
             }
         });
@@ -787,7 +816,11 @@ function eliminarAlumno(btn) {
     const nombre = btn.getAttribute('data-nombre');
     
     document.getElementById('confirm-mensaje').innerHTML = 
-        '¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">' + nombre + '</span>?';
+        (document.documentElement.lang === 'es' ? '¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">' + nombre + '</span>?' : 
+         document.documentElement.lang === 'en' ? 'Are you sure you want to delete <span class="confirm-highlight">' + nombre + '</span>?' :
+         document.documentElement.lang === 'ja' ? '<span class="confirm-highlight">' + nombre + '</span> を削除してもよろしいですか？' :
+         '<span class="confirm-highlight">' + nombre + '</span>님을 삭제하시겠습니까?');
+    
     document.getElementById('confirm-eliminar-link').href = '/eliminar/alumno/' + deleteId;
     document.getElementById('modal-confirmar').classList.add('active');
 }
@@ -820,7 +853,11 @@ function eliminarProfesor(btn) {
     const nombre = btn.getAttribute('data-nombre');
     
     document.getElementById('confirm-mensaje').innerHTML = 
-        '¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">' + nombre + '</span>?';
+        (document.documentElement.lang === 'es' ? '¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">' + nombre + '</span>?' : 
+         document.documentElement.lang === 'en' ? 'Are you sure you want to delete <span class="confirm-highlight">' + nombre + '</span>?' :
+         document.documentElement.lang === 'ja' ? '<span class="confirm-highlight">' + nombre + '</span> を削除してもよろしいですか？' :
+         '<span class="confirm-highlight">' + nombre + '</span>님을 삭제하시겠습니까?');
+    
     document.getElementById('confirm-eliminar-link').href = '/eliminar/profesor/' + deleteId;
     document.getElementById('modal-confirmar').classList.add('active');
 }
@@ -869,56 +906,52 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="logo-text">FG Academy</div>
         </div>
         <div class="nav-links">
-            <a href="/">Inicio</a>
-            <a href="/gestion" class="active">Gestión</a>
-            <a href="#" class="active">Guias</a>
+            <a href="/" th:text="#{nav.inicio}">Inicio</a>
+            <a href="/gestion" class="active" th:text="#{nav.gestion}">Gestión</a>
+            <a href="#" class="active" th:text="#{nav.guias}">Guias</a>
         </div>
     </nav>
-     <a href="?lang=es" class="lang-flag" 
-       th:classappend="${lang == 'es' ? 'active' : ''}"
-       title="Español">🇪🇸</a>
-    <a href="?lang=en" class="lang-flag"
-       th:classappend="${lang == 'en' ? 'active' : ''}"
-       title="English">🇬🇧</a>
-    <a href="?lang=ja" class="lang-flag"
-       th:classappend="${lang == 'ja' ? 'active' : ''}"
-       title="日本語">🇯🇵</a>
-    <a href="?lang=ko" class="lang-flag"
-       th:classappend="${lang == 'ko' ? 'active' : ''}"
-       title="한국어">🇰🇷</a>
+    
+    <div class="lang-flags">
+        <a href="?lang=es" class="lang-flag" th:classappend="${lang == 'es' ? 'active' : ''}" title="Español">🇪🇸</a>
+        <a href="?lang=en" class="lang-flag" th:classappend="${lang == 'en' ? 'active' : ''}" title="English">🇬🇧</a>
+        <a href="?lang=ja" class="lang-flag" th:classappend="${lang == 'ja' ? 'active' : ''}" title="日本語">🇯🇵</a>
+        <a href="?lang=ko" class="lang-flag" th:classappend="${lang == 'ko' ? 'active' : ''}" title="한국어">🇰🇷</a>
+    </div>
+    
     <section class="header">
-        <h1>Gestión de Alumnos y Profesores</h1>
-        <p>Selecciona una opción para ver y gestionar los datos. Utiliza los filtros para búsquedas específicas.</p>
+        <h1 th:text="#{gestion.titulo}">Gestión de Alumnos y Profesores</h1>
+        <p th:text="#{gestion.subtitulo}">Selecciona una opción para ver y gestionar los datos. Utiliza los filtros para búsquedas específicas.</p>
     </section>
     
     <!-- Panel de selección -->
     <div class="selection-panel">
         <div class="selection-card active" id="alumnos-card">
             <div class="selection-icon"><i class="fas fa-user-graduate"></i></div>
-            <h2>Alumnos</h2>
+            <h2 th:text="#{gestion.alumnos}">Alumnos</h2>
             <div class="stats">
                 <div class="stat-item">
                     <div class="stat-value" th:text="${totalAlumnos}">0</div>
-                    <div class="stat-label">Alumnos</div>
+                    <div class="stat-label" th:text="#{gestion.alumnos}">Alumnos</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" th:text="${totalProfesores}">0</div>
-                    <div class="stat-label">Profesores</div>
+                    <div class="stat-label" th:text="#{gestion.profesores}">Profesores</div>
                 </div>
             </div>
         </div>
         
         <div class="selection-card" id="profesores-card">
             <div class="selection-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-            <h2>Profesores</h2>
+            <h2 th:text="#{gestion.profesores}">Profesores</h2>
             <div class="stats">
                 <div class="stat-item">
                     <div class="stat-value" th:text="${totalProfesores}">0</div>
-                    <div class="stat-label">Profesores</div>
+                    <div class="stat-label" th:text="#{gestion.profesores}">Profesores</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" th:text="${totalAlumnos}">0</div>
-                    <div class="stat-label">Alumnos</div>
+                    <div class="stat-label" th:text="#{gestion.alumnos}">Alumnos</div>
                 </div>
             </div>
         </div>
@@ -928,41 +961,41 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- PANEL DE ALUMNOS -->
         <section class="listing-panel active" id="alumnos-panel">
             <div class="panel-header">
-                <h2 class="panel-title"><i class="fas fa-user-graduate"></i> Listado de Alumnos</h2>
+                <h2 class="panel-title"><i class="fas fa-user-graduate"></i> <span th:text="#{gestion.alumnos}">Listado de Alumnos</span></h2>
                 <div class="stats-badge">
-                    <i class="fas fa-users"></i> Total: <span th:text="${totalAlumnos}">0</span>
+                    <i class="fas fa-users"></i> <span th:text="#{gestion.total.alumnos}">Total</span>: <span th:text="${totalAlumnos}">0</span>
                 </div>
             </div>
             
             <!-- FILTROS PARA ALUMNOS -->
             <div class="filters-container">
                 <div class="filters-header">
-                    <h3 class="filters-title"><i class="fas fa-filter"></i> Filtrar Alumnos</h3>
+                    <h3 class="filters-title"><i class="fas fa-filter"></i> <span th:text="#{gestion.filtros.aplicar}">Filtrar Alumnos</span></h3>
                     <div class="filter-buttons">
                         <button class="filter-btn apply" id="apply-alumno-filters">
-                            <i class="fas fa-search"></i> Aplicar Filtros
+                            <i class="fas fa-search"></i> <span th:text="#{gestion.filtros.aplicar}">Aplicar Filtros</span>
                         </button>
                         <button class="filter-btn reset" id="reset-alumno-filters">
-                            <i class="fas fa-redo"></i> Limpiar Filtros
+                            <i class="fas fa-redo"></i> <span th:text="#{gestion.filtros.limpiar}">Limpiar Filtros</span>
                         </button>
                     </div>
                 </div>
                 
                 <div class="filter-grid">
                     <div class="filter-group">
-                        <label for="alumno-id"><i class="fas fa-hashtag"></i> ID del Alumno</label>
-                        <input type="text" id="alumno-id" class="filter-input" placeholder="Ej: 1, 2, 3...">
+                        <label for="alumno-id"><i class="fas fa-hashtag"></i> <span th:text="#{gestion.filtros.id}">ID del Alumno</span></label>
+                        <input type="text" id="alumno-id" class="filter-input" th:placeholder="#{gestion.filtros.id}" placeholder="Ej: 1, 2, 3...">
                     </div>
                     
                     <div class="filter-group">
-                        <label for="alumno-nombre"><i class="fas fa-user"></i> Nombre</label>
-                        <input type="text" id="alumno-nombre" class="filter-input" placeholder="Buscar por nombre...">
+                        <label for="alumno-nombre"><i class="fas fa-user"></i> <span th:text="#{gestion.filtros.nombre}">Nombre</span></label>
+                        <input type="text" id="alumno-nombre" class="filter-input" th:placeholder="#{gestion.filtros.nombre}" placeholder="Buscar por nombre...">
                     </div>
                     
                     <div class="filter-group">
-                        <label for="alumno-profesor"><i class="fas fa-chalkboard-teacher"></i> Profesor Asignado</label>
+                        <label for="alumno-profesor"><i class="fas fa-chalkboard-teacher"></i> <span th:text="#{gestion.filtros.profesor}">Profesor Asignado</span></label>
                         <select id="alumno-profesor" class="filter-select">
-                            <option value="">Todos los profesores</option>
+                            <option value="" th:text="#{gestion.filtros.todos.profesores}">Todos los profesores</option>
                             <option th:each="profesor : ${profesores}" th:value="${profesor.id.value}" th:text="${profesor.nombre}">Profesor</option>
                         </select>
                     </div>
@@ -973,11 +1006,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Edad</th>
-                            <th>Profesor</th>
-                            <th>Fecha Registro</th>
+                            <th th:text="#{gestion.tabla.id}">ID</th>
+                            <th th:text="#{gestion.tabla.nombre}">Nombre</th>
+                            <th th:text="#{gestion.tabla.edad}">Edad</th>
+                            <th th:text="#{gestion.tabla.profesor}">Profesor</th>
+                            <th th:text="#{gestion.tabla.fecha}">Fecha Registro</th>
                         </tr>
                     </thead>
                     <tbody id="alumnos-tbody">
@@ -987,11 +1020,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             <td th:text="${alumno.edad}">22</td>
                             <td><span class="badge professor" th:text="${alumno.profesorId?.value} ?: 'N/A'">1</span></td>
                             <td th:text="${#temporals.format(alumno.createdAt, 'dd/MM/yyyy')}">01/01/2024</td>
-                            </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(alumnos)}">
-                            <td colspan="6" style="text-align:center; padding:30px;">
-                                <i class="fas fa-info-circle"></i> No hay alumnos registrados
+                            <td colspan="5" style="text-align:center; padding:30px;">
+                                <i class="fas fa-info-circle"></i> <span th:text="#{gestion.no.alumnos}">No hay alumnos registrados</span>
                             </td>
                         </tr>
                     </tbody>
@@ -1002,61 +1034,45 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- PANEL DE PROFESORES -->
         <section class="listing-panel" id="profesores-panel">
             <div class="panel-header">
-                <h2 class="panel-title"><i class="fas fa-chalkboard-teacher"></i> Listado de Profesores</h2>
+                <h2 class="panel-title"><i class="fas fa-chalkboard-teacher"></i> <span th:text="#{gestion.profesores}">Listado de Profesores</span></h2>
                 <div class="stats-badge">
-                    <i class="fas fa-users"></i> Total: <span th:text="${totalProfesores}">0</span>
+                    <i class="fas fa-users"></i> <span th:text="#{gestion.total.profesores}">Total</span>: <span th:text="${totalProfesores}">0</span>
                 </div>
             </div>
             
             <!-- FILTROS PARA PROFESORES -->
             <div class="filters-container">
                 <div class="filters-header">
-                    <h3 class="filters-title"><i class="fas fa-filter"></i> Filtrar Profesores</h3>
+                    <h3 class="filters-title"><i class="fas fa-filter"></i> <span th:text="#{gestion.filtros.aplicar}">Filtrar Profesores</span></h3>
                     <div class="filter-buttons">
                         <button class="filter-btn apply" id="apply-profesor-filters">
-                            <i class="fas fa-search"></i> Aplicar Filtros
+                            <i class="fas fa-search"></i> <span th:text="#{gestion.filtros.aplicar}">Aplicar Filtros</span>
                         </button>
                         <button class="filter-btn reset" id="reset-profesor-filters">
-                            <i class="fas fa-redo"></i> Limpiar Filtros
+                            <i class="fas fa-redo"></i> <span th:text="#{gestion.filtros.limpiar}">Limpiar Filtros</span>
                         </button>
                     </div>
                 </div>
                 
                 <div class="filter-grid">
                     <div class="filter-group">
-                        <label for="profesor-id"><i class="fas fa-hashtag"></i> ID del Profesor</label>
-                        <input type="text" id="profesor-id" class="filter-input" placeholder="Ej: 1, 2, 3...">
+                        <label for="profesor-id"><i class="fas fa-hashtag"></i> <span th:text="#{gestion.filtros.id}">ID del Profesor</span></label>
+                        <input type="text" id="profesor-id" class="filter-input" th:placeholder="#{gestion.filtros.id}" placeholder="Ej: 1, 2, 3...">
                     </div>
                     
                     <div class="filter-group">
-                        <label for="profesor-nombre"><i class="fas fa-user"></i> Nombre</label>
-                        <input type="text" id="profesor-nombre" class="filter-input" placeholder="Buscar por nombre...">
+                        <label for="profesor-nombre"><i class="fas fa-user"></i> <span th:text="#{gestion.filtros.nombre}">Nombre</span></label>
+                        <input type="text" id="profesor-nombre" class="filter-input" th:placeholder="#{gestion.filtros.nombre}" placeholder="Buscar por nombre...">
                     </div>
                     
                     <div class="filter-group">
-                        <label for="profesor-juego"><i class="fas fa-gamepad"></i> Juego</label>
+                        <label for="profesor-juego"><i class="fas fa-gamepad"></i> <span th:text="#{gestion.filtros.juego}">Juego</span></label>
                         <select id="profesor-juego" class="filter-select">
-                            <option value="">Todos los juegos</option>
+                            <option value="" th:text="#{gestion.filtros.todos.juegos}">Todos los juegos</option>
                             <option value="Guilty Gear -Strive-">Guilty Gear -Strive-</option>
                             <option value="Granblue Fantasy Versus Rising">Granblue Fantasy Versus Rising</option>
-                            <option value="Blazblue Centralfiction">Blazblue Centralfiction</option>
                             <option value="Tekken 8">Tekken 8</option>
                             <option value="Street Fighter 6">Street Fighter 6</option>
-                            <option value="Mortal Kombat 1">Mortal Kombat 1</option>
-                            <option value="2XKO">2XKO</option>
-                            <option value="Marvel Tokon Fighting souls">Marvel Tokon Fighting souls</option>
-                            <option value="Blazblue Cross tag battle">Blazblue Cross tag battle</option>
-                            <option value="Virtua Fighter 5 Revo">Virtua Fighter 5 Revo</option>
-                            <option value="Fatal Fury: City of the Wolves">Fatal Fury: City of the Wolves</option>
-                            <option value="King of Fighters XVI">King of Fighters XVI</option>
-                            <option value="Chaos Code New Sign of Catastrophe">Chaos Code New Sign of Catastrophe</option>
-                            <option value="Chaos Code Nemesis Experiment">Chaos Code Nemesis Experiment</option>
-                            <option value="Guilty Gear Xrd REV2">Guilty Gear Xrd REV2</option>
-                            <option value="DNF Duel">DNF Duel</option>
-                            <option value="Ultimate Marvel vs Capcom 3">Ultimate Marvel vs Capcom 3</option>
-                            <option value="Invincible vs">Invincible vs</option>
-                            <option value="Vampire Savior">Vampire Savior</option>
-                            <option value="Under Night In-Birth 2 Sys:Celes">Under Night In-Birth 2 Sys:Celes</option>
                         </select>
                     </div>
                 </div>
@@ -1066,10 +1082,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Juego</th>
-                           
+                            <th th:text="#{gestion.tabla.id}">ID</th>
+                            <th th:text="#{gestion.tabla.nombre}">Nombre</th>
+                            <th th:text="#{gestion.tabla.juego}">Juego</th>
                         </tr>
                     </thead>
                     <tbody id="profesores-tbody">
@@ -1077,11 +1092,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             <td><span class="badge id" th:text="${profesor.id.value}">1</span></td>
                             <td th:text="${profesor.nombre}">Carlos Rodríguez</td>
                             <td th:text="${profesor.juego}">Street Fighter 6</td>
-                            </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(profesores)}">
-                            <td colspan="4" style="text-align:center; padding:30px;">
-                                <i class="fas fa-info-circle"></i> No hay profesores registrados
+                            <td colspan="3" style="text-align:center; padding:30px;">
+                                <i class="fas fa-info-circle"></i> <span th:text="#{gestion.no.profesores}">No hay profesores registrados</span>
                             </td>
                         </tr>
                     </tbody>
@@ -1090,11 +1104,10 @@ document.addEventListener('DOMContentLoaded', function() {
         </section>
     </div>
 
-
     <footer>
         <div class="footer-content">
             <div class="copyright">
-                <p>FG Academy - Sistema de Gestión &copy; 2024 | Datos en tiempo real</p>
+                <p th:text="#{footer.copyright}">FG Academy - Sistema de Gestión &copy; 2024 | Datos en tiempo real</p>
             </div>
         </div>
     </footer>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FG Academy - Gestión Alumnos/Profesores</title>
+    <title th:text="#{app.titulo}">FG Academy - Gestión Alumnos/Profesores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link th:href="@{/css/gestion.css}" rel="stylesheet">
 </head>
@@ -23,7 +23,7 @@
     --info-color: #3b82f6;
     --success-color: #10b981;
     --add-color: #22c55e;
-    --download-color: #8b5cf6; /* Color morado para descargar */
+    --download-color: #8b5cf6;
 }
 
 * {
@@ -137,6 +137,28 @@ nav {
 .nav-links a:hover,
 .nav-links a.active {
     color: var(--accent-yellow);
+}
+
+.lang-flags {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    position: absolute;
+    right: 30px;
+    top: 80px;
+}
+
+.lang-flag {
+    font-size: 1.5rem;
+    text-decoration: none;
+    opacity: 0.6;
+    transition: all 0.3s;
+}
+
+.lang-flag:hover,
+.lang-flag.active {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 /* Header */
@@ -303,7 +325,6 @@ nav {
     gap: 8px;
 }
 
-/* NUEVO: Contenedor de botones de acción (Añadir + Descargar) */
 .action-buttons-container {
     display: flex;
     justify-content: flex-end;
@@ -312,7 +333,6 @@ nav {
     flex-wrap: wrap;
 }
 
-/* Botón de añadir */
 .btn-add {
     background: linear-gradient(135deg, var(--add-color), #15803d);
     color: white;
@@ -330,7 +350,6 @@ nav {
     box-shadow: 0 3px 10px rgba(34, 197, 94, 0.3);
 }
 
-/* NUEVO: Botón de descargar */
 .btn-download {
     background: linear-gradient(135deg, var(--download-color), #6d28d9);
     color: white;
@@ -775,6 +794,11 @@ footer {
         width: 100%;
         justify-content: center;
     }
+    .lang-flags {
+        position: static;
+        justify-content: center;
+        margin-top: 10px;
+    }
 }
 </style>
 <script>
@@ -868,7 +892,11 @@ function setupFilters() {
             if (filasVisibles.length === 0) {
                 const noResultsRow = document.createElement('tr');
                 noResultsRow.id = 'alumnos-no-resultados';
-                noResultsRow.innerHTML = '<td colspan="6" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> No hay alumnos que coincidan con los filtros</td>';
+                noResultsRow.innerHTML = '<td colspan="6" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> ' + 
+                    (document.documentElement.lang === 'es' ? 'No hay alumnos que coincidan con los filtros' : 
+                     document.documentElement.lang === 'en' ? 'No students match the filters' :
+                     document.documentElement.lang === 'ja' ? 'フィルターに一致する生徒はいません' :
+                     '필터와 일치하는 학생이 없습니다') + '</td>';
                 alumnosTbody.appendChild(noResultsRow);
             }
         });
@@ -930,7 +958,11 @@ function setupFilters() {
             if (filasVisibles.length === 0) {
                 const noResultsRow = document.createElement('tr');
                 noResultsRow.id = 'profesores-no-resultados';
-                noResultsRow.innerHTML = '<td colspan="4" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> No hay profesores que coincidan con los filtros</td>';
+                noResultsRow.innerHTML = '<td colspan="4" style="text-align:center; padding:30px;"><i class="fas fa-info-circle"></i> ' + 
+                    (document.documentElement.lang === 'es' ? 'No hay profesores que coincidan con los filtros' : 
+                     document.documentElement.lang === 'en' ? 'No teachers match the filters' :
+                     document.documentElement.lang === 'ja' ? 'フィルターに一致する講師はいません' :
+                     '필터와 일치하는 강사가 없습니다') + '</td>';
                 profesoresTbody.appendChild(noResultsRow);
             }
         });
@@ -989,7 +1021,12 @@ function eliminarAlumno(btn) {
     const nombre = btn.getAttribute('data-nombre');
     
     document.getElementById('confirm-mensaje').innerHTML = 
-        '¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">' + nombre + '</span>?';
+        (document.documentElement.lang === 'es' ? '¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">' : 
+         document.documentElement.lang === 'en' ? 'Are you sure you want to delete <span class="confirm-highlight">' :
+         document.documentElement.lang === 'ja' ? '<span class="confirm-highlight">' + nombre + '</span> を削除してもよろしいですか？' :
+         '<span class="confirm-highlight">' + nombre + '</span>님을 삭제하시겠습니까?') + 
+        (document.documentElement.lang !== 'ja' && document.documentElement.lang !== 'ko' ? nombre + '</span>?' : '');
+    
     document.getElementById('confirm-eliminar-link').href = '/eliminar/alumno/' + deleteId;
     document.getElementById('modal-confirmar').classList.add('active');
 }
@@ -1022,7 +1059,12 @@ function eliminarProfesor(btn) {
     const nombre = btn.getAttribute('data-nombre');
     
     document.getElementById('confirm-mensaje').innerHTML = 
-        '¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">' + nombre + '</span>?';
+        (document.documentElement.lang === 'es' ? '¿Estás seguro de que quieres eliminar a <span class="confirm-highlight">' : 
+         document.documentElement.lang === 'en' ? 'Are you sure you want to delete <span class="confirm-highlight">' :
+         document.documentElement.lang === 'ja' ? '<span class="confirm-highlight">' + nombre + '</span> を削除してもよろしいですか？' :
+         '<span class="confirm-highlight">' + nombre + '</span>님을 삭제하시겠습니까?') + 
+        (document.documentElement.lang !== 'ja' && document.documentElement.lang !== 'ko' ? nombre + '</span>?' : '');
+    
     document.getElementById('confirm-eliminar-link').href = '/eliminar/profesor/' + deleteId;
     document.getElementById('modal-confirmar').classList.add('active');
 }
@@ -1072,58 +1114,52 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         
         <div class="nav-links">
-            <a href="/">Inicio</a>
-            <a href="/gestion" class="active">Gestión</a>
+            <a href="/" th:text="#{nav.inicio}">Inicio</a>
+            <a href="/gestion" class="active" th:text="#{nav.gestion}">Gestión</a>
         </div>
         
     </nav>
-     <a href="?lang=es" class="lang-flag" 
-       th:classappend="${lang == 'es' ? 'active' : ''}"
-       title="Español">🇪🇸</a>
-    <a href="?lang=en" class="lang-flag"
-       th:classappend="${lang == 'en' ? 'active' : ''}"
-       title="English">🇬🇧</a>
-    <a href="?lang=ja" class="lang-flag"
-       th:classappend="${lang == 'ja' ? 'active' : ''}"
-       title="日本語">🇯🇵</a>
-    <a href="?lang=ko" class="lang-flag"
-       th:classappend="${lang == 'ko' ? 'active' : ''}"
-       title="한국어">🇰🇷</a>
     
+    <div class="lang-flags">
+        <a href="?lang=es" class="lang-flag" th:classappend="${lang == 'es' ? 'active' : ''}" title="Español">🇪🇸</a>
+        <a href="?lang=en" class="lang-flag" th:classappend="${lang == 'en' ? 'active' : ''}" title="English">🇬🇧</a>
+        <a href="?lang=ja" class="lang-flag" th:classappend="${lang == 'ja' ? 'active' : ''}" title="日本語">🇯🇵</a>
+        <a href="?lang=ko" class="lang-flag" th:classappend="${lang == 'ko' ? 'active' : ''}" title="한국어">🇰🇷</a>
+    </div>
     
     <section class="header">
-        <h1>Panel de administracion</h1>
-        <p>Selecciona una opción para ver y administrar los datos. Utiliza los filtros para búsquedas específicas.</p>
+        <h1 th:text="#{gestion.titulo}">Panel de administracion</h1>
+        <p th:text="#{gestion.subtitulo}">Selecciona una opción para ver y administrar los datos. Utiliza los filtros para búsquedas específicas.</p>
     </section>
     
     <!-- Panel de selección -->
     <div class="selection-panel">
         <div class="selection-card active" id="alumnos-card">
             <div class="selection-icon"><i class="fas fa-user-graduate"></i></div>
-            <h2>Alumnos</h2>
+            <h2 th:text="#{gestion.alumnos}">Alumnos</h2>
             <div class="stats">
                 <div class="stat-item">
                     <div class="stat-value" th:text="${totalAlumnos}">0</div>
-                    <div class="stat-label">Alumnos</div>
+                    <div class="stat-label" th:text="#{gestion.alumnos}">Alumnos</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" th:text="${totalProfesores}">0</div>
-                    <div class="stat-label">Profesores</div>
+                    <div class="stat-label" th:text="#{gestion.profesores}">Profesores</div>
                 </div>
             </div>
         </div>
         
         <div class="selection-card" id="profesores-card">
             <div class="selection-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-            <h2>Profesores</h2>
+            <h2 th:text="#{gestion.profesores}">Profesores</h2>
             <div class="stats">
                 <div class="stat-item">
                     <div class="stat-value" th:text="${totalProfesores}">0</div>
-                    <div class="stat-label">Profesores</div>
+                    <div class="stat-label" th:text="#{gestion.profesores}">Profesores</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" th:text="${totalAlumnos}">0</div>
-                    <div class="stat-label">Alumnos</div>
+                    <div class="stat-label" th:text="#{gestion.alumnos}">Alumnos</div>
                 </div>
             </div>
         </div>
@@ -1133,51 +1169,50 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- PANEL DE ALUMNOS -->
         <section class="listing-panel active" id="alumnos-panel">
             <div class="panel-header">
-                <h2 class="panel-title"><i class="fas fa-user-graduate"></i> Listado de Alumnos</h2>
+                <h2 class="panel-title"><i class="fas fa-user-graduate"></i> <span th:text="#{gestion.alumnos}">Listado de Alumnos</span></h2>
                 <div class="stats-badge">
-                    <i class="fas fa-users"></i> Total: <span th:text="${totalAlumnos}">0</span>
+                    <i class="fas fa-users"></i> <span th:text="#{gestion.total.alumnos}">Total</span>: <span th:text="${totalAlumnos}">0</span>
                 </div>
             </div>
             
-            <!-- NUEVO: Contenedor de botones (Añadir + Descargar) -->
             <div class="action-buttons-container">
                 <a href="/crear/alumno" class="btn-add">
-                    <i class="fas fa-plus-circle"></i> Añadir Nuevo Alumno
+                    <i class="fas fa-plus-circle"></i> <span th:text="#{gestion.boton.anadir.alumno}">Añadir Nuevo Alumno</span>
                 </a>
                 <a href="/reportes/alumnos/pdf" class="btn-download">
-                    <i class="fas fa-download"></i> Descargar Listado
+                    <i class="fas fa-download"></i> <span th:text="#{gestion.boton.descargar}">Descargar Listado</span>
                 </a>
             </div>
             
             <!-- FILTROS PARA ALUMNOS -->
             <div class="filters-container">
                 <div class="filters-header">
-                    <h3 class="filters-title"><i class="fas fa-filter"></i> Filtrar Alumnos</h3>
+                    <h3 class="filters-title"><i class="fas fa-filter"></i> <span th:text="#{gestion.filtros.aplicar}">Filtrar Alumnos</span></h3>
                     <div class="filter-buttons">
                         <button class="filter-btn apply" id="apply-alumno-filters">
-                            <i class="fas fa-search"></i> Aplicar Filtros
+                            <i class="fas fa-search"></i> <span th:text="#{gestion.filtros.aplicar}">Aplicar Filtros</span>
                         </button>
                         <button class="filter-btn reset" id="reset-alumno-filters">
-                            <i class="fas fa-redo"></i> Limpiar Filtros
+                            <i class="fas fa-redo"></i> <span th:text="#{gestion.filtros.limpiar}">Limpiar Filtros</span>
                         </button>
                     </div>
                 </div>
                 
                 <div class="filter-grid">
                     <div class="filter-group">
-                        <label for="alumno-id"><i class="fas fa-hashtag"></i> ID del Alumno</label>
-                        <input type="text" id="alumno-id" class="filter-input" placeholder="Ej: 1, 2, 3...">
+                        <label for="alumno-id"><i class="fas fa-hashtag"></i> <span th:text="#{gestion.filtros.id}">ID del Alumno</span></label>
+                        <input type="text" id="alumno-id" class="filter-input" th:placeholder="#{gestion.filtros.id}" placeholder="Ej: 1, 2, 3...">
                     </div>
                     
                     <div class="filter-group">
-                        <label for="alumno-nombre"><i class="fas fa-user"></i> Nombre</label>
-                        <input type="text" id="alumno-nombre" class="filter-input" placeholder="Buscar por nombre...">
+                        <label for="alumno-nombre"><i class="fas fa-user"></i> <span th:text="#{gestion.filtros.nombre}">Nombre</span></label>
+                        <input type="text" id="alumno-nombre" class="filter-input" th:placeholder="#{gestion.filtros.nombre}" placeholder="Buscar por nombre...">
                     </div>
                     
                     <div class="filter-group">
-                        <label for="alumno-profesor"><i class="fas fa-chalkboard-teacher"></i> Profesor Asignado</label>
+                        <label for="alumno-profesor"><i class="fas fa-chalkboard-teacher"></i> <span th:text="#{gestion.filtros.profesor}">Profesor Asignado</span></label>
                         <select id="alumno-profesor" class="filter-select">
-                            <option value="">Todos los profesores</option>
+                            <option value="" th:text="#{gestion.filtros.profesor} + ' ' + #{gestion.todos}">Todos los profesores</option>
                             <option th:each="profesor : ${profesores}" th:value="${profesor.id.value}" th:text="${profesor.nombre}">Profesor</option>
                         </select>
                     </div>
@@ -1188,12 +1223,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Edad</th>
-                            <th>Profesor</th>
-                            <th>Fecha Registro</th>
-                            <th>Acciones</th>
+                            <th th:text="#{gestion.tabla.id}">ID</th>
+                            <th th:text="#{gestion.tabla.nombre}">Nombre</th>
+                            <th th:text="#{gestion.tabla.edad}">Edad</th>
+                            <th th:text="#{gestion.tabla.profesor}">Profesor</th>
+                            <th th:text="#{gestion.tabla.fecha}">Fecha Registro</th>
+                            <th th:text="#{gestion.tabla.acciones}">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="alumnos-tbody">
@@ -1208,19 +1243,19 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <button class="btn-action btn-edit" 
                                             th:attr="data-id=${alumno.id.value}, data-nombre=${alumno.nombre}, data-edad=${alumno.edad}, data-profesor=${alumno.profesorId?.value}"
                                             onclick="editarAlumno(this)">
-                                        <i class="fas fa-edit"></i> Editar
+                                        <i class="fas fa-edit"></i> <span th:text="#{gestion.boton.editar}">Editar</span>
                                     </button>
                                     <button class="btn-action btn-delete" 
                                             th:attr="data-id=${alumno.id.value}, data-nombre=${alumno.nombre}"
                                             onclick="eliminarAlumno(this)">
-                                        <i class="fas fa-trash"></i> Eliminar
+                                        <i class="fas fa-trash"></i> <span th:text="#{gestion.boton.eliminar}">Eliminar</span>
                                     </button>
                                 </div>
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(alumnos)}">
                             <td colspan="6" style="text-align:center; padding:30px;">
-                                <i class="fas fa-info-circle"></i> No hay alumnos registrados
+                                <i class="fas fa-info-circle"></i> <span th:text="#{gestion.no.alumnos}">No hay alumnos registrados</span>
                             </td>
                         </tr>
                     </tbody>
@@ -1231,71 +1266,55 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- PANEL DE PROFESORES -->
         <section class="listing-panel" id="profesores-panel">
             <div class="panel-header">
-                <h2 class="panel-title"><i class="fas fa-chalkboard-teacher"></i> Listado de Profesores</h2>
+                <h2 class="panel-title"><i class="fas fa-chalkboard-teacher"></i> <span th:text="#{gestion.profesores}">Listado de Profesores</span></h2>
                 <div class="stats-badge">
-                    <i class="fas fa-users"></i> Total: <span th:text="${totalProfesores}">0</span>
+                    <i class="fas fa-users"></i> <span th:text="#{gestion.total.profesores}">Total</span>: <span th:text="${totalProfesores}">0</span>
                 </div>
             </div>
             
-            <!-- NUEVO: Contenedor de botones (Añadir + Descargar) -->
             <div class="action-buttons-container">
                 <a href="/crear/profesor" class="btn-add">
-                    <i class="fas fa-plus-circle"></i> Añadir Nuevo Profesor
+                    <i class="fas fa-plus-circle"></i> <span th:text="#{gestion.boton.anadir.profesor}">Añadir Nuevo Profesor</span>
                 </a>
                 <a href="/reportes/profesores/pdf" class="btn-download">
-                    <i class="fas fa-download"></i> Descargar Listado
+                    <i class="fas fa-download"></i> <span th:text="#{gestion.boton.descargar}">Descargar Listado</span>
                 </a>
             </div>
             
             <!-- FILTROS PARA PROFESORES -->
             <div class="filters-container">
                 <div class="filters-header">
-                    <h3 class="filters-title"><i class="fas fa-filter"></i> Filtrar Profesores</h3>
+                    <h3 class="filters-title"><i class="fas fa-filter"></i> <span th:text="#{gestion.filtros.aplicar} + ' ' + #{gestion.profesores}">Filtrar Profesores</span></h3>
                     <div class="filter-buttons">
                         <button class="filter-btn apply" id="apply-profesor-filters">
-                            <i class="fas fa-search"></i> Aplicar Filtros
+                            <i class="fas fa-search"></i> <span th:text="#{gestion.filtros.aplicar}">Aplicar Filtros</span>
                         </button>
                         <button class="filter-btn reset" id="reset-profesor-filters">
-                            <i class="fas fa-redo"></i> Limpiar Filtros
+                            <i class="fas fa-redo"></i> <span th:text="#{gestion.filtros.limpiar}">Limpiar Filtros</span>
                         </button>
                     </div>
                 </div>
                 
                 <div class="filter-grid">
                     <div class="filter-group">
-                        <label for="profesor-id"><i class="fas fa-hashtag"></i> ID del Profesor</label>
-                        <input type="text" id="profesor-id" class="filter-input" placeholder="Ej: 1, 2, 3...">
+                        <label for="profesor-id"><i class="fas fa-hashtag"></i> <span th:text="#{gestion.filtros.id} + ' ' + #{gestion.profesores}">ID del Profesor</span></label>
+                        <input type="text" id="profesor-id" class="filter-input" th:placeholder="#{gestion.filtros.id}" placeholder="Ej: 1, 2, 3...">
                     </div>
                     
                     <div class="filter-group">
-                        <label for="profesor-nombre"><i class="fas fa-user"></i> Nombre</label>
-                        <input type="text" id="profesor-nombre" class="filter-input" placeholder="Buscar por nombre...">
+                        <label for="profesor-nombre"><i class="fas fa-user"></i> <span th:text="#{gestion.filtros.nombre}">Nombre</span></label>
+                        <input type="text" id="profesor-nombre" class="filter-input" th:placeholder="#{gestion.filtros.nombre}" placeholder="Buscar por nombre...">
                     </div>
                     
                     <div class="filter-group">
-                        <label for="profesor-juego"><i class="fas fa-gamepad"></i> Juego</label>
+                        <label for="profesor-juego"><i class="fas fa-gamepad"></i> <span th:text="#{gestion.filtros.juego}">Juego</span></label>
                         <select id="profesor-juego" class="filter-select">
-                            <option value="">Todos los juegos</option>
+                            <option value="" th:text="#{gestion.filtros.juego} + ' ' + #{gestion.todos}">Todos los juegos</option>
                             <option value="Guilty Gear -Strive-">Guilty Gear -Strive-</option>
                             <option value="Granblue Fantasy Versus Rising">Granblue Fantasy Versus Rising</option>
-                            <option value="Blazblue Centralfiction">Blazblue Centralfiction</option>
                             <option value="Tekken 8">Tekken 8</option>
                             <option value="Street Fighter 6">Street Fighter 6</option>
                             <option value="Mortal Kombat 1">Mortal Kombat 1</option>
-                            <option value="2XKO">2XKO</option>
-                            <option value="Marvel Tokon Fighting souls">Marvel Tokon Fighting souls</option>
-                            <option value="Blazblue Cross tag battle">Blazblue Cross tag battle</option>
-                            <option value="Virtua Fighter 5 Revo">Virtua Fighter 5 Revo</option>
-                            <option value="Fatal Fury: City of the Wolves">Fatal Fury: City of the Wolves</option>
-                            <option value="King of Fighters XVI">King of Fighters XVI</option>
-                            <option value="Chaos Code New Sign of Catastrophe">Chaos Code New Sign of Catastrophe</option>
-                            <option value="Chaos Code Nemesis Experiment">Chaos Code Nemesis Experiment</option>
-                            <option value="Guilty Gear Xrd REV2">Guilty Gear Xrd REV2</option>
-                            <option value="DNF Duel">DNF Duel</option>
-                            <option value="Ultimate Marvel vs Capcom 3">Ultimate Marvel vs Capcom 3</option>
-                            <option value="Invincible vs">Invincible vs</option>
-                            <option value="Vampire Savior">Vampire Savior</option>
-                            <option value="Under Night In-Birth 2 Sys:Celes">Under Night In-Birth 2 Sys:Celes</option>
                         </select>
                     </div>
                 </div>
@@ -1305,10 +1324,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Juego</th>
-                            <th>Acciones</th>
+                            <th th:text="#{gestion.tabla.id}">ID</th>
+                            <th th:text="#{gestion.tabla.nombre}">Nombre</th>
+                            <th th:text="#{gestion.tabla.juego}">Juego</th>
+                            <th th:text="#{gestion.tabla.acciones}">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="profesores-tbody">
@@ -1321,19 +1340,19 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <button class="btn-action btn-edit" 
                                             th:attr="data-id=${profesor.id.value}, data-nombre=${profesor.nombre}, data-juego=${profesor.juego}"
                                             onclick="editarProfesor(this)">
-                                        <i class="fas fa-edit"></i> Editar
+                                        <i class="fas fa-edit"></i> <span th:text="#{gestion.boton.editar}">Editar</span>
                                     </button>
                                     <button class="btn-action btn-delete" 
                                             th:attr="data-id=${profesor.id.value}, data-nombre=${profesor.nombre}"
                                             onclick="eliminarProfesor(this)">
-                                        <i class="fas fa-trash"></i> Eliminar
+                                        <i class="fas fa-trash"></i> <span th:text="#{gestion.boton.eliminar}">Eliminar</span>
                                     </button>
                                 </div>
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(profesores)}">
                             <td colspan="4" style="text-align:center; padding:30px;">
-                                <i class="fas fa-info-circle"></i> No hay profesores registrados
+                                <i class="fas fa-info-circle"></i> <span th:text="#{gestion.no.profesores}">No hay profesores registrados</span>
                             </td>
                         </tr>
                     </tbody>
@@ -1345,31 +1364,35 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- MODAL EDITAR ALUMNO -->
     <div id="modal-editar-alumno" class="modal">
         <div class="modal-content">
-            <h2><i class="fas fa-edit"></i> Editar Alumno</h2>
+            <h2><i class="fas fa-edit"></i> <span th:text="#{modal.editar.titulo} + ' ' + #{gestion.alumnos}">Editar Alumno</span></h2>
             <form action="/editar/alumno" method="post">
                 <input type="hidden" id="edit-alumno-id" name="id">
                 <div class="form-group">
-                    <label>ID</label>
+                    <label th:text="#{gestion.tabla.id}">ID</label>
                     <input type="text" id="edit-alumno-id-display" readonly>
                 </div>
                 <div class="form-group">
-                    <label>Nombre</label>
+                    <label th:text="#{gestion.tabla.nombre}">Nombre</label>
                     <input type="text" id="edit-alumno-nombre" name="nombre" required>
                 </div>
                 <div class="form-group">
-                    <label>Edad</label>
+                    <label th:text="#{gestion.tabla.edad}">Edad</label>
                     <input type="number" id="edit-alumno-edad" name="edad" required>
                 </div>
                 <div class="form-group">
-                    <label>Profesor</label>
+                    <label th:text="#{gestion.tabla.profesor}">Profesor</label>
                     <select id="edit-alumno-profesor" name="profesorId" class="filter-select" required>
-                        <option value="">Selecciona un profesor</option>
+                        <option value="" th:text="#{modal.seleccionar}">Selecciona un profesor</option>
                         <option th:each="profesor : ${profesores}" th:value="${profesor.id.value}" th:text="${profesor.nombre}"></option>
                     </select>
                 </div>
                 <div class="modal-buttons">
-                    <button type="submit" class="btn-modal btn-confirm">Guardar Cambios</button>
-                    <button type="button" class="btn-modal btn-cancel" onclick="cerrarModalEditarAlumno()">Cancelar</button>
+                    <button type="submit" class="btn-modal btn-confirm">
+                        <i class="fas fa-save"></i> <span th:text="#{modal.editar.guardar}">Guardar Cambios</span>
+                    </button>
+                    <button type="button" class="btn-modal btn-cancel" onclick="cerrarModalEditarAlumno()">
+                        <i class="fas fa-times"></i> <span th:text="#{modal.cancelar}">Cancelar</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -1378,46 +1401,35 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- MODAL EDITAR PROFESOR -->
     <div id="modal-editar-profesor" class="modal">
         <div class="modal-content">
-            <h2><i class="fas fa-edit"></i> Editar Profesor</h2>
+            <h2><i class="fas fa-edit"></i> <span th:text="#{modal.editar.titulo} + ' ' + #{gestion.profesores}">Editar Profesor</span></h2>
             <form action="/editar/profesor" method="post">
                 <input type="hidden" id="edit-profesor-id" name="id">
                 <div class="form-group">
-                    <label>ID</label>
+                    <label th:text="#{gestion.tabla.id}">ID</label>
                     <input type="text" id="edit-profesor-id-display" readonly>
                 </div>
                 <div class="form-group">
-                    <label>Nombre</label>
+                    <label th:text="#{gestion.tabla.nombre}">Nombre</label>
                     <input type="text" id="edit-profesor-nombre" name="nombre" required>
                 </div>
                 <div class="form-group">
-                    <label>Juego</label>
+                    <label th:text="#{gestion.tabla.juego}">Juego</label>
                     <select id="edit-profesor-juego" name="juego" class="filter-select" required>
-                        <option value="">Selecciona un juego</option>
+                        <option value="" th:text="#{modal.seleccionar}">Selecciona un juego</option>
                         <option value="Guilty Gear -Strive-">Guilty Gear -Strive-</option>
                         <option value="Granblue Fantasy Versus Rising">Granblue Fantasy Versus Rising</option>
-                        <option value="Blazblue Centralfiction">Blazblue Centralfiction</option>
                         <option value="Tekken 8">Tekken 8</option>
                         <option value="Street Fighter 6">Street Fighter 6</option>
                         <option value="Mortal Kombat 1">Mortal Kombat 1</option>
-                        <option value="2XKO">2XKO</option>
-                        <option value="Marvel Tokon Fighting souls">Marvel Tokon Fighting souls</option>
-                        <option value="Blazblue Cross tag battle">Blazblue Cross tag battle</option>
-                        <option value="Virtua Fighter 5 Revo">Virtua Fighter 5 Revo</option>
-                        <option value="Fatal Fury: City of the Wolves">Fatal Fury: City of the Wolves</option>
-                        <option value="King of Fighters XVI">King of Fighters XVI</option>
-                        <option value="Chaos Code New Sign of Catastrophe">Chaos Code New Sign of Catastrophe</option>
-                        <option value="Chaos Code Nemesis Experiment">Chaos Code Nemesis Experiment</option>
-                        <option value="Guilty Gear Xrd REV2">Guilty Gear Xrd REV2</option>
-                        <option value="DNF Duel">DNF Duel</option>
-                        <option value="Ultimate Marvel vs Capcom 3">Ultimate Marvel vs Capcom 3</option>
-                        <option value="Invincible vs">Invincible vs</option>
-                        <option value="Vampire Savior">Vampire Savior</option>
-                        <option value="Under Night In-Birth 2 Sys:Celes">Under Night In-Birth 2 Sys:Celes</option>
                     </select>
                 </div>
                 <div class="modal-buttons">
-                    <button type="submit" class="btn-modal btn-confirm">Guardar Cambios</button>
-                    <button type="button" class="btn-modal btn-cancel" onclick="cerrarModalEditarProfesor()">Cancelar</button>
+                    <button type="submit" class="btn-modal btn-confirm">
+                        <i class="fas fa-save"></i> <span th:text="#{modal.editar.guardar}">Guardar Cambios</span>
+                    </button>
+                    <button type="button" class="btn-modal btn-cancel" onclick="cerrarModalEditarProfesor()">
+                        <i class="fas fa-times"></i> <span th:text="#{modal.cancelar}">Cancelar</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -1426,11 +1438,15 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- MODAL CONFIRMAR ELIMINACIÓN -->
     <div id="modal-confirmar" class="modal">
         <div class="modal-content">
-            <h2><i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación</h2>
+            <h2><i class="fas fa-exclamation-triangle"></i> <span th:text="#{modal.eliminar.titulo}">Confirmar Eliminación</span></h2>
             <div class="confirm-message" id="confirm-mensaje"></div>
             <div class="modal-buttons">
-                <a href="#" id="confirm-eliminar-link" class="btn-modal btn-confirm" style="text-decoration: none; text-align: center; background: var(--danger-color);">Eliminar</a>
-                <button type="button" class="btn-modal btn-cancel" onclick="cerrarModalConfirmar()">Cancelar</button>
+                <a href="#" id="confirm-eliminar-link" class="btn-modal btn-confirm" style="text-decoration: none; text-align: center; background: var(--danger-color);">
+                    <i class="fas fa-trash"></i> <span th:text="#{modal.eliminar.confirmar}">Eliminar</span>
+                </a>
+                <button type="button" class="btn-modal btn-cancel" onclick="cerrarModalConfirmar()">
+                    <i class="fas fa-times"></i> <span th:text="#{modal.cancelar}">Cancelar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -1438,7 +1454,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <footer>
         <div class="footer-content">
             <div class="copyright">
-                <p>FG Academy - Sistema de Gestión &copy; 2024 | Datos en tiempo real</p>
+                <p th:text="#{footer.copyright}">FG Academy - Sistema de Gestión &copy; 2024 | Datos en tiempo real</p>
             </div>
         </div>
     </footer>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FG Academy - Crear Alumno</title>
+    <title th:text="#{app.titulo}">FG Academy - Crear Alumno</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link th:href="@{/css/crear.css}" rel="stylesheet">
 </head>
@@ -16,10 +16,10 @@
             <div class="logo-text">FG Academy</div>
         </div>
         <div class="nav-links">
-            <a href="/">Inicio</a>
-            <a href="/gestion">Gestión</a>
-            <a href="/crear/alumno" class="active">Crear Alumno</a>
-            <a href="/crear/profesor">Crear Profesor</a>
+            <a href="/" th:text="#{nav.inicio}">Inicio</a>
+            <a href="/gestion" th:text="#{nav.gestion}">Gestión</a>
+            <a href="/crear/alumno" class="active" th:text="#{nav.crear.alumno}">Crear Alumno</a>
+            <a href="/crear/profesor" th:text="#{nav.crear.profesor}">Crear Profesor</a>
         </div>
     </nav>
     
@@ -31,8 +31,8 @@
     </div>
     
     <section class="header">
-        <h1>Crear Nuevo Alumno</h1>
-        <p>Completa el formulario para registrar un nuevo alumno</p>
+        <h1 th:text="#{alumno.crear.titulo}">Crear Nuevo Alumno</h1>
+        <p th:text="#{alumno.crear.subtitulo}">Completa el formulario para registrar un nuevo alumno</p>
     </section>
     
     <div class="main-container">
@@ -40,19 +40,19 @@
             <form action="/crear/alumno" method="post" class="crear-form">
                 <div class="form-grid">
                     <div class="form-group full-width">
-                        <label for="nombre">Nombre completo</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
+                        <label for="nombre" th:text="#{alumno.crear.nombre}">Nombre completo</label>
+                        <input type="text" id="nombre" name="nombre" th:placeholder="#{alumno.crear.nombre.placeholder}" placeholder="Ej: Juan Pérez" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="edad">Edad</label>
-                        <input type="number" id="edad" name="edad" min="1" max="120" required>
+                        <label for="edad" th:text="#{alumno.crear.edad}">Edad</label>
+                        <input type="number" id="edad" name="edad" min="1" max="120" th:placeholder="#{alumno.crear.edad.placeholder}" placeholder="18" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="profesorId">Profesor asignado</label>
+                        <label for="profesorId" th:text="#{alumno.crear.profesor}">Profesor asignado</label>
                         <select id="profesorId" name="profesorId" required>
-                            <option value="">Selecciona un profesor</option>
+                            <option value="" th:text="#{alumno.crear.profesor.seleccionar}">Selecciona un profesor</option>
                             <option th:each="profesor : ${profesores}" th:value="${profesor.id.value}" th:text="${profesor.nombre}"></option>
                         </select>
                     </div>
@@ -60,10 +60,10 @@
                 
                 <div class="form-buttons">
                     <button type="submit" class="btn btn-confirm">
-                        <i class="fas fa-save"></i> Crear Alumno
+                        <i class="fas fa-save"></i> <span th:text="#{alumno.crear.boton}">Crear Alumno</span>
                     </button>
                     <a href="/gestion" class="btn btn-cancel">
-                        <i class="fas fa-times"></i> Cancelar
+                        <i class="fas fa-times"></i> <span th:text="#{alumno.crear.cancelar}">Cancelar</span>
                     </a>
                 </div>
             </form>
@@ -76,39 +76,38 @@
             <div class="modal-icon">
                 <i class="fas fa-check-circle"></i>
             </div>
-            <h2>¡Alumno Creado!</h2>
-            <p th:text="'Alumno: ' + ${nombreCreado} + ' creado correctamente'">Alumno creado correctamente</p>
+            <h2 th:text="#{alumno.creado.titulo}">¡Alumno Creado!</h2>
+            <p th:text="'Alumno: ' + ${nombreCreado} + ' ' + #{alumno.creado.mensaje}">Alumno creado correctamente</p>
             <div class="modal-buttons">
                 <a href="/crear/alumno" class="btn-modal btn-primary">
-                    <i class="fas fa-plus"></i> Crear otro
+                    <i class="fas fa-plus"></i> <span th:text="#{alumno.creado.otro}">Crear otro</span>
                 </a>
                 <a href="/gestion" class="btn-modal btn-secondary">
-                    <i class="fas fa-list"></i> Ver listados
+                    <i class="fas fa-list"></i> <span th:text="#{gestion.boton.descargar}">Ver listados</span>
                 </a>
                 <a href="/" class="btn-modal btn-cancel">
-                    <i class="fas fa-home"></i> Inicio
+                    <i class="fas fa-home"></i> <span th:text="#{nav.inicio}">Inicio</span>
                 </a>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>FG Academy - Sistema de Gestión &copy; 2024</p>
+        <p th:text="#{footer.copyright}">FG Academy - Sistema de Gestión &copy; 2024</p>
     </footer>
 
     <script th:src="@{/js/crear.js}"></script>
 </body>
 <style>
     :root {
-    --primary-dark: #0a1a0a;        /* Verde oscuro profundo */
-    --secondary-dark: #1a2a1a;       /* Verde medio oscuro */
-    --accent-green: #4CAF50;          /* Verde principal */
-    --accent-light: #a5d6a7;          /* Verde claro */
-    --accent-glow: rgba(76, 175, 80, 0.4);  /* Brillo verde */
-    --accent-lime: #cddc39;            /* Verde lima para contrastes */
-    --text-light: #f1f8e9;            /* Texto claro con tono verdoso */
-    --border-color: #2e5e2e;           /* Borde verde oscuro */
-    --panel-bg: rgba(26, 42, 26, 0.95); /* Fondo panel verde oscuro */
+    --primary-dark: #0a1a0a;
+    --secondary-dark: #1a2a1a;
+    --accent-green: #4CAF50;
+    --accent-light: #a5d6a7;
+    --accent-glow: rgba(76, 175, 80, 0.4);
+    --text-light: #f1f8e9;
+    --border-color: #2e5e2e;
+    --panel-bg: rgba(26, 42, 26, 0.95);
     --gradient-bg: linear-gradient(135deg, #0a1a0a 0%, #1a3a1a 50%, #0a1a0a 100%);
 }
 

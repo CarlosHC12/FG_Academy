@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FG Academy - Academia de Juegos de Lucha</title>
+    <title th:text="#{app.titulo}">FG Academy - Academia de Juegos de Lucha</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     <link rel="stylesheet" href="/css/fg-academy-styles.css">
@@ -163,17 +163,17 @@ nav {
     text-align: center;
     position: relative;
     overflow: hidden;
-
     background-image: url("https://media.discordapp.net/attachments/471316767914983427/1472297436742680801/1.png?ex=69920f56&is=6990bdd6&hm=078f77460ca018f0776d9c130542e813eccff044703ea752acb372e75b3633a4&=&format=webp&quality=lossless&width=1872&height=624");
-    background-size: cover;        /* que cubra todo */
-    background-position: center;   /* centrada */
-    background-repeat: no-repeat;  /* sin repetir */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
+
 .hero::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(10, 20, 41, 0.65); /* oscurece */
+    background: rgba(10, 20, 41, 0.65);
     z-index: 0;
 }
 
@@ -181,7 +181,6 @@ nav {
     position: relative;
     z-index: 1;
 }
-
 
 .hero h1 {
     font-size: 3.5rem;
@@ -218,6 +217,7 @@ nav {
     align-items: center;
     gap: 10px;
     font-size: 1.1rem;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -668,179 +668,161 @@ footer {
         grid-template-columns: 1fr;
     }
 }
-
-
 </style>
 
-
 <body>
-
     <script>
-            // Inicializar fondo animado
-function createAnimatedBackground() {
-    const bgContainer = document.getElementById('animated-bg');
-    const colors = ['rgba(42, 117, 187, 0.1)', 'rgba(77, 161, 255, 0.1)', 'rgba(106, 176, 255, 0.1)'];
-    
-    for (let i = 0; i < 15; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('bg-particle');
-        
-        // Tamaño aleatorio
-        const size = Math.random() * 200 + 100;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        
-        // Posición aleatoria
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = `${Math.random() * 100}%`;
-        
-        // Color aleatorio
-        particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
-        
-        // Animación más lenta para partículas grandes
-        const duration = 20 + Math.random() * 30;
-        particle.style.animationDuration = `${duration}s`;
-        particle.style.animationDelay = `${Math.random() * 10}s`;
-        
-        bgContainer.appendChild(particle);
-    }
-}
-
-// Inicializar Swiper (carrusel)
-function initializeSwiper() {
-    const swiper = new Swiper('.swiper', {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        loop: true,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-            768: {
-                slidesPerView: 2,
-            },
-            1024: {
-                slidesPerView: 3,
-            },
-        },
-    });
-}
-
-// Manejar el formulario
-function setupForm() {
-    document.querySelector('.join-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Aquí normalmente enviarías los datos a un servidor
-        // Por ahora solo mostramos un mensaje
-        alert('¡Gracias por tu interés! Te contactaremos pronto con más información sobre FG Academy.');
-        
-        // Limpiar el formulario
-        this.reset();
-    });
-}
-
-// Efecto suave al hacer scroll a los enlaces
-function setupSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
+        // Inicializar fondo animado
+        function createAnimatedBackground() {
+            const bgContainer = document.getElementById('animated-bg');
+            const colors = ['rgba(42, 117, 187, 0.1)', 'rgba(77, 161, 255, 0.1)', 'rgba(106, 176, 255, 0.1)'];
             
-            if (href !== '#') {
-                e.preventDefault();
-                const target = document.querySelector(href);
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('bg-particle');
                 
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
+                const size = Math.random() * 200 + 100;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
+                
+                const duration = 20 + Math.random() * 30;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                bgContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar Swiper (carrusel)
+        function initializeSwiper() {
+            const swiper = new Swiper('.swiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+        }
+
+        // Manejar el formulario
+        function setupForm() {
+            document.querySelector('.join-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('¡Gracias por tu interés! Te contactaremos pronto con más información sobre FG Academy.');
+                this.reset();
+            });
+        }
+
+        // Efecto suave al hacer scroll a los enlaces
+        function setupSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    
+                    if (href !== '#') {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        
+                        if (target) {
+                            window.scrollTo({
+                                top: target.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        // Efectos de aparición de elementos
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.feature-card, .news-card, .join-container').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        }
+
+        // Efecto de escritura en el título principal
+        function typeWriterEffect() {
+            const heroTitle = document.querySelector('.hero h1');
+            const originalText = heroTitle.textContent;
+            
+            if (!heroTitle || !originalText) return;
+            
+            let i = 0;
+            heroTitle.textContent = '';
+            
+            function type() {
+                if (i < originalText.length) {
+                    heroTitle.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                } else {
+                    setTimeout(deleteText, 2000);
                 }
             }
-        });
-    });
-}
-
-// Efectos de aparición de elementos
-function setupScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+            
+            function deleteText() {
+                if (i > 0) {
+                    heroTitle.textContent = originalText.substring(0, i - 1);
+                    i--;
+                    setTimeout(deleteText, 30);
+                } else {
+                    setTimeout(type, 500);
+                }
             }
+            
+            type();
+        }
+
+        // Inicializar todo cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            createAnimatedBackground();
+            initializeSwiper();
+            setupForm();
+            setupSmoothScrolling();
+            setupScrollAnimations();
+            setTimeout(typeWriterEffect, 1000);
         });
-    }, observerOptions);
-    
-    // Observar elementos con animación
-    document.querySelectorAll('.feature-card, .news-card, .join-container').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        observer.observe(el);
-    });
-}
-
-// Efecto de escritura en el título principal
-function typeWriterEffect() {
-    const heroTitle = document.querySelector('.hero h1');
-    const originalText = heroTitle.textContent;
-    
-    if (!heroTitle || !originalText) return;
-    
-    let i = 0;
-    heroTitle.textContent = '';
-    
-    function type() {
-        if (i < originalText.length) {
-            heroTitle.textContent += originalText.charAt(i);
-            i++;
-            setTimeout(type, 50);
-        } else {
-            setTimeout(deleteText, 2000);
-        }
-    }
-    
-    function deleteText() {
-        if (i > 0) {
-            heroTitle.textContent = originalText.substring(0, i - 1);
-            i--;
-            setTimeout(deleteText, 30);
-        } else {
-            setTimeout(type, 500);
-        }
-    }
-    
-    type();
-}
-
-// Inicializar todo cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
-    createAnimatedBackground();
-    initializeSwiper();
-    setupForm();
-    setupSmoothScrolling();
-    setupScrollAnimations();
-    
-    // Iniciar efecto de escritura después de un tiempo
-    setTimeout(typeWriterEffect, 1000);
-});
-    
     </script>
+    
     <!-- Fondo animado -->
     <div class="animated-bg" id="animated-bg"></div>
     
@@ -851,82 +833,68 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="logo-text">FG Academy</div>
         </div>
         <div class="nav-links">
-            <a href="#" class="active">Inicio</a>
-            <a href="/arcade">Diseña tu Fight Stick</a>
-            <a href="#">Mas informacion</a>
-            <a href="/gestion"><span style="background-color: #3a69d6 ; border-radius: 5px; height: 300px; width: 20%; color: #fff;"> Iniciar sesion </span></a>
-            <a >|</a>
-            <a href=""><span style="background-color: #000d2a ; border-radius: 5px; height:300px; width: 20%; color: #fff;"> Solicita acceso </span></a>
-           
+            <a href="#" class="active" th:text="#{nav.inicio}">Inicio</a>
+            <a href="/arcade" th:text="#{nav.disenia}">Diseña tu Fight Stick</a>
+            <a href="#" th:text="#{nav.informacion}">Mas informacion</a>
+            <a href="/gestion"><span style="background-color: #3a69d6 ; border-radius: 5px; height: 300px; width: 20%; color: #fff;" th:text="#{nav.iniciar}">Iniciar sesion</span></a>
+            <a>|</a>
+            <a href=""><span style="background-color: #000d2a ; border-radius: 5px; height:300px; width: 20%; color: #fff;" th:text="#{nav.solicitar}">Solicita acceso</span></a>
         </div>
     </nav>
-     <a href="?lang=es" class="lang-flag" 
-       th:classappend="${lang == 'es' ? 'active' : ''}"
-       title="Español">🇪🇸</a>
-    <a href="?lang=en" class="lang-flag"
-       th:classappend="${lang == 'en' ? 'active' : ''}"
-       title="English">🇬🇧</a>
-    <a href="?lang=ja" class="lang-flag"
-       th:classappend="${lang == 'ja' ? 'active' : ''}"
-       title="日本語">🇯🇵</a>
-    <a href="?lang=ko" class="lang-flag"
-       th:classappend="${lang == 'ko' ? 'active' : ''}"
-       title="한국어">🇰🇷</a>
+    
+    <!-- Banderas -->
+    <a href="?lang=es" class="lang-flag" th:classappend="${lang == 'es' ? 'active' : ''}" title="Español">🇪🇸</a>
+    <a href="?lang=en" class="lang-flag" th:classappend="${lang == 'en' ? 'active' : ''}" title="English">🇬🇧</a>
+    <a href="?lang=ja" class="lang-flag" th:classappend="${lang == 'ja' ? 'active' : ''}" title="日本語">🇯🇵</a>
+    <a href="?lang=ko" class="lang-flag" th:classappend="${lang == 'ko' ? 'active' : ''}" title="한국어">🇰🇷</a>
+    
     <!-- Hero Section -->
     <section class="hero">
-        <h1>APRENDE, COMPITE, DOMINA</h1>
-        <p>Únete a la academia líder en formación de jugadores competitivos. Aprende de los mejores, mejora tus habilidades y compite en torneos internacionales.</p>
+        <h1 th:text="#{hero.titulo}">APRENDE, COMPITE, DOMINA</h1>
+        <p th:text="#{hero.descripcion}">Únete a la academia líder en formación de jugadores competitivos. Aprende de los mejores, mejora tus habilidades y compite en torneos internacionales.</p>
         <div class="hero-buttons">
             <a href="#join" class="btn btn-primary">
-                <i class="fas fa-user-plus"></i> Únete a la Academia
+                <i class="fas fa-user-plus"></i> <span th:text="#{hero.boton.unete}">Únete a la Academia</span>
             </a>
             <a href="FGA_CONTROLLER_DESIGNER.html" class="btn btn-secondary">
-                <i class="fas fa-gamepad"></i> Diseña tu Fight Stick
+                <i class="fas fa-gamepad"></i> <span th:text="#{hero.boton.disenia}">Diseña tu Fight Stick</span>
             </a>
         </div>
     </section>
     
     <!-- Sección de características -->
     <section class="features">
-        <h2 class="section-title">¿Por qué elegir FG Academy?</h2>
+        <h2 class="section-title" th:text="#{caracteristicas.titulo}">¿Por qué elegir FG Academy?</h2>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h3>Cursos Especializados</h3>
-                <p>Aprende desde lo básico hasta técnicas avanzadas con nuestro plan de estudios estructurado y profesores profesionales.</p>
+                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3 th:text="#{caracteristicas.cursos.titulo}">Cursos Especializados</h3>
+                <p th:text="#{caracteristicas.cursos.descripcion}">Aprende desde lo básico hasta técnicas avanzadas con nuestro plan de estudios estructurado y profesores profesionales.</p>
             </div>
             
             <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <h3>Entrenamiento Competitivo</h3>
-                <p>Prepárate para torneos con sesiones de práctica intensiva, análisis de partidas y estrategias de juego.</p>
+                <div class="feature-icon"><i class="fas fa-trophy"></i></div>
+                <h3 th:text="#{caracteristicas.entrenamiento.titulo}">Entrenamiento Competitivo</h3>
+                <p th:text="#{caracteristicas.entrenamiento.descripcion}">Prepárate para torneos con sesiones de práctica intensiva, análisis de partidas y estrategias de juego.</p>
             </div>
             
             <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h3>Comunidad Activa</h3>
-                <p>Conecta con jugadores de todos los niveles, participa en eventos exclusivos y forma parte de nuestra red de fighters.</p>
+                <div class="feature-icon"><i class="fas fa-users"></i></div>
+                <h3 th:text="#{caracteristicas.comunidad.titulo}">Comunidad Activa</h3>
+                <p th:text="#{caracteristicas.comunidad.descripcion}">Conecta con jugadores de todos los niveles, participa en eventos exclusivos y forma parte de nuestra red de fighters.</p>
             </div>
             
             <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-tools"></i>
-                </div>
-                <h3>Equipamiento Profesional</h3>
-                <p>Accede a fight sticks de alta calidad, salas de práctica equipadas y tecnología de última generación.</p>
+                <div class="feature-icon"><i class="fas fa-tools"></i></div>
+                <h3 th:text="#{caracteristicas.equipamiento.titulo}">Equipamiento Profesional</h3>
+                <p th:text="#{caracteristicas.equipamiento.descripcion}">Accede a fight sticks de alta calidad, salas de práctica equipadas y tecnología de última generación.</p>
             </div>
         </div>
     </section>
     
     <!-- Carrusel de juegos -->
     <section class="games-carousel">
-        <h2 class="section-title">Juegos que Enseñamos</h2>
+        <h2 class="section-title" th:text="#{juegos.titulo}">Juegos que Enseñamos</h2>
         <div class="swiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
@@ -934,7 +902,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <img src="https://images.unsplash.com/photo-1632501641765-e568d28b0017?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Street Fighter" class="game-image">
                         <div class="game-info">
                             <h3>Street Fighter VI</h3>
-                            <p>Domina el legendario juego de lucha con personajes icónicos y mecánicas profundas.</p>
+                            <p th:text="#{juegos.sf.descripcion}">Domina el legendario juego de lucha con personajes icónicos y mecánicas profundas.</p>
                         </div>
                     </div>
                 </div>
@@ -944,7 +912,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tekken" class="game-image">
                         <div class="game-info">
                             <h3>Tekken 8</h3>
-                            <p>Aprende el juego de lucha 3D más popular con nuestro sistema de entrenamiento especializado.</p>
+                            <p th:text="#{juegos.tekken.descripcion}">Aprende el juego de lucha 3D más popular con nuestro sistema de entrenamiento especializado.</p>
                         </div>
                     </div>
                 </div>
@@ -954,7 +922,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <img src="https://images.unsplash.com/photo-1593693399748-55d1f2f7c75b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Guilty Gear" class="game-image">
                         <div class="game-info">
                             <h3>Guilty Gear Strive</h3>
-                            <p>Descubre el juego de lucha anime con los gráficos más impresionantes y gameplay único.</p>
+                            <p th:text="#{juegos.gg.descripcion}">Descubre el juego de lucha anime con los gráficos más impresionantes y gameplay único.</p>
                         </div>
                     </div>
                 </div>
@@ -964,7 +932,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dragon Ball FighterZ" class="game-image">
                         <div class="game-info">
                             <h3>Dragon Ball FighterZ</h3>
-                            <p>Conviértete en el mejor luchador con este frenético juego de lucha basado en el popular anime.</p>
+                            <p th:text="#{juegos.dbz.descripcion}">Conviértete en el mejor luchador con este frenético juego de lucha basado en el popular anime.</p>
                         </div>
                     </div>
                 </div>
@@ -974,7 +942,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mortal Kombat" class="game-image">
                         <div class="game-info">
                             <h3>Mortal Kombat 1</h3>
-                            <p>Domina el juego de lucha más brutal con fatalities icónicas y gameplay profundo.</p>
+                            <p th:text="#{juegos.mk.descripcion}">Domina el juego de lucha más brutal con fatalities icónicas y gameplay profundo.</p>
                         </div>
                     </div>
                 </div>
@@ -987,41 +955,35 @@ document.addEventListener('DOMContentLoaded', function() {
     
     <!-- Sección de noticias -->
     <section class="news-section">
-        <h2 class="section-title">Noticias Recientes</h2>
+        <h2 class="section-title" th:text="#{noticias.titulo}">Noticias Recientes</h2>
         <div class="news-container">
             <div class="news-card">
                 <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Torneo" class="news-image">
                 <div class="news-content">
-                    <div class="news-date">
-                        <i class="far fa-calendar"></i> 15 Noviembre 2023
-                    </div>
-                    <h3>Nuestro equipo gana el torneo regional</h3>
-                    <p>Los estudiantes de FG Academy se alzan con la victoria en el torneo regional de Street Fighter VI, demostrando el alto nivel de nuestra formación.</p>
-                    <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    <div class="news-date"><i class="far fa-calendar"></i> 15 Noviembre 2023</div>
+                    <h3 th:text="#{noticias.noticia1.titulo}">Nuestro equipo gana el torneo regional</h3>
+                    <p th:text="#{noticias.noticia1.descripcion}">Los estudiantes de FG Academy se alzan con la victoria en el torneo regional de Street Fighter VI, demostrando el alto nivel de nuestra formación.</p>
+                    <a href="#" class="read-more" th:text="#{noticias.leer_mas}">Leer más <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
             
             <div class="news-card">
                 <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nuevo curso" class="news-image">
                 <div class="news-content">
-                    <div class="news-date">
-                        <i class="far fa-calendar"></i> 10 Noviembre 2023
-                    </div>
-                    <h3>Nuevo curso: Tekken 8 desde cero</h3>
-                    <p>Lanzamos un curso completo para dominar Tekken 8, ideal para jugadores que quieren comenzar su camino competitivo.</p>
-                    <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    <div class="news-date"><i class="far fa-calendar"></i> 10 Noviembre 2023</div>
+                    <h3 th:text="#{noticias.noticia2.titulo}">Nuevo curso: Tekken 8 desde cero</h3>
+                    <p th:text="#{noticias.noticia2.descripcion}">Lanzamos un curso completo para dominar Tekken 8, ideal para jugadores que quieren comenzar su camino competitivo.</p>
+                    <a href="#" class="read-more" th:text="#{noticias.leer_mas}">Leer más <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
             
             <div class="news-card">
                 <img src="https://images.unsplash.com/photo-1585504198191-3ca5e3bc6c62?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Colaboración" class="news-image">
                 <div class="news-content">
-                    <div class="news-date">
-                        <i class="far fa-calendar"></i> 5 Noviembre 2023
-                    </div>
-                    <h3>Colaboración con profesionales del sector</h3>
-                    <p>FG Academy anuncia colaboración con jugadores profesionales para ofrecer masterclasses exclusivas a nuestros estudiantes.</p>
-                    <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    <div class="news-date"><i class="far fa-calendar"></i> 5 Noviembre 2023</div>
+                    <h3 th:text="#{noticias.noticia3.titulo}">Colaboración con profesionales del sector</h3>
+                    <p th:text="#{noticias.noticia3.descripcion}">FG Academy anuncia colaboración con jugadores profesionales para ofrecer masterclasses exclusivas a nuestros estudiantes.</p>
+                    <a href="#" class="read-more" th:text="#{noticias.leer_mas}">Leer más <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -1030,36 +992,36 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- Sección "Únete Ya" -->
     <section class="join-section" id="join">
         <div class="join-container">
-            <h2 class="join-title">¡ÚNETE YA!</h2>
-            <p class="join-text">Comienza tu viaje en el mundo competitivo de los juegos de lucha. Forma parte de la academia que está formando a la próxima generación de campeones.</p>
+            <h2 class="join-title" th:text="#{join.titulo}">¡ÚNETE YA!</h2>
+            <p class="join-text" th:text="#{join.descripcion}">Comienza tu viaje en el mundo competitivo de los juegos de lucha. Forma parte de la academia que está formando a la próxima generación de campeones.</p>
             
             <form class="join-form">
                 <div class="form-group">
-                    <label for="name">Nombre completo</label>
-                    <input type="text" id="name" placeholder="Tu nombre" required>
+                    <label for="name" th:text="#{form.nombre}">Nombre completo</label>
+                    <input type="text" id="name" th:placeholder="#{form.nombre.placeholder}" placeholder="Tu nombre" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" id="email" placeholder="tu@email.com" required>
+                    <label for="email" th:text="#{form.email}">Correo electrónico</label>
+                    <input type="email" id="email" th:placeholder="#{form.email.placeholder}" placeholder="tu@email.com" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="game">Juego de interés principal</label>
-                    <input type="text" id="game" placeholder="Ej: Street Fighter VI, Tekken 8, etc.">
+                    <label for="game" th:text="#{form.juego}">Juego de interés principal</label>
+                    <input type="text" id="game" th:placeholder="#{form.juego.placeholder}" placeholder="Ej: Street Fighter VI, Tekken 8, etc.">
                 </div>
                 
                 <div class="form-group">
-                    <label for="level">Nivel de experiencia</label>
-                    <input type="text" id="level" placeholder="Principiante, Intermedio, Avanzado">
+                    <label for="level" th:text="#{form.nivel}">Nivel de experiencia</label>
+                    <input type="text" id="level" th:placeholder="#{form.nivel.placeholder}" placeholder="Principiante, Intermedio, Avanzado">
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-large">
-                    <i class="fas fa-paper-plane"></i> Enviar solicitud
+                    <i class="fas fa-paper-plane"></i> <span th:text="#{form.enviar}">Enviar solicitud</span>
                 </button>
             </form>
             
-            <p style="margin-top: 30px; color: #8aa3cc; font-size: 0.9rem;">
+            <p style="margin-top: 30px; color: #8aa3cc; font-size: 0.9rem;" th:text="#{form.seguridad}">
                 <i class="fas fa-shield-alt"></i> Tus datos están seguros y solo serán usados para contactarte.
             </p>
         </div>
@@ -1069,8 +1031,8 @@ document.addEventListener('DOMContentLoaded', function() {
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>FG Academy</h3>
-                <p>La academia líder en formación de jugadores competitivos de juegos de lucha. Nuestra misión es desarrollar el talento de la próxima generación de esports.</p>
+                <h3 th:text="#{footer.academy.titulo}">FG Academy</h3>
+                <p th:text="#{footer.academy.descripcion}">La academia líder en formación de jugadores competitivos de juegos de lucha. Nuestra misión es desarrollar el talento de la próxima generación de esports.</p>
                 <div class="social-links">
                     <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
@@ -1080,34 +1042,34 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             
             <div class="footer-section">
-                <h3>Enlaces rápidos</h3>
-                <a href="#">Inicio</a><br>
-                <a href="#">Cursos</a><br>
-                <a href="fightstick-designer.html">Diseña tu Fight Stick</a><br>
-                <a href="#">Comunidad</a><br>
-                <a href="#">Contacto</a>
+                <h3 th:text="#{footer.enlaces.titulo}">Enlaces rápidos</h3>
+                <a href="#" th:text="#{footer.enlaces.inicio}">Inicio</a><br>
+                <a href="#" th:text="#{footer.enlaces.cursos}">Cursos</a><br>
+                <a href="fightstick-designer.html" th:text="#{footer.enlaces.disenia}">Diseña tu Fight Stick</a><br>
+                <a href="#" th:text="#{footer.enlaces.comunidad}">Comunidad</a><br>
+                <a href="#" th:text="#{footer.enlaces.contacto}">Contacto</a>
             </div>
             
             <div class="footer-section">
-                <h3>Cursos populares</h3>
-                <a href="#">Street Fighter VI - De cero a héroe</a><br>
-                <a href="#">Tekken 8 - Técnicas avanzadas</a><br>
-                <a href="#">Guilty Gear Strive - Fundamentos</a><br>
-                <a href="#">Entrenamiento competitivo</a><br>
-                <a href="#">Psicología del jugador</a>
+                <h3 th:text="#{footer.cursos.titulo}">Cursos populares</h3>
+                <a href="#" th:text="#{footer.cursos.sf}">Street Fighter VI - De cero a héroe</a><br>
+                <a href="#" th:text="#{footer.cursos.tekken}">Tekken 8 - Técnicas avanzadas</a><br>
+                <a href="#" th:text="#{footer.cursos.gg}">Guilty Gear Strive - Fundamentos</a><br>
+                <a href="#" th:text="#{footer.cursos.entrenamiento}">Entrenamiento competitivo</a><br>
+                <a href="#" th:text="#{footer.cursos.psicologia}">Psicología del jugador</a>
             </div>
             
             <div class="footer-section">
-                <h3>Contacto</h3>
-                <p><i class="fas fa-map-marker-alt"></i> Calle del Arcade 123, Madrid</p>
-                <p><i class="fas fa-phone"></i> +34 912 345 678</p>
-                <p><i class="fas fa-envelope"></i> info@fgacademy.com</p>
-                <p><i class="fas fa-clock"></i> Lunes a Viernes: 10:00 - 22:00</p>
+                <h3 th:text="#{footer.contacto.titulo}">Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> <span th:text="#{footer.contacto.direccion}">Calle del Arcade 123, Madrid</span></p>
+                <p><i class="fas fa-phone"></i> <span th:text="#{footer.contacto.telefono}">+34 912 345 678</span></p>
+                <p><i class="fas fa-envelope"></i> <span th:text="#{footer.contacto.email}">info@fgacademy.com</span></p>
+                <p><i class="fas fa-clock"></i> <span th:text="#{footer.contacto.horario}">Lunes a Viernes: 10:00 - 22:00</span></p>
             </div>
         </div>
         
         <div class="copyright">
-            <p>FG Academy - Escuela de juegos de lucha &copy; 2023 | Todos los derechos reservados</p>
+            <p th:text="#{footer.copyright}">FG Academy - Escuela de juegos de lucha &copy; 2023 | Todos los derechos reservados</p>
         </div>
     </footer>
     

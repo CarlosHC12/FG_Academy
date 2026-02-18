@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FG Academy - Crear Profesor</title>
+    <title th:text="#{app.titulo}">FG Academy - Crear Profesor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link th:href="@{/css/crear.css}" rel="stylesheet">
-    
 </head>
 <body>
     <div class="animated-bg" id="animated-bg"></div>
@@ -17,34 +16,23 @@
             <div class="logo-text">FG Academy</div>
         </div>
         <div class="nav-links">
-            <a href="/">Inicio</a>
-            <a href="/gestion">Gestión</a>
-            <a href="/crear/alumno">Crear Alumno</a>
-            <a href="/crear/profesor" class="active">Crear Profesor</a>
+            <a href="/" th:text="#{nav.inicio}">Inicio</a>
+            <a href="/gestion" th:text="#{nav.gestion}">Gestión</a>
+            <a href="/crear/alumno" th:text="#{nav.crear.alumno}">Crear Alumno</a>
+            <a href="/crear/profesor" class="active" th:text="#{nav.crear.profesor}">Crear Profesor</a>
         </div>
-        <div class="language-selector" th:with="lang=${#locale.language}">
-   
-</div>
-
     </nav>
-    <div>
-         <a href="?lang=es" class="lang-flag" 
-       th:classappend="${lang == 'es' ? 'active' : ''}"
-       title="Español">🇪🇸</a>
-    <a href="?lang=en" class="lang-flag"
-       th:classappend="${lang == 'en' ? 'active' : ''}"
-       title="English">🇬🇧</a>
-    <a href="?lang=ja" class="lang-flag"
-       th:classappend="${lang == 'ja' ? 'active' : ''}"
-       title="日本語">🇯🇵</a>
-    <a href="?lang=ko" class="lang-flag"
-       th:classappend="${lang == 'ko' ? 'active' : ''}"
-       title="한국어">🇰🇷</a>
+    
+    <div class="language-selector">
+        <a href="?lang=es" class="lang-flag" th:classappend="${lang == 'es' ? 'active' : ''}" title="Español">🇪🇸</a>
+        <a href="?lang=en" class="lang-flag" th:classappend="${lang == 'en' ? 'active' : ''}" title="English">🇬🇧</a>
+        <a href="?lang=ja" class="lang-flag" th:classappend="${lang == 'ja' ? 'active' : ''}" title="日本語">🇯🇵</a>
+        <a href="?lang=ko" class="lang-flag" th:classappend="${lang == 'ko' ? 'active' : ''}" title="한국어">🇰🇷</a>
     </div>
     
     <section class="header">
-        <h1>Crear Nuevo Profesor</h1>
-        <p>Completa el formulario para registrar un nuevo profesor</p>
+        <h1 th:text="#{profesor.crear.titulo}">Crear Nuevo Profesor</h1>
+        <p th:text="#{profesor.crear.subtitulo}">Completa el formulario para registrar un nuevo profesor</p>
     </section>
     
     <div class="main-container">
@@ -52,44 +40,29 @@
             <form action="/crear/profesor" method="post" class="crear-form">
                 <div class="form-grid">
                     <div class="form-group full-width">
-                        <label for="nombre">Nombre completo</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Carlos Rodríguez" required>
+                        <label for="nombre" th:text="#{profesor.crear.nombre}">Nombre completo</label>
+                        <input type="text" id="nombre" name="nombre" th:placeholder="#{profesor.crear.nombre.placeholder}" placeholder="Ej: Carlos Rodríguez" required>
                     </div>
                     
                     <div class="form-group full-width">
-                        <label for="juego">Juego especialidad</label>
+                        <label for="juego" th:text="#{profesor.crear.juego}">Juego especialidad</label>
                         <select id="juego" name="juego" required>
-                            <option value="">Selecciona un juego</option>
+                            <option value="" th:text="#{profesor.crear.juego.seleccionar}">Selecciona un juego</option>
                             <option value="Guilty Gear -Strive-">Guilty Gear -Strive-</option>
                             <option value="Granblue Fantasy Versus Rising">Granblue Fantasy Versus Rising</option>
-                            <option value="Blazblue Centralfiction">Blazblue Centralfiction</option>
                             <option value="Tekken 8">Tekken 8</option>
                             <option value="Street Fighter 6">Street Fighter 6</option>
                             <option value="Mortal Kombat 1">Mortal Kombat 1</option>
-                            <option value="2XKO">2XKO</option>
-                            <option value="Marvel Tokon Fighting souls">Marvel Tokon Fighting souls</option>
-                            <option value="Blazblue Cross tag battle">Blazblue Cross tag battle</option>
-                            <option value="Virtua Fighter 5 Revo">Virtua Fighter 5 Revo</option>
-                            <option value="Fatal Fury: City of the Wolves">Fatal Fury: City of the Wolves</option>
-                            <option value="King of Fighters XVI">King of Fighters XVI</option>
-                            <option value="Chaos Code New Sign of Catastrophe">Chaos Code New Sign of Catastrophe</option>
-                            <option value="Chaos Code Nemesis Experiment">Chaos Code Nemesis Experiment</option>
-                            <option value="Guilty Gear Xrd REV2">Guilty Gear Xrd REV2</option>
-                            <option value="DNF Duel">DNF Duel</option>
-                            <option value="Ultimate Marvel vs Capcom 3">Ultimate Marvel vs Capcom 3</option>
-                            <option value="Invincible vs">Invincible vs</option>
-                            <option value="Vampire Savior">Vampire Savior</option>
-                            <option value="Under Night In-Birth 2 Sys:Celes">Under Night In-Birth 2 Sys:Celes</option>
                         </select>
                     </div>
                 </div>
                 
                 <div class="form-buttons">
                     <button type="submit" class="btn btn-confirm">
-                        <i class="fas fa-save"></i> Crear Profesor
+                        <i class="fas fa-save"></i> <span th:text="#{profesor.crear.boton}">Crear Profesor</span>
                     </button>
                     <a href="/gestion" class="btn btn-cancel">
-                        <i class="fas fa-times"></i> Cancelar
+                        <i class="fas fa-times"></i> <span th:text="#{profesor.crear.cancelar}">Cancelar</span>
                     </a>
                 </div>
             </form>
@@ -102,39 +75,38 @@
             <div class="modal-icon">
                 <i class="fas fa-check-circle"></i>
             </div>
-            <h2>¡Profesor Creado!</h2>
-            <p th:text="'Profesor: ' + ${nombreCreado} + ' creado correctamente'">Profesor creado correctamente</p>
+            <h2 th:text="#{profesor.creado.titulo}">¡Profesor Creado!</h2>
+            <p th:text="'Profesor: ' + ${nombreCreado} + ' ' + #{profesor.creado.mensaje}">Profesor creado correctamente</p>
             <div class="modal-buttons">
                 <a href="/crear/profesor" class="btn-modal btn-primary">
-                    <i class="fas fa-plus"></i> Crear otro
+                    <i class="fas fa-plus"></i> <span th:text="#{profesor.creado.otro}">Crear otro</span>
                 </a>
                 <a href="/gestion" class="btn-modal btn-secondary">
-                    <i class="fas fa-list"></i> Ver listados
+                    <i class="fas fa-list"></i> <span th:text="#{gestion.boton.descargar}">Ver listados</span>
                 </a>
                 <a href="/" class="btn-modal btn-cancel">
-                    <i class="fas fa-home"></i> Inicio
+                    <i class="fas fa-home"></i> <span th:text="#{nav.inicio}">Inicio</span>
                 </a>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>FG Academy - Sistema de Gestión &copy; 2024</p>
+        <p th:text="#{footer.copyright}">FG Academy - Sistema de Gestión &copy; 2024</p>
     </footer>
 
     <script th:src="@{/js/crear.js}"></script>
 </body>
 <style>
     :root {
-    --primary-dark: #0a1a0a;        /* Verde oscuro profundo */
-    --secondary-dark: #1a2a1a;       /* Verde medio oscuro */
-    --accent-green: #4CAF50;          /* Verde principal */
-    --accent-light: #a5d6a7;          /* Verde claro */
-    --accent-glow: rgba(76, 175, 80, 0.4);  /* Brillo verde */
-    --accent-lime: #cddc39;            /* Verde lima para contrastes */
-    --text-light: #f1f8e9;            /* Texto claro con tono verdoso */
-    --border-color: #2e5e2e;           /* Borde verde oscuro */
-    --panel-bg: rgba(26, 42, 26, 0.95); /* Fondo panel verde oscuro */
+    --primary-dark: #0a1a0a;
+    --secondary-dark: #1a2a1a;
+    --accent-green: #4CAF50;
+    --accent-light: #a5d6a7;
+    --accent-glow: rgba(76, 175, 80, 0.4);
+    --text-light: #f1f8e9;
+    --border-color: #2e5e2e;
+    --panel-bg: rgba(26, 42, 26, 0.95);
     --gradient-bg: linear-gradient(135deg, #0a1a0a 0%, #1a3a1a 50%, #0a1a0a 100%);
 }
 
@@ -244,6 +216,27 @@ nav {
 .nav-links a:hover,
 .nav-links a.active {
     color: var(--accent-green);
+}
+
+/* Language selector */
+.language-selector {
+    display: flex;
+    gap: 10px;
+    padding: 10px 30px;
+    justify-content: flex-end;
+}
+
+.lang-flag {
+    font-size: 1.5rem;
+    text-decoration: none;
+    opacity: 0.6;
+    transition: all 0.3s;
+}
+
+.lang-flag:hover,
+.lang-flag.active {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 /* Header */
