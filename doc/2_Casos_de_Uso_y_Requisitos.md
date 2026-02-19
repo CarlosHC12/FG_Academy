@@ -1,42 +1,36 @@
 # Casos de Uso y Requisitos
 
-## 1. Introducción
+## Página de Inicio Pública
+- **Descripción:** La página de inicio es accesible para todos los usuarios, sin restricciones.
 
-Este documento describe los casos de uso, requisitos funcionales y no funcionales del sistema.
+## Casos de Uso: Gestión de Usuarios
 
-## 2. Casos de Uso
+### 1. Iniciar Sesión
+- **Actor:** Usuario (Estudiante, Profesor)
+- **Descripción:** Los usuarios pueden iniciar sesión para acceder a las listas de estudiantes y profesores.
 
-### Caso de Uso 1: [Nombre del Caso de Uso]
-- **Descripción:** [Descripción del caso de uso]
-- **Actores:** [Actores involucrados]
-- **Precondiciones:** [Condiciones que deben cumplirse antes de ejecutar el caso de uso]
-- **Postcondiciones:** [Resultados después de la ejecución del caso de uso]
+### 2. Ver Listas de Estudiantes y Profesores
+- **Actor:** Estudiante, Profesor
+- **Descripción:** Los usuarios pueden ver las listas de estudiantes y profesores, pero no pueden editarlas.
+
+### 3. Gestión de Usuarios por Administrador
+- **Actor:** Administrador
 - **Flujo Principal:**
-  1. [Paso 1]
-  2. [Paso 2]
-  3. [Paso 3]
+    1. El administrador inicia sesión.
+    2. El administrador accede a las listas de estudiantes y profesores.
+    3. El administrador puede:
+        - Editar o eliminar un estudiante o profesor existente.
+        - Crear nuevos estudiantes o profesores utilizando formularios.
+        - Descargar listas en formato PDF.
 
-### Caso de Uso 2: [Nombre del Caso de Uso]
-- **Descripción:** [Descripción del caso de uso]
-- **Actores:** [Actores involucrados]
-- **Precondiciones:** [Condiciones que deben cumplirse antes de ejecutar el caso de uso]
-- **Postcondiciones:** [Resultados después de la ejecución del caso de uso]
-- **Flujo Principal:**
-  1. [Paso 1]
-  2. [Paso 2]
-  3. [Paso 3]
+## Requisitos Funcionales
+1. El sistema debe permitir a los usuarios iniciar sesión.
+2. El sistema debe ofrecer vistas de listas de estudiantes y profesores a los usuarios (lectura únicamente).
+3. El administrador debe poder gestionar estudiantes y profesores (editar, eliminar, crear).
+4. El sistema debe permitir la descarga de listas como archivos PDF.
 
-## 3. Requisitos Funcionales
-
-- **RF1:** [Descripción del Requisito Funcional 1]
-- **RF2:** [Descripción del Requisito Funcional 2]
-
-## 4. Requisitos No Funcionales
-
-- **RNF1:** [Descripción del Requisito No Funcional 1]
-- **RNF2:** [Descripción del Requisito No Funcional 2]
-
----
-
-**Fecha de Creación:** 2026-02-19 09:27:44 (UTC) 
-**Autor:** CarlosHC12
+## Requisitos No Funcionales
+1. **Usabilidad:** La interfaz debe ser intuitiva y fácil de navegar.
+2. **Seguridad:** El sistema debe asegurar que solo los administradores puedan realizar cambios en los datos.
+3. **Rendimiento:** Las listas deben cargarse rápidamente, incluso con un gran número de registros.
+4. **Compatibilidad:** El sistema debe ser accesible desde diferentes dispositivos y navegadores.
