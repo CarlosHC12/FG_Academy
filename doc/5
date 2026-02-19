@@ -1,0 +1,50 @@
+# 3. Diseño de la Aplicación
+
+[← Volver al índice](../index.md) | [Anterior: Casos de Uso y Requisitos](2_Casos_de_Uso_y_Requisitos.md) | [Siguiente: Arquitectura y Despliegue →](4_Arquitectura_y_Despliegue.md)
+
+---
+
+## 3.1 GUI (Graphical User Interface)
+
+La interfaz gráfica de **FG_Academy** ha sido diseñada con un enfoque minimalista y funcional, priorizando la claridad en la presentación de datos y la facilidad de uso. Utiliza una paleta de colores oscuros con acentos en verde para las acciones principales y amarillo para elementos destacados.
+
+### 3.1.1 Estilo Visual
+
+- **Fondo oscuro** (`#1a1a0a`, `#0a1a0a`) que reduce la fatiga visual durante sesiones prolongadas
+- **Acentos en amarillo dorado** (`#ffd700`) para elementos interactivos y estadísticas
+- **Tarjetas con efecto de vidrio** (glassmorphism) mediante `backdrop-filter: blur(10px)`
+- **Tipografía clara y legible** con fuente `Inter` y `Segoe UI`
+- **Efectos de hover** con elevación y sombras para mejorar la interactividad
+
+### 3.1.2 Página de Gestión (`gestion.html`)
+
+La página de gestión es el núcleo de la aplicación y presenta:
+
+- **Panel de selección** con dos tarjetas (Alumnos/Profesores) que cambian el contenido mostrado
+- **Sistema de filtros** en tiempo real que permiten buscar por ID, nombre o profesor asignado
+- **Tablas de datos** con información de alumnos y profesores
+- **Botones de acción** (Editar/Eliminar) en cada fila
+- **Selectores de idioma** mediante banderas en la parte superior
+
+### 3.1.3 Página de Administración (`admin.html`)
+
+Versión simplificada de la gestión que muestra:
+
+- Listados completos de alumnos y profesores en una sola vista
+- Mismas funcionalidades de edición y eliminación
+- Estadísticas resumidas en la parte superior
+
+### 3.1.4 Páginas de Creación (`crear-alumno.html` y `crear-profesor.html`)
+
+Formularios con:
+
+- Diseño limpio y centrado
+- Validaciones en cliente (HTML5) y servidor
+- Selectores dinámicos poblados desde la base de datos
+- Modales de confirmación tras operaciones exitosas
+
+---
+
+## 3.2 UI (Vistas)
+
+### 3.2.1 Vista de Gestión (Alumnos)
