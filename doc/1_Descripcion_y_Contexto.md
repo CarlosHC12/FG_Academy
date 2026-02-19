@@ -1,44 +1,23 @@
-# Descripción y Contexto
+# FG_Academy Context
 
-Este documento proporciona una descripción y un contexto detallado sobre el proyecto.
+FG_Academy es una innovadora institución que se centra en la formación de jugadores de videojuegos de lucha. Con el crecimiento explosivo de los esports, especialmente en el ámbito de los videojuegos de lucha, se ha vuelto esencial ofrecer una educación especializada que aborde tanto las habilidades técnicas como la mentalidad competitiva.
 
-## Introducción
+# Boom de los esports en videojuegos de lucha
 
-> Aquí puedes agregar una breve introducción sobre el proyecto, su propósito y su importancia.
+En los últimos años, hemos visto un auge en la popularidad de los esports, con juegos como Street Fighter, Tekken y Super Smash Bros ganando millones de seguidores. Este fenómeno ha llevado a la creación de grandes plataformas competitivas y eventos donde los jugadores pueden demostrar su talento.
 
-## Objetivos del Proyecto
+# Problemas del mercado
 
-> Detalla los objetivos principales del proyecto, lo que se espera lograr y cómo se medirá el éxito.
+A pesar de este crecimiento, aún persisten problemas en el mercado, como la falta de un enfoque específico en la enseñanza de los videojuegos de lucha. La mayoría de las escuelas de esports ofrecen programas genéricos que no se adaptan a las necesidades de los jugadores de este género.
 
-## Alcance
+# Aplicaciones existentes
 
-> Define el alcance del proyecto: lo que está incluido y lo que está fuera del alcance.
+Si bien existen algunas plataformas de formación en esports, raramente se especializan en los videojuegos de lucha. Esto resulta en una falta de recursos adecuados para estos jugadores específicos, quienes requieren entrenamientos y estrategias únicas para sobresalir en sus disciplinas.
 
-### Fechas Clave
+# Propuesta de valor de FG_Academy
 
-- **Fecha de inicio:** [Fecha de inicio]
-- **Fecha de finalización prevista:** [Fecha de finalización]
+FG_Academy se diferencia al ofrecer un currículo tailored exclusively for fighting games, que aborda tanto las técnicas de juego como la preparación mental. Además, cuenta con entrenadores profesionales con experiencia en la escena competitiva de videojuegos de lucha. Con un enfoque práctico y personalizado, FG_Academy prepara a sus estudiantes no solo para competir, sino también para entender el ecosistema del deporte electrónico.
 
-## Parte interesada
+# Atendiendo las necesidades específicas de los jugadores de videojuegos de lucha
 
-> Enumera las partes interesadas clave y sus roles en el proyecto. Incluye información de contacto si es relevante.
-
-- **Nombre:** CarlosHC12  
-- **Rol:** [Rol del usuario]
-- **Email:** [Email del usuario]
-
-## Presupuesto
-
-> Proporciona un desglose del presupuesto del proyecto, incluidos los costos estimados y cualquier financiación recibida.
-
-## Riesgos y Desafíos
-
-> Enumera los posibles riesgos y desafíos que podrían afectar el progreso del proyecto y cómo se mitigarán.
-
-## Conclusiones
-
-> Resumen final y cualquier otro comentario relevante.
-
----  
-
-**Fecha y hora actual (UTC):** 2026-02-19 09:27:39
+Nos enfocamos en desarrollar habilidades concretas que son esenciales para el éxito en torneos, como el análisis de juego, la toma de decisiones rápidas y la resistencia mental. Al estar dedicados exclusivamente a este género, podemos ofrecer un entrenamiento que realmente resuena con las experiencias y desafíos de los jugadores de videojuegos de lucha.
