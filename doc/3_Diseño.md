@@ -1,40 +1,43 @@
-# Documentación de Diseño
 
-## 1. Interfaz Gráfica de Usuario (GUI)
-- Detalles sobre la apariencia visual de las aplicaciones.
+**Clases principales:**
+- `Alumno`, `Profesor` - Entidades del dominio
+- `AlumnoId`, `ProfesorId` - Objetos valor
+- `AlumnoRepository`, `ProfesorRepository` - Interfaces de repositorio
+- `CreateAlumnoService`, `FindAlumnoService` - Servicios
+- `CreateAlumnoUseCase`, `FindAlumnoUseCase` - Casos de uso
+- `AlumnoController`, `ProfesorController` - Controladores REST
+- `PaginasController` - Controlador de vistas
+- `AlumnoMapper`, `ProfesorMapper` - Mapeadores
+- `AlumnoEntity`, `ProfesorEntity` - Entidades JPA
 
-## 2. Interfaz de Usuario (UI)
-- Descripción de los elementos con los que los usuarios interactúan.
+---
 
-## 3. Experiencia del Usuario (UX)
-- Enfoque en cómo los usuarios sienten y experimentan el producto.
+## 3.13 Plan de Pruebas
 
-## 4. Interacción del Usuario (IxD)
-- Análisis de cómo interactúan los usuarios con los diferentes componentes del sistema.
+**Pruebas Unitarias:**
+- Servicios (CRUD)
+- Casos de uso (lógica de negocio)
+- Mappers (conversiones)
+- Validaciones
 
-## 5. Paleta de Colores
-- **Primarios:** 
-  - #FF5733 (Rojo)
-  - #33FF57 (Verde)
-- **Secundarios:** 
-  - #3357FF (Azul)
-  - #F1C40F (Amarillo)
+**Pruebas de Integración:**
+- Repositorios con H2 embebida
+- Controladores REST
+- Servicios con repositorios
 
-## 6. Tipografía
-- Fuentes:  
-  - **Cabecera:** Arial Bold, 24px  
-  - **Texto:** Roboto, 16px  
+**Pruebas Funcionales:**
+- Creación de alumnos y profesores
+- Edición y eliminación
+- Filtros en listados
+- Exportación PDF
+- Cambio de idioma
 
-## 7. Wireframes
-- Representaciones visuales simple de las interfaces de usuario que se utilizarán.
+**Herramientas:**
+- JUnit 5
+- Mockito
+- Spring Boot Test
+- Postman
 
-## 8. Consideraciones de Accesibilidad
-- Análisis de la accesibilidad que aseguran que el diseño es usable para personas con discapacidades.
+---
 
-## 9. Modelos de Interacción
-- Descripción de la interacción entre usuarios y sistema.
-
-## 10. Diagrama de Navegación
-- Explicación gráfica de la estructura de navegación entre diferentes pantallas y secciones de la aplicación.
-
-Este documento proporciona una base sólida para la comprensión y el desarrollo de la aplicación, asegurando una experiencia óptima para los usuarios.
+[← Anterior: Casos de Uso y Requisitos](2_Casos_de_Uso_y_Requisitos.md) | [Volver al índice](../index.md) | [Siguiente: Arquitectura y Despliegue →](4_Arquitectura_y_Despliegue.md)
