@@ -1,0 +1,92 @@
+@startuml
+title Diagrama de Clases - Versión Simplificada
+
+class Alumno {
+  - id: AlumnoId
+  - nombre: String
+  - edad: int
+  - profesorId: ProfesorId
+  - createdAt: LocalDateTime
+}
+
+class Profesor {
+  - id: ProfesorId
+  - nombre: String
+  - juego: String
+  - createdAt: LocalDateTime
+}
+
+class AlumnoId {
+  - value: Integer
+}
+
+class ProfesorId {
+  - value: Integer
+}
+
+interface AlumnoRepository {
+  + save(Alumno): Alumno
+  + getAll(): List<Alumno>
+  + getById(AlumnoId): Optional<Alumno>
+  + deleteById(AlumnoId): void
+}
+
+interface ProfesorRepository {
+  + save(Profesor): Profesor
+  + getAll(): List<Profesor>
+  + getById(ProfesorId): Optional<Profesor>
+  + deleteById(ProfesorId): void
+}
+
+class AlumnoService {
+  + createAlumno(CreateAlumnoCommand): Alumno
+  + findAll(): List<Alumno>
+}
+
+class ProfesorService {
+  + createProfesor(CreateProfesorCommand): Profesor
+  + findAll(): List<Profesor>
+}
+
+class PaginasController {
+  + main(): String
+  + gestion(Model): String
+  + admin(Model): String
+  + crearAlumno(Model): String
+  + crearProfesor(): String
+  + exportarAlumnosPdf(HttpServletResponse): void
+  + exportarProfesoresPdf(HttpServletResponse): void
+}
+
+class AlumnoEntity {
+  - id: Integer
+  - nombre: String
+  - edad: Integer
+  - profesor: ProfesorEntity
+  - fechaCreacion: LocalDateTime
+}
+
+class ProfesorEntity {
+  - id: Integer
+  - nombre: String
+  - juego: String
+  - fechaCreacion: LocalDateTime
+  - alumnos: List<AlumnoEntity>
+}
+
+Alumno --> AlumnoId
+Alumno --> ProfesorId
+Profesor --> ProfesorId
+
+AlumnoService --> AlumnoRepository
+ProfesorService --> ProfesorRepository
+
+AlumnoRepository <|.. AlumnoEntity
+ProfesorRepository <|.. ProfesorEntity
+
+PaginasController --> AlumnoService
+PaginasController --> ProfesorService
+
+AlumnoEntity --> ProfesorEntity
+ProfesorEntity --> AlumnoEntity
+@enduml

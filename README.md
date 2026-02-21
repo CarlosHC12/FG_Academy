@@ -16,7 +16,7 @@
 
 Esta documentación está organizada en varios módulos para facilitar su lectura y consulta:
 
-1. **[1_Descripcion_y_Contexto.md](./doc/1_Descripcion_y_Contexto.md)** - Contexto del proyecto, aplicaciones existentes y propuesta de valor
+1. **[1_Descripcion_y_Contexto.md](./doc/1_Introduccion.md)** - Contexto del proyecto, aplicaciones existentes y propuesta de valor
 2. **[2_Casos_de_Uso_y_Requisitos.md](./doc/2_Casos_de_Uso_y_Requisitos.md)** - Casos de uso, actores y requisitos funcionales/no funcionales
 3. **[3_Diseño.md](./doc/3_Diseño.md)** - GUI, UI, UX, IxD, diagramas de navegación y reutilización
 4. **[4_Arquitectura_y_Despliegue.md](./doc/4_Arquitectura_y_Despliegue.md)** - Arquitectura, componentes, servicios REST y base de datos

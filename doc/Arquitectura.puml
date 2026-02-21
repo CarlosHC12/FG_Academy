@@ -1,0 +1,33 @@
+@startuml
+title Arquitectura por Capas
+
+package "Presentación" {
+  [Vistas Thymeleaf]
+  [Controladores MVC]
+}
+
+package "Aplicación" {
+  [Servicios]
+  [Casos de Uso]
+  [Mappers]
+}
+
+package "Dominio" {
+  [Entidades]
+  [Interfaces Repositorio]
+}
+
+package "Infraestructura" {
+  [Implementaciones JPA]
+  [Base de Datos H2]
+}
+
+[Vistas Thymeleaf] --> [Controladores MVC]
+[Controladores MVC] --> [Servicios]
+[Servicios] --> [Casos de Uso]
+[Casos de Uso] --> [Interfaces Repositorio]
+[Interfaces Repositorio] <|.. [Implementaciones JPA]
+[Implementaciones JPA] --> [Base de Datos H2]
+[Servicios] --> [Mappers]
+[Servicios] --> [Entidades]
+@enduml

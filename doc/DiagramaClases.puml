@@ -1,0 +1,33 @@
+@startuml
+title Diagrama de Despliegue - Versión Simple
+
+node "Docker Host" {
+  
+  rectangle "Contenedor Docker" {
+    artifact "fg-academy.jar"
+    artifact "Java 17"
+    port "8080"
+  }
+  
+  database "Volumen de Datos" {
+    file "fgacademy.mv.db"
+  }
+  
+  file "Dockerfile"
+  file "docker-compose.yml"
+}
+
+node "Cliente" {
+  artifact "Navegador"
+}
+
+node "Docker Hub" {
+  artifact "Imagen Docker"
+}
+
+"Contenedor Docker" --> "Volumen de Datos" : Monta
+"Contenedor Docker" --> "8080" : Expone
+"Cliente" --> "8080" : HTTP
+"Contenedor Docker" --> "Imagen Docker" : Sube/Baja
+"Dockerfile" --> "Contenedor Docker" : Construye
+@enduml

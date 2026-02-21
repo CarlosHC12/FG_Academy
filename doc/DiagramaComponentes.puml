@@ -1,0 +1,41 @@
+@startuml
+title Componentes - Resumen
+
+node "Cliente" {
+  [Navegador Web]
+}
+
+node "Servidor" {
+  
+  package "Capa Web" {
+    [Controladores MVC]
+    [Vistas Thymeleaf]
+  }
+  
+  package "Capa REST" {
+    [Controladores REST]
+    [DTOs]
+  }
+  
+  package "Capa de Negocio" {
+    [Servicios]
+    [Casos de Uso]
+  }
+  
+  package "Capa de Persistencia" {
+    [Repositorios]
+    [Entidades JPA]
+  }
+  
+  database "Base de Datos H2"
+}
+
+[Navegador Web] --> [Controladores MVC] : HTTP
+[Navegador Web] --> [Controladores REST] : API
+[Controladores MVC] --> [Servicios] : llama
+[Controladores REST] --> [Servicios] : llama
+[Servicios] --> [Casos de Uso] : ejecuta
+[Casos de Uso] --> [Repositorios] : persiste
+[Repositorios] --> [Entidades JPA] : mapea
+[Entidades JPA] --> "Base de Datos H2" : SQL
+@enduml
