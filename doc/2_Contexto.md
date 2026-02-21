@@ -6,7 +6,7 @@
 
 ## 2.1 Mundo real del problema
 
-En el mundo de los juegos de lucha competitivos, los jugadores necesitan organizar su entrenamiento, llevar un registro de sus progresos y acceder a guías de personajes. Actualmente, la información está dispersa en wikis, foros y videos de YouTube, sin una plataforma centralizada que permita gestionar alumnos y profesores de una academia.
+Hoy en dia los e-sports son cada vez mas relevantes, llegando a tener muchos espectadores, igualandose cada vez mas con deportes normales, llegando al punto de ser reconocido como deporte por el comite olimpico (Solo en arabia saudi) y eso desemboco en el nacimiento de escuelas dedicados a los e-sports de los juegos populares o mainstream, lol, valorant cs2 etc, pero no existen del genero de peleas/lucha o fighting y es ahi donde nace FG_Academy, como una iniciativa para potenciar los figthing games en españa, y quitar el miedo a estos juegos.
 
 ---
 

@@ -21,7 +21,7 @@ La interfaz gráfica está construida con HTML5, CSS3 y JavaScript, utilizando T
 - **Consistencia**: Mismos patrones en todas las páginas
 - **Feedback**: Modales de confirmación tras operaciones
 - **Prevención de errores**: Confirmación antes de eliminar
-- **Reconocimiento**: Iconos intuitivos
+- **Reconocimiento**: Iconos intuitivos 
 
 ### 3.1.3 IxD
 
