@@ -1,6 +1,6 @@
 # 2. Contexto de la aplicación
 
-[← Anterior: Introducción](1_Introduccion.md) | [Volver al índice](../README.md) | [Siguiente: Diseño →](3_Diseno.md)
+[← Anterior: Introducción](1_Introduccion.md) | [Volver al índice](../README.md) | [Siguiente: Diseño →](3_Diseño.md)
 
 ---
 
