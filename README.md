@@ -1,10 +1,10 @@
-# 🥋 FG_Academy - Escuela de Juegos de Pelea
+# FG_Academy - Escuela de Juegos de Pelea
 
-## 📋 Resumen Ejecutivo
+## Resumen Ejecutivo
 
-**FG_Academy** es una plataforma educativa interactiva diseñada para enseñar y entrenar las mecánicas fundamentales de los juegos de pelea (Fighting Games). La aplicación combina un servidor backend robusto con una interfaz gráfica intuitiva para ofrecer una experiencia de aprendizaje completa.
+**FG_Academy** ES un entorno de aprendizaje para juegos de lucha
 
-### 🔖 Información General
+###  Información General
 - **Versión**: 1.0.0
 - **Descripción**: Escuela de juegos de pelea
 - **Lenguajes**: HTML (82.8%), Java (17.2%)
@@ -12,7 +12,7 @@
 
 ---
 
-## 📂 Estructura de Documentación
+##  Estructura de Documentación
 
 Esta documentación está organizada en varios módulos para facilitar su lectura y consulta:
 
@@ -28,31 +28,13 @@ Esta documentación está organizada en varios módulos para facilitar su lectur
 
 ---
 
-## 🚀 Inicio Rápido
+## Inicio Rápido
 
 ### Requisitos Previos
 - Java 11 o superior
 - Maven 3.6+
 - Docker (opcional, para DevContainer)
 - Navegador moderno con soporte HTML5
-
-### Instalación
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/CarlosHC12/FG_Academy.git
-cd FG_Academy
-
-# Compilar el proyecto
-mvn clean install
-
-# Ejecutar el servidor
-cd Server
-mvn spring-boot:run
-
-# Abrir la aplicación en el navegador
-# http://localhost:8080
-```
 
 ### Desarrollo con DevContainer
 
@@ -78,22 +60,15 @@ Para acceder a la documentación completa, consulta la carpeta [`doc/`](./doc/) 
 
 ## 🤝 Integrantes
 
-| Nombre | Apellido | Rol |
-|--------|----------|-----|
-| Carlos | HC | Desarrollador Principal |
+| Nombre | Apellido |
+|--------|----------|
+| Carlos | Hurtado | 
 
 ---
 
-## 📞 Contacto y Soporte
+Git: https://github.com/CarlosHC12/FG_Academy
 
-Para preguntas o sugerencias sobre la documentación o el proyecto, por favor abre un issue en este repositorio.
-
+Docker: https://hub.docker.com/repositories/carloschc12
 ---
 
-## 📄 Licencia
-
-[Especificar licencia del proyecto]
-
----
-
-**Última actualización**: 2026-02-19
+**Última actualización**: 2026-02-22

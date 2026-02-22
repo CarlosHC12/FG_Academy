@@ -25,7 +25,7 @@ FG_Academy/
 ├── docs/
 └── .gitignore
 
-text
+
 
 ### Documentación
 
@@ -94,41 +94,17 @@ Entorno de desarrollo en contenedor Docker con todo preconfigurado.
 **Construcción:**
 mvn clean package
 
-text
+
 
 **Ejecución:**
 java -jar fg-academy-1.0.0.jar --spring.profiles.active=prod
 
-text
 
-**Docker:**
-[VER ANEXO 3: Dockerfile al final del documento]
-[VER ANEXO 4: docker-compose.yml al final del documento]
 
 **Verificación:**
 - Página principal: http://localhost:8080
 - API Alumnos: http://localhost:8080/api/alumnos
 - API Profesores: http://localhost:8080/api/profesores
-
----
-
-## ANEXOS
-
-### ANEXO 1: pom.xml
-
-[El código del archivo pom.xml va aquí]
-
-### ANEXO 2: devcontainer.json
-
-[El código del archivo .devcontainer/devcontainer.json va aquí]
-
-### ANEXO 3: Dockerfile
-
-[El código del archivo Dockerfile va aquí]
-
-### ANEXO 4: docker-compose.yml
-
-[El código del archivo docker-compose.yml va aquí]
 
 ---
 

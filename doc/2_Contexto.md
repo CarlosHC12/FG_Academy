@@ -12,7 +12,7 @@ Hoy en dia los e-sports son cada vez mas relevantes, llegando a tener muchos esp
 
 ## 2.2 Qué app existen
 
-Tecnicamente no existe una aplicacion dedicada a escuelas de figting pero si excisten guias.
+Tecnicamente no existen escuelas dedicadas a figting games ni aplicaciones dedicadas. sin embargo, si existen foros o medios por el cual se realizan acciones similares.
 
 | Aplicación | Funcionalidad | Limitaciones |
 |------------|---------------|---------------|
