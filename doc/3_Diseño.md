@@ -30,9 +30,7 @@ La interfaz gráfica está construida con HTML5, CSS3 y JavaScript, utilizando T
 - Modales de confirmación
 - Botones de acción directa en tablas
 
-### 3.1.4 Diagrama navegación
 
-[AQUÍ VA EL DIAGRAMA DE NAVEGACIÓN EN PLANTUML]
 
 ### 3.1.5 Reutilización
 
@@ -46,15 +44,15 @@ La interfaz gráfica está construida con HTML5, CSS3 y JavaScript, utilizando T
 
 ## 3.2 Arquitectura
 
-[AQUÍ VA EL DIAGRAMA DE ARQUITECTURA EN PLANTUML]
+![](Arquitectura.puml)
 
 ### 3.2.1 Despliegue
 
-[AQUÍ VA EL DIAGRAMA DE DESPLIEGUE EN PLANTUML]
+![](Despliegue.puml)
 
 ### 3.2.2 Componentes
 
-[AQUÍ VA EL DIAGRAMA DE COMPONENTES EN PLANTUML]
+![](DiagramaComponentes.puml)
 
 ---
 

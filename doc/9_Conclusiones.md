@@ -35,7 +35,6 @@
 
 - **Expansión a más juegos**: Añadir guías de nuevos títulos
 - **Versión mobile**: Desarrollo de app nativa o PWA
-- **Comunidad**: Crear foros o secciones colaborativas
 - **Monetización**: Ofrecer contenido premium o suscripciones
 - **API pública**: Abrir endpoints para integraciones externas
 - **Modo offline**: Sincronización para usar sin conexión
